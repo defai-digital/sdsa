@@ -79,6 +79,29 @@ const showError = (msg) => {
   setTimeout(() => el.classList.add("hidden"), 8000);
 };
 
+function formatProcessError(message) {
+  const text = String(message || "").trim();
+
+  const softCap = text.match(/requires suppressing ([\d.]+%) of rows \(cap: (\d+%)\)/i);
+  if (softCap) {
+    return `Processing blocked: estimated suppression is ${softCap[1]}, above the ${softCap[2]} cap.\nReview the preflight suggestions below.`;
+  }
+
+  const hardCap = text.match(/would suppress ([\d.]+%) of rows, exceeding the hard utility cap of (\d+%)/i);
+  if (hardCap) {
+    return `Processing blocked: estimated suppression is ${hardCap[1]}, above the hard ${hardCap[2]} cap.\nReview the preflight suggestions below.`;
+  }
+
+  if (text.startsWith("All ") && text.includes("rows were suppressed")) {
+    return "Processing blocked: no rows would remain after k-anonymity.\nReview the preflight suggestions below.";
+  }
+
+  return text.replaceAll(
+    "accept_weaker_guarantee=true",
+    "Allow >10% row suppression"
+  );
+}
+
 async function readErrorMessage(res) {
   const raw = await res.text();
   if (!raw) return `${res.status} ${res.statusText}`.trim();
@@ -481,6 +504,26 @@ function flashAcceptWeaker() {
   toggle.classList.add("flash");
 }
 
+function guardProcessFromPreflight() {
+  const preflight = state.preflight;
+  if (!preflight) return false;
+
+  if (preflight.within_hard_suppression_cap === false) {
+    showError("Processing blocked: estimated suppression is above the hard cap.\nReview the preflight suggestions below.");
+    flashPreflight();
+    return true;
+  }
+
+  if (preflight.within_suppression_cap === false && !$("accept-weaker").checked) {
+    showError("Processing blocked: estimated suppression is above the 10% cap.\nUse the preflight suggestions or allow >10% row suppression.");
+    flashPreflight();
+    flashAcceptWeaker();
+    return true;
+  }
+
+  return false;
+}
+
 $("process-btn").addEventListener("click", async () => {
   const body = collectProcessPayload();
   for (const [col, params] of Object.entries(body.dp_params)) {
@@ -495,6 +538,7 @@ $("process-btn").addEventListener("click", async () => {
       return;
     }
   }
+  if (guardProcessFromPreflight()) return;
 
   const btn = $("process-btn");
   btn.classList.add("loading");
@@ -516,7 +560,7 @@ $("process-btn").addEventListener("click", async () => {
     renderReview(data.report);
     show("step-review");
   } catch (e) {
-    showError(`Processing failed: ${e.message}`);
+    showError(formatProcessError(e.message));
     const msg = (e.message || "").toLowerCase();
     // Soft-cap breach: the toggle on the actions bar is the one-click fix.
     // Flash it so the user sees the control they need to flip.
