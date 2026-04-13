@@ -87,3 +87,25 @@ def test_laplace_sampler_handles_boundary_rng_outputs():
         assert all(isinstance(v, float) and v == v for v in results)
     finally:
         L.secrets.randbits = orig
+
+
+def test_correlation_matrix_returns_none_for_constant_columns():
+    """Regression: constant column → Polars corr returns NaN → report JSON
+    was invalid (NaN is not standard JSON). Now returns None."""
+    import polars as pl
+    import json
+    from sdsa.validate.metrics import correlation_matrix
+
+    df = pl.DataFrame({
+        "constant": [42] * 10,   # zero variance → NaN
+        "varying":  list(range(10)),
+    })
+    cm = correlation_matrix(df)
+    assert cm["constant"]["varying"] is None
+    assert cm["varying"]["constant"] is None
+    assert cm["constant"]["constant"] is None
+    assert cm["varying"]["varying"] == 1.0
+    # Must be valid JSON — no NaN literals allowed.
+    serialized = json.dumps(cm)
+    assert "NaN" not in serialized
+    assert "nan" not in serialized.lower() or "Infinity" not in serialized

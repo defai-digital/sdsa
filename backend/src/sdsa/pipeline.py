@@ -79,13 +79,13 @@ def _high_suppression_message(
 ) -> str:
     return (
         f"k={k} requires suppressing {suppression:.1%} of rows "
-        f"(cap: {cap:.0%}). "
+        f"(soft cap: {cap:.0%}). "
         f"QI columns by cardinality (worst first): "
         f"{_qi_cardinality_report(df, qi_cols)}. "
-        f"Reduce suppression by unchecking high-cardinality QIs or "
-        f"generalizing them further. "
-        f"Set accept_weaker_guarantee=true only if partial loss is acceptable "
-        f"(zero-row output will still be refused)."
+        f"To proceed: either reduce suppression by unchecking high-cardinality "
+        f"QIs or generalizing them further, OR enable "
+        f"\"Allow >{cap:.0%} row suppression\" and re-run. "
+        f"Zero-row output is always refused."
     )
 
 
@@ -101,6 +101,23 @@ def _hard_suppression_message(
         f"This output is refused even with accept_weaker_guarantee=true. "
         f"Reduce the QI set, generalize high-cardinality fields, or lower k."
     )
+
+
+def _derive_deterministic_key(key_name: str, deployment_salt: bytes) -> bytes:
+    """Deploy-salt-scoped HMAC key derivation for deterministic mode (ADR-0008).
+
+    Two invocations with the same (deployment_salt, key_name) produce the
+    same 32-byte key → same hashes/tokens across sessions. Two different
+    deployments with the same key_name get different keys (because salts
+    differ), preserving the deployment-level trust boundary.
+    """
+    import hashlib
+    import hmac as _hmac
+    return _hmac.new(
+        deployment_salt,
+        b"sdsa-det-v1|" + key_name.encode("utf-8"),
+        hashlib.sha256,
+    ).digest()
 
 
 def run_pipeline(
@@ -120,6 +137,16 @@ def run_pipeline(
     if request.deterministic_key_name and dp_columns:
         raise PipelineError(
             "Deterministic mode cannot be combined with DP columns (ADR-0008)."
+        )
+
+    # Deterministic mode: override the session-random hmac_key with a key
+    # derived from (deployment_salt, user-supplied key name). Without this,
+    # the `deterministic_key_name` request field was silently ignored and
+    # every session produced different tokens — breaking the one real
+    # use case of deterministic mode (joinable pseudonyms across exports).
+    if request.deterministic_key_name:
+        hmac_key = _derive_deterministic_key(
+            request.deterministic_key_name, cfg.deployment_salt
         )
 
     # 1. non-DP transforms
@@ -156,6 +183,11 @@ def run_pipeline(
         if "lower" not in params or "upper" not in params:
             raise PipelineError(
                 f"DP column '{col}' needs declared bounds (lower, upper)"
+            )
+        if not df[col].dtype.is_numeric():
+            raise PipelineError(
+                f"column '{col}' has dtype {df[col].dtype}; dp_laplace requires "
+                f"a numeric column"
             )
         try:
             lp = LaplaceParams(

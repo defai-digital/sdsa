@@ -80,17 +80,26 @@ def compare_column(name: str, before: pl.Series, after: pl.Series | None) -> dic
     return report
 
 
-def correlation_matrix(df: pl.DataFrame) -> dict[str, dict[str, float]]:
+def correlation_matrix(df: pl.DataFrame) -> dict[str, dict[str, float | None]]:
+    import math
     num_cols = [c for c in df.columns if df[c].dtype.is_numeric()]
-    out: dict[str, dict[str, float]] = {}
+    out: dict[str, dict[str, float | None]] = {}
     for a in num_cols:
         out[a] = {}
         for b in num_cols:
             try:
-                out[a][b] = float(pl.DataFrame({"a": df[a], "b": df[b]})
-                                  .drop_nulls().select(pl.corr("a", "b")).item() or 0.0)
+                val = pl.DataFrame({"a": df[a], "b": df[b]}) \
+                        .drop_nulls().select(pl.corr("a", "b")).item()
+                # Polars returns NaN when either column has zero variance
+                # (e.g. all rows identical). NaN is not valid JSON, so
+                # coerce to None — downstream consumers treat None as
+                # "undefined / not computable".
+                if val is None or math.isnan(val) or math.isinf(val):
+                    out[a][b] = None
+                else:
+                    out[a][b] = float(val)
             except Exception:
-                out[a][b] = 0.0
+                out[a][b] = None
     return out
 
 

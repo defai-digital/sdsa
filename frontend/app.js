@@ -472,6 +472,15 @@ function flashPreflight() {
   el.classList.add("flash");
 }
 
+function flashAcceptWeaker() {
+  const toggle = $("accept-weaker")?.closest(".toggle");
+  if (!toggle) return;
+  try { toggle.scrollIntoView({ behavior: "smooth", block: "center" }); } catch {}
+  toggle.classList.remove("flash");
+  void toggle.offsetWidth;
+  toggle.classList.add("flash");
+}
+
 $("process-btn").addEventListener("click", async () => {
   const body = collectProcessPayload();
   for (const [col, params] of Object.entries(body.dp_params)) {
@@ -508,10 +517,13 @@ $("process-btn").addEventListener("click", async () => {
     show("step-review");
   } catch (e) {
     showError(`Processing failed: ${e.message}`);
-    // When the failure is a suppression/QI issue, the preflight panel above
-    // already contains the fix buttons. Bring the user's eye to it.
     const msg = (e.message || "").toLowerCase();
-    if (msg.includes("suppress") || msg.includes("qi") || msg.includes("k-anonymity")) {
+    // Soft-cap breach: the toggle on the actions bar is the one-click fix.
+    // Flash it so the user sees the control they need to flip.
+    if (msg.includes("soft cap") && !$("accept-weaker").checked) {
+      flashAcceptWeaker();
+    } else if (msg.includes("suppress") || msg.includes("qi") || msg.includes("k-anonymity")) {
+      // Hard-cap or other QI issue — the preflight panel has the remediation.
       flashPreflight();
     }
   } finally {

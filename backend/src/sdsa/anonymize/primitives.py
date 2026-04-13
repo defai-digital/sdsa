@@ -16,17 +16,41 @@ import polars as pl
 
 def mask(series: pl.Series, keep_prefix: int = 0, keep_suffix: int = 0,
          mask_char: str = "*") -> pl.Series:
-    """Replace characters with mask_char, optionally keeping a prefix/suffix."""
+    """Replace characters with mask_char, optionally keeping a prefix/suffix.
+
+    Guarantees at least one masked character when the input is non-empty.
+    If keep_prefix + keep_suffix >= len(s), both are scaled down
+    proportionally so that at least one character is masked — otherwise
+    a short value like "hi" with keep_prefix=5 would leak unchanged.
+    """
+    if keep_prefix < 0 or keep_suffix < 0:
+        raise ValueError("keep_prefix and keep_suffix must be >= 0")
+
     def _mask(v):
         if v is None:
             return None
         s = str(v)
-        if not s:
-            return s
         n = len(s)
-        p = min(keep_prefix, n)
-        q = min(keep_suffix, max(n - p, 0))
-        return s[:p] + (mask_char * (n - p - q)) + s[n - q:] if q else s[:p] + mask_char * (n - p)
+        if n == 0:
+            return s
+        p = keep_prefix
+        q = keep_suffix
+        # Enforce the privacy invariant: at least one character is masked.
+        # If the caller's prefix+suffix would leave zero masked chars, we
+        # shrink them proportionally (rounding down) so 1 char gets masked.
+        if p + q >= n:
+            # Scale so p + q = n - 1 (at least one char masked).
+            target = max(n - 1, 0)
+            if p + q > 0:
+                scale = target / (p + q)
+                p = int(p * scale)
+                q = int(q * scale)
+            else:
+                p = q = 0
+        p = min(p, n)
+        q = min(q, max(n - p, 0))
+        middle = mask_char * (n - p - q)
+        return s[:p] + middle + (s[n - q:] if q else "")
     return series.map_elements(_mask, return_dtype=pl.Utf8)
 
 

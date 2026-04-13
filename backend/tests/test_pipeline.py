@@ -149,3 +149,75 @@ def test_dp_epsilon_out_of_range():
     )
     with pytest.raises(PipelineError):
         run_pipeline(df, req, "s6", b"\x00" * 32, schema=[], pii_suggestions={})
+
+
+def test_dp_laplace_rejected_on_non_numeric_column():
+    """Regression: applying action=dp_laplace to a string column used to
+    crash inside map_elements with ValueError → 500. Now rejected with
+    a clear PipelineError at the boundary."""
+    import polars as pl
+    from sdsa.anonymize.policy import ColumnPolicy
+    from sdsa.pipeline import PipelineError, ProcessRequest, run_pipeline
+
+    df = pl.DataFrame({"name": ["alice", "bob", "carol"] * 5, "dept": ["A"] * 15})
+    req = ProcessRequest(
+        policies=[
+            ColumnPolicy(column="name", action="dp_laplace"),
+            ColumnPolicy(column="dept", action="retain", is_quasi_identifier=True),
+        ],
+        k=5,
+        dp_params={"name": {"epsilon": 1.0, "lower": 0, "upper": 10}},
+    )
+    with pytest.raises(PipelineError) as exc:
+        run_pipeline(df, req, "sNum", b"\x00" * 32, schema=[], pii_suggestions={})
+    assert "dp_laplace requires a numeric column" in str(exc.value)
+
+
+def test_deterministic_mode_actually_deterministic():
+    """Regression: deterministic_key_name was accepted by the API but had no
+    effect — hashing still used the session-random hmac_key. Joining two
+    sanitized exports that both enabled deterministic mode with the same key
+    was broken. Now the key is derived from (deployment_salt, key_name), so
+    the same key on the same deployment produces the same hashes."""
+    import polars as pl
+    from sdsa.anonymize.policy import ColumnPolicy
+    from sdsa.core.config import get_config
+    from sdsa.pipeline import ProcessRequest, run_pipeline
+
+    df = pl.DataFrame({"email": ["alice@x.com", "bob@x.com", "carol@x.com"] * 5,
+                        "dept": ["A"] * 15})
+    req = ProcessRequest(
+        policies=[
+            ColumnPolicy(column="email", action="hash"),
+            ColumnPolicy(column="dept", action="retain", is_quasi_identifier=True),
+        ],
+        k=5,
+        deterministic_key_name="shared-project-2026",
+    )
+    # Two separate "sessions" with different random hmac_keys, but the same
+    # deterministic_key_name + deployment_salt.
+    r1 = run_pipeline(df, req, "s1", b"\x00" * 32, schema=[], pii_suggestions={})
+    r2 = run_pipeline(df, req, "s2", b"\xff" * 32, schema=[], pii_suggestions={})
+    assert r1.df["email"].to_list() == r2.df["email"].to_list()
+
+
+def test_deterministic_mode_different_keys_produce_different_hashes():
+    """Two different key names must yield distinct hashes — otherwise the
+    deployment couldn't segregate projects."""
+    import polars as pl
+    from sdsa.anonymize.policy import ColumnPolicy
+    from sdsa.pipeline import ProcessRequest, run_pipeline
+
+    df = pl.DataFrame({"email": ["alice@x.com"] * 10, "dept": ["A"] * 10})
+    base = dict(
+        policies=[
+            ColumnPolicy(column="email", action="hash"),
+            ColumnPolicy(column="dept", action="retain", is_quasi_identifier=True),
+        ],
+        k=5,
+    )
+    r1 = run_pipeline(df, ProcessRequest(**base, deterministic_key_name="alpha"),
+                      "s1", b"\x00" * 32, schema=[], pii_suggestions={})
+    r2 = run_pipeline(df, ProcessRequest(**base, deterministic_key_name="beta"),
+                      "s2", b"\x00" * 32, schema=[], pii_suggestions={})
+    assert r1.df["email"][0] != r2.df["email"][0]

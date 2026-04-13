@@ -72,3 +72,32 @@ def test_string_truncate():
     s = pl.Series("zip", ["12345"])
     out = string_truncate(s, keep=3).to_list()
     assert out == ["123**"]
+
+
+def test_mask_enforces_at_least_one_char_masked_on_short_values():
+    """Regression (privacy leak): mask(s, keep_prefix=5) used to return 'hi'
+    unchanged because p = min(5, 2) = 2 consumed the whole string and the
+    middle slice was empty. At least one character must always be masked."""
+    s = pl.Series("x", ["hi", "abc", "abcdef"])
+    out = mask(s, keep_prefix=5, keep_suffix=0).to_list()
+    for original, masked in zip(["hi", "abc", "abcdef"], out):
+        assert "*" in masked, f"{original!r} → {masked!r} has no mask chars"
+
+
+def test_mask_scales_prefix_plus_suffix_for_short_strings():
+    """When keep_prefix + keep_suffix >= len(s), both are scaled down so at
+    least one character is masked, but the ratio between them is preserved."""
+    s = pl.Series("x", ["abcde"])  # length 5
+    # 4 + 4 = 8 >= 5 → scale so they sum to 4; ratio 1:1 → p=q=2
+    out = mask(s, keep_prefix=4, keep_suffix=4).to_list()[0]
+    assert out.count("*") >= 1
+    assert out[:2] == "ab"
+
+
+def test_mask_rejects_negative_params():
+    s = pl.Series("x", ["abcdef"])
+    try:
+        mask(s, keep_prefix=-1)
+    except ValueError:
+        return
+    raise AssertionError("expected ValueError for negative keep_prefix")
