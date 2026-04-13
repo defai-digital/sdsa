@@ -38,8 +38,15 @@ def enforce_k(
     if missing:
         raise ValueError(f"QI columns not in dataframe: {missing}")
 
+    # group_by treats all NULL QI values as one group, so we must match NULLs
+    # in the join too — otherwise NULL-keyed rows get silently suppressed even
+    # when their equivalence class is large enough. Polars renamed
+    # `join_nulls` to `nulls_equal` in 1.24; accept either.
     class_sizes = df.group_by(qi_columns).len().rename({"len": "_cls_size"})
-    joined = df.join(class_sizes, on=qi_columns, how="left")
+    try:
+        joined = df.join(class_sizes, on=qi_columns, how="left", nulls_equal=True)
+    except TypeError:
+        joined = df.join(class_sizes, on=qi_columns, how="left", join_nulls=True)
     kept = joined.filter(pl.col("_cls_size") >= k).drop("_cls_size")
 
     suppressed = rows_total - kept.height

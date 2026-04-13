@@ -392,3 +392,39 @@ def test_process_rejects_invalid_dp_bounds():
     r = client.post(f"/api/process/{sid}", json=req)
     assert r.status_code == 400
     assert "invalid DP params" in r.text
+
+
+def test_failed_reprocess_clears_previous_downloads():
+    r = client.post("/api/upload", files={"file": ("sample.csv", CSV_SAMPLE, "text/csv")})
+    assert r.status_code == 200, r.text
+    sid = r.json()["session_id"]
+
+    ok_req = {
+        "policies": [
+            {"column": "email", "action": "hash"},
+            {"column": "zip", "action": "string_truncate",
+             "params": {"keep": 3}, "is_quasi_identifier": True},
+            {"column": "age", "action": "numeric_bin",
+             "params": {"bin_width": 10}, "is_quasi_identifier": True},
+            {"column": "salary", "action": "retain"},
+        ],
+        "k": 5,
+        "dp_params": {},
+    }
+    r = client.post(f"/api/process/{sid}", json=ok_req)
+    assert r.status_code == 200, r.text
+    assert client.get(f"/api/download/{sid}/data.csv").status_code == 200
+    assert client.get(f"/api/download/{sid}/report.json").status_code == 200
+
+    bad_req = {
+        "policies": [
+            {"column": "age", "action": "numeric_bin", "params": {}, "is_quasi_identifier": False},
+        ],
+        "k": 5,
+        "dp_params": {},
+    }
+    r = client.post(f"/api/process/{sid}", json=bad_req)
+    assert r.status_code == 400
+
+    assert client.get(f"/api/download/{sid}/data.csv").status_code == 404
+    assert client.get(f"/api/download/{sid}/report.json").status_code == 404

@@ -42,13 +42,21 @@ def _laplace_sample(scale: float) -> float:
     constant-time; not resistant to timing side-channels (out of scope
     per ADR-0007 threat model).
     """
-    # u in (-0.5, 0.5), open interval
-    raw = secrets.randbits(53)
-    u = (raw / (1 << 53)) - 0.5
-    # Avoid log(0)
-    if u == 0:
-        u = 1e-12
-    return -scale * math.copysign(math.log(1 - 2 * abs(u)), u)
+    # Inverse CDF sampling with explicit handling of the distribution boundaries.
+    # Rejection avoids float64 cancellation near p=0 / p=1 where a naive
+    # `(raw / 2^53) - 0.5` could land exactly on ±0.5 and crash math.log(0).
+    while True:
+        raw = secrets.randbits(53)
+        # p in [0, 1 - 2^-53]; reject 0 (naked boundary).
+        if raw == 0:
+            continue
+        p = raw / (1 << 53)
+        if p < 0.5:
+            return -scale * math.log(2 * p)
+        # Compute 1 - p as ((1<<53) - raw) / (1<<53) to preserve precision
+        # when p is very close to 1. 1 - p is always >= 2^-53 > 0 here.
+        one_minus_p = ((1 << 53) - raw) / (1 << 53)
+        return scale * math.log(2 * one_minus_p)
 
 
 def apply_laplace(series: pl.Series, params: LaplaceParams) -> pl.Series:

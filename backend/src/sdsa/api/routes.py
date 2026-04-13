@@ -113,6 +113,10 @@ async def process(session_id: str, request: ProcessRequest) -> ProcessResponse:
         raise HTTPException(404, "session not found or expired")
 
     detection = session.detection or {"schema": [], "pii": {}}
+    # Invalidate any previous successful output before attempting a new run so
+    # failed re-processing cannot leave stale downloads attached to the session.
+    session.output_bytes = None
+    session.output_report = None
 
     try:
         result = run_pipeline(

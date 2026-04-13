@@ -5,7 +5,7 @@
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-64%20passing-brightgreen)](backend/tests/)
+[![Tests](https://img.shields.io/badge/tests-73%20passing-brightgreen)](backend/tests/)
 
 SDSA is a self-hostable web app that takes a CSV / TXT / SQL dump, detects
 sensitive columns automatically, applies per-column anonymization (masking,
@@ -13,8 +13,15 @@ hashing, tokenization, generalization), adds calibrated Laplace noise to
 numeric columns, enforces k-anonymity, and hands back a sanitized file plus
 a machine-readable privacy report.
 
+SDSA should be positioned as an enterprise-oriented data sanitization layer:
+explicit field policies, bounded privacy mechanisms, operator review before
+release, and an auditable report for every run. It is not a black-box
+"make this anonymous" button, and it does not claim guarantees the system
+does not actually provide.
+
 **What SDSA does NOT claim:** dataset-level (ε,δ)-differential privacy.
 Every report says so explicitly. See [Privacy claim](#privacy-claim).
+For the longer explanation, see [docs/privacy-model.md](docs/privacy-model.md).
 
 ---
 
@@ -31,6 +38,26 @@ Every report says so explicitly. See [Privacy claim](#privacy-claim).
 | **Privacy report** | JSON + Markdown, auto-bundled with the download. Contains ε per column, k achieved, prosecutor risk bound, policy applied, and an explicit claim statement. |
 | **Zero-persistence** | In-memory session store. 30-minute TTL. Best-effort zeroization on delete. No raw row values in logs. |
 | **Policy file** | Optional `sdsa-policy.json` for project-wide field-level rules. |
+
+## What We Mean By "Data Obfuscation"
+
+In SDSA, "data obfuscation" means controlled transformation of sensitive
+fields so the output remains useful for engineering, analytics, and vendor
+workflows without exposing the original direct identifiers.
+
+- Direct identifiers can be masked, hashed, tokenized, redacted, or dropped.
+- Quasi-identifiers can be generalized with binning, date truncation, and
+  string truncation before k-anonymity enforcement.
+- Numeric measures can receive bounded Laplace noise where differential
+  privacy is configured.
+
+This is an enterprise workflow because the treatment is explicit, reviewable,
+and reproducible. The operator can see which fields are transformed, which
+fields are treated as quasi-identifiers, how much suppression k-anonymity
+requires, and what privacy claim is attached to the exported file.
+
+For the full model, tradeoffs, and limits, see
+[docs/privacy-model.md](docs/privacy-model.md).
 
 ## Screenshots
 
@@ -77,8 +104,9 @@ backend/              Python 3.11+ FastAPI app
     pipeline.py       end-to-end orchestration
     report.py         privacy report builder (JSON + Markdown)
     preflight.py      equivalence-class impact estimator
-  tests/              64 pytest cases
+  tests/              73 pytest cases
 frontend/             Vanilla HTML/CSS/JS (served by FastAPI at `/`)
+docs/                 Product and privacy-model documentation
 samples/              Synthetic demo data — small + large + huge (200 MB)
 sdsa-policy.default.json   Shipped default rule catalog
 sdsa-policy.json.example   Starting point for project overrides
@@ -161,13 +189,17 @@ Verbatim from every generated report:
 SDSA is honest about what it does and does not guarantee. Dataset-level DP
 synthesis (PrivBayes / DP-GAN / MST) is out of scope for v1.
 
+For a more detailed explanation of the data-obfuscation model, local DP
+usage, k-anonymity role, and enterprise positioning, see
+[docs/privacy-model.md](docs/privacy-model.md).
+
 ---
 
 ## Tests
 
 ```bash
 cd backend
-.venv/bin/pytest            # 64 passing
+.venv/bin/pytest            # 73 passing
 .venv/bin/pytest -v         # with individual names
 ```
 

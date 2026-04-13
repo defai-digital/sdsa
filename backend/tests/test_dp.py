@@ -61,3 +61,29 @@ def test_accountant_tracks_per_column():
     assert snap["age"] == 1.0
     assert snap["salary"] == 1.0
     assert a.max_epsilon() == 1.0
+
+
+def test_laplace_sampler_handles_boundary_rng_outputs():
+    """Regression: previous implementation crashed with math domain error
+    when secrets.randbits(53) == 0 produced u == -0.5 exactly → log(0).
+
+    The fix uses rejection sampling: raw == 0 is rejected and retried; all
+    other values produce a defined sample. Verify by scripting the RNG
+    output sequence.
+    """
+    import sdsa.dp.laplace as L
+
+    orig = L.secrets.randbits
+    try:
+        sequence = iter([0, 1, 0, (1 << 53) - 1, 1 << 52])
+        def fake(_bits):
+            try:
+                return next(sequence)
+            except StopIteration:
+                return 1
+        L.secrets.randbits = fake
+        results = [L._laplace_sample(1.0) for _ in range(3)]
+        # No crashes; no NaN values (NaN != NaN).
+        assert all(isinstance(v, float) and v == v for v in results)
+    finally:
+        L.secrets.randbits = orig

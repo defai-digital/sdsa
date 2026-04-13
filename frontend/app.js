@@ -79,6 +79,16 @@ const showError = (msg) => {
   setTimeout(() => el.classList.add("hidden"), 8000);
 };
 
+async function readErrorMessage(res) {
+  const raw = await res.text();
+  if (!raw) return `${res.status} ${res.statusText}`.trim();
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed.detail === "string") return parsed.detail;
+  } catch {}
+  return raw;
+}
+
 // --- Upload (drag & drop + click to browse) --------------------------------
 
 const MAX_UPLOAD_BYTES = 300 * 1024 * 1024;
@@ -112,7 +122,7 @@ async function uploadFile(file) {
   fd.append("file", file);
   try {
     const res = await fetch(`${API}/upload`, { method: "POST", body: fd });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(await readErrorMessage(res));
     const data = await res.json();
     state.sessionId = data.session_id;
     state.schema = data.schema;
@@ -129,6 +139,16 @@ async function uploadFile(file) {
   } finally {
     dropzone.classList.remove("uploading");
   }
+}
+
+function renderPreflightError(message) {
+  state.preflight = null;
+  $("process-btn").disabled = false;
+  const el = $("preflight");
+  el.className = "preflight warn";
+  el.innerHTML = `
+    <div class="preflight-title">Preflight unavailable</div>
+    <ul class="preflight-list"><li>${esc(message)}</li></ul>`;
 }
 
 function flashDropzoneError(msg) {
@@ -375,13 +395,13 @@ async function runPreflight() {
         deterministic_key_name: body.deterministic_key_name,
       }),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(await readErrorMessage(res));
     const data = await res.json();
     if (seq !== preflightSeq) return;
     renderPreflight(data.preflight);
   } catch (e) {
     if (seq !== preflightSeq) return;
-    renderPreflight(null);
+    renderPreflightError(e.message || "Unable to estimate suppression");
   }
 }
 
@@ -436,7 +456,7 @@ $("process-btn").addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(await readErrorMessage(res));
     const data = await res.json();
     renderReview(data.report);
     show("step-review");
