@@ -334,16 +334,28 @@ function renderPreflight(preflight) {
       bullets.push(`Best single-column relief: remove or generalize ${best.column} to reach ${(best.suppression_ratio * 100).toFixed(1)}% suppression.`);
     }
   }
+  if (preflight.greedy_drop_plan?.steps?.length) {
+    const plan = preflight.greedy_drop_plan;
+    const cols = plan.steps.map((step) => step.column);
+    const verb = plan.reaches_target ? "reach" : "reduce to";
+    bullets.push(`Suggested QI plan: uncheck ${cols.join(" -> ")} to ${verb} ${(plan.final_suppression_ratio * 100).toFixed(1)}% suppression.`);
+  }
   for (const msg of (preflight.suggestions || [])) bullets.push(msg);
   // One-click remediation. When the hard cap is blown, these become primary —
   // the user needs to fix something before Process will succeed.
   const bestFix = preflight.drop_one_qi_impacts?.find((item) => item.improvement > 0);
+  const greedyPlan = preflight.greedy_drop_plan?.steps?.map((step) => step.column) || [];
   const btnClass = hardBlocked ? "btn-primary" : "btn-ghost";
   const actions = [];
   if (bestFix) {
     actions.push(`<button type="button" class="btn ${btnClass} quick-fix"
                     data-col="${esc(bestFix.column)}">
       Uncheck "${esc(bestFix.column)}" as QI
+    </button>`);
+  }
+  if (greedyPlan.length > 1) {
+    actions.push(`<button type="button" class="btn ${btnClass}" id="apply-greedy-plan">
+      Apply suggested QI plan (${greedyPlan.length})
     </button>`);
   }
   if (hardBlocked && preflight.qi_columns?.length > 1) {
@@ -377,6 +389,16 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("#uncheck-all-qi")) {
     document.querySelectorAll("#columns-table tbody .qi").forEach((cb) => { cb.checked = false; });
     schedulePreflight();
+    return;
+  }
+  if (e.target.closest("#apply-greedy-plan")) {
+    const cols = state.preflight?.greedy_drop_plan?.steps?.map((step) => step.column) || [];
+    for (const col of cols) {
+      const row = document.querySelector(`#columns-table tbody tr[data-column="${CSS.escape(col)}"]`);
+      const qi = row?.querySelector(".qi");
+      if (qi) qi.checked = false;
+    }
+    schedulePreflight();
   }
 });
 
@@ -395,6 +417,14 @@ async function runPreflight() {
         deterministic_key_name: body.deterministic_key_name,
       }),
     });
+    if (res.status === 404) {
+      // Session expired while configuring — don't spam the warn panel; reset.
+      if (seq === preflightSeq) {
+        showError("Session expired — please re-upload.");
+        await resetToUpload();
+      }
+      return;
+    }
     if (!res.ok) throw new Error(await readErrorMessage(res));
     const data = await res.json();
     if (seq !== preflightSeq) return;
@@ -432,6 +462,16 @@ function esc(s) {
   })[c]);
 }
 
+function flashPreflight() {
+  const el = $("preflight");
+  if (!el || el.classList.contains("hidden")) return;
+  try { el.scrollIntoView({ behavior: "smooth", block: "center" }); } catch {}
+  el.classList.remove("flash");
+  // Force reflow so the animation restarts if it was already applied.
+  void el.offsetWidth;
+  el.classList.add("flash");
+}
+
 $("process-btn").addEventListener("click", async () => {
   const body = collectProcessPayload();
   for (const [col, params] of Object.entries(body.dp_params)) {
@@ -456,12 +496,24 @@ $("process-btn").addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    if (res.status === 404) {
+      // Session is gone (expired or deleted). Don't leave the user stuck.
+      showError("Session expired — please re-upload.");
+      await resetToUpload();
+      return;
+    }
     if (!res.ok) throw new Error(await readErrorMessage(res));
     const data = await res.json();
     renderReview(data.report);
     show("step-review");
   } catch (e) {
     showError(`Processing failed: ${e.message}`);
+    // When the failure is a suppression/QI issue, the preflight panel above
+    // already contains the fix buttons. Bring the user's eye to it.
+    const msg = (e.message || "").toLowerCase();
+    if (msg.includes("suppress") || msg.includes("qi") || msg.includes("k-anonymity")) {
+      flashPreflight();
+    }
   } finally {
     btn.classList.remove("loading");
     btn.disabled = false;

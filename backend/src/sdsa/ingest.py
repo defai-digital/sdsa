@@ -194,11 +194,13 @@ def _parse_row_tuples(text: str, start: int) -> tuple[list[list], int]:
             break
         i += 1  # consume (
         row: list[Any] = []
+        closed = False
         while i < n:
             while i < n and text[i] in " \t\n\r":
                 i += 1
             if i < n and text[i] == ")":
                 i += 1
+                closed = True
                 break
             val, i = _parse_value(text, i)
             row.append(val)
@@ -206,6 +208,10 @@ def _parse_row_tuples(text: str, start: int) -> tuple[list[list], int]:
                 i += 1
             if i < n and text[i] == ",":
                 i += 1
+        if not closed:
+            raise ParseError(
+                "unterminated row tuple in VALUES clause — expected ')'"
+            )
         rows.append(row)
     return rows, i
 

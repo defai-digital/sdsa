@@ -134,3 +134,12 @@ def test_parse_upload_sql():
     assert res.format == "sql"
     assert res.df.height == 2
     assert res.meta["table"] == "t"
+
+
+def test_parse_sql_rejects_unterminated_row_tuple():
+    """Regression: previously, an unterminated VALUES tuple (no closing ')')
+    was silently treated as a valid partial row instead of raising."""
+    sql = "INSERT INTO t (a, b) VALUES (1, 'open"
+    with pytest.raises(ParseError) as exc:
+        parse_sql(sql)
+    assert "unterminated" in str(exc.value).lower() or "expected ')'" in str(exc.value)

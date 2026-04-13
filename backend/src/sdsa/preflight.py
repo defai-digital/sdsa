@@ -44,12 +44,74 @@ def _drop_one_impacts(df: pl.DataFrame, qi_columns: list[str], k: int) -> list[d
         result = enforce_k(df, reduced, k)
         impacts.append({
             "column": col,
+            "n_unique": int(df[col].n_unique()),
             "suppression_ratio": result.suppression_ratio,
             "rows_suppressed": result.rows_suppressed,
             "improvement": base.suppression_ratio - result.suppression_ratio,
         })
     impacts.sort(key=lambda item: item["improvement"], reverse=True)
     return impacts
+
+
+def _greedy_drop_plan(
+    df: pl.DataFrame,
+    qi_columns: list[str],
+    k: int,
+    target_cap: float,
+) -> dict[str, Any] | None:
+    if not qi_columns:
+        return None
+
+    current_qis = list(qi_columns)
+    current_result = enforce_k(df, current_qis, k)
+    if current_result.suppression_ratio <= target_cap:
+        return None
+
+    steps: list[dict[str, Any]] = []
+    start_ratio = current_result.suppression_ratio
+
+    while current_qis and current_result.suppression_ratio > target_cap:
+        impacts = []
+        for col in current_qis:
+            reduced = [c for c in current_qis if c != col]
+            result = enforce_k(df, reduced, k)
+            impacts.append({
+                "column": col,
+                "n_unique": int(df[col].n_unique()),
+                "suppression_ratio": result.suppression_ratio,
+                "rows_suppressed": result.rows_suppressed,
+                "improvement": current_result.suppression_ratio - result.suppression_ratio,
+                "remaining_qi_columns": reduced,
+            })
+
+        impacts.sort(
+            key=lambda item: (
+                item["suppression_ratio"],
+                -item["improvement"],
+                -item["n_unique"],
+                item["column"],
+            )
+        )
+        best = impacts[0]
+        steps.append({
+            "column": best["column"],
+            "n_unique": best["n_unique"],
+            "suppression_ratio": best["suppression_ratio"],
+            "rows_suppressed": best["rows_suppressed"],
+            "remaining_qi_columns": best["remaining_qi_columns"],
+        })
+        current_qis = best["remaining_qi_columns"]
+        current_result = enforce_k(df, current_qis, k)
+
+    return {
+        "target_cap": target_cap,
+        "start_suppression_ratio": start_ratio,
+        "final_suppression_ratio": current_result.suppression_ratio,
+        "final_rows_suppressed": current_result.rows_suppressed,
+        "remaining_qi_columns": current_qis,
+        "reaches_target": current_result.suppression_ratio <= target_cap,
+        "steps": steps,
+    }
 
 
 def preflight_k_anonymity(
@@ -66,11 +128,20 @@ def preflight_k_anonymity(
             "Deterministic mode cannot be combined with DP columns (ADR-0008)."
         )
 
+    # k-anonymity only inspects QI columns. Transforms and DP noise applied to
+    # non-QI columns cannot change equivalence-class sizes, so we skip them.
+    # This is what made preflight feel slow on large files — it was hashing
+    # every email and tokenizing every identifier before running the only
+    # operation that reads QI values.
+    qi_names = {p.column for p in request.policies if p.is_quasi_identifier}
+
     for policy in request.policies:
+        if policy.column not in qi_names:
+            continue
         df = apply_policy(df, policy, hmac_key)
 
     for col in dp_columns:
-        if col not in df.columns:
+        if col not in df.columns or col not in qi_names:
             continue
         params = request.dp_params.get(col)
         if not params or "epsilon" not in params:
@@ -91,15 +162,12 @@ def preflight_k_anonymity(
                 f"DP column '{col}' needs declared bounds (lower, upper)"
             )
         try:
-            lp = LaplaceParams(
-                epsilon=eps,
-                lower=float(params["lower"]),
-                upper=float(params["upper"]),
-            )
+            lower = float(params["lower"])
+            upper = float(params["upper"])
         except (TypeError, ValueError) as e:
             raise PolicyApplicationError(f"DP bounds for '{col}' must be numeric") from e
         try:
-            noised = apply_laplace(df[col], lp)
+            noised = apply_laplace(df[col], LaplaceParams(eps, lower, upper))
         except ValueError as e:
             raise PolicyApplicationError(f"invalid DP params for '{col}': {e}") from e
         df = df.with_columns(noised.alias(col))
@@ -108,6 +176,12 @@ def preflight_k_anonymity(
     result = enforce_k(df, qi_columns, request.k)
     worst = _qi_cardinality(df, qi_columns)
     drop_impacts = _drop_one_impacts(df, qi_columns, request.k)
+    target_cap = (
+        cfg.hard_max_suppression_ratio
+        if result.suppression_ratio > cfg.hard_max_suppression_ratio
+        else cfg.max_suppression_ratio
+    )
+    greedy_drop_plan = _greedy_drop_plan(df, qi_columns, request.k, target_cap)
 
     suggestions: list[str] = []
     if result.suppression_ratio > cfg.hard_max_suppression_ratio:
@@ -143,6 +217,19 @@ def preflight_k_anonymity(
             f"Estimated suppression is {result.suppression_ratio:.1%}, within the {cfg.max_suppression_ratio:.0%} cap."
         )
 
+    if greedy_drop_plan and greedy_drop_plan["steps"]:
+        plan_cols = ", ".join(f"'{step['column']}'" for step in greedy_drop_plan["steps"])
+        if greedy_drop_plan["reaches_target"]:
+            suggestions.append(
+                f"Greedy QI plan: uncheck {plan_cols} to reach "
+                f"{greedy_drop_plan['final_suppression_ratio']:.1%} suppression."
+            )
+        else:
+            suggestions.append(
+                f"Greedy QI plan: uncheck {plan_cols} to reduce suppression to "
+                f"{greedy_drop_plan['final_suppression_ratio']:.1%}, but it still misses the cap."
+            )
+
     return {
         "k": request.k,
         "qi_columns": qi_columns,
@@ -158,5 +245,6 @@ def preflight_k_anonymity(
         "hard_suppression_cap": cfg.hard_max_suppression_ratio,
         "worst_qi_by_cardinality": worst,
         "drop_one_qi_impacts": drop_impacts,
+        "greedy_drop_plan": greedy_drop_plan,
         "suggestions": suggestions,
     }

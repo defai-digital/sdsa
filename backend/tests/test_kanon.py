@@ -45,3 +45,30 @@ def test_null_qi_rows_are_not_silently_dropped():
     assert res.df.height == 5
     assert set(res.df["zip"].to_list()) == {None}
     assert res.rows_suppressed == 3
+
+
+def test_user_column_named_cls_size_does_not_collide():
+    """Regression: enforce_k used a fixed internal column name '_cls_size'
+    which would collide with any user-supplied column of that name and make
+    the join raise. The fix uses a namespaced name and falls back to an
+    alternative if the namespaced one is also taken."""
+    df = pl.DataFrame({
+        "dept":       ["A"] * 6 + ["B"] * 6,
+        "_cls_size":  list(range(12)),        # user data happens to use this name
+    })
+    res = enforce_k(df, qi_columns=["dept"], k=5)
+    assert res.df.height == 12
+    # User's column must still be present and untouched.
+    assert "_cls_size" in res.df.columns
+    assert res.df["_cls_size"].to_list() == list(range(12))
+
+
+def test_user_column_named_sdsa_cls_size_also_works():
+    """Defense-in-depth: even the namespaced internal name shouldn't collide."""
+    df = pl.DataFrame({
+        "dept":           ["A"] * 6 + ["B"] * 6,
+        "_sdsa_cls_size": list(range(12)),
+    })
+    res = enforce_k(df, qi_columns=["dept"], k=5)
+    assert res.df.height == 12
+    assert "_sdsa_cls_size" in res.df.columns

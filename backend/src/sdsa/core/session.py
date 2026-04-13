@@ -33,6 +33,10 @@ class SessionStore:
         self._sessions: dict[str, Session] = {}
 
     def create(self) -> Session:
+        # Opportunistic reap — ensures abandoned sessions don't accumulate
+        # even if no background sweeper is running (e.g. tests, single-shot
+        # CLI usage).
+        self.sweep()
         session_id = secrets.token_urlsafe(16)
         session = Session(session_id=session_id, created_at=time.time())
         with self._lock:

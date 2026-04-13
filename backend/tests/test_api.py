@@ -428,3 +428,21 @@ def test_failed_reprocess_clears_previous_downloads():
 
     assert client.get(f"/api/download/{sid}/data.csv").status_code == 404
     assert client.get(f"/api/download/{sid}/report.json").status_code == 404
+
+
+def test_session_sweep_reaps_expired_sessions(monkeypatch):
+    """Regression: abandoned sessions used to stay in memory forever because
+    sweep() was never called. create() now sweeps opportunistically, so
+    expired entries get reclaimed when the next upload happens."""
+    from sdsa.core.session import get_store, Session
+    import time as _time
+
+    store = get_store()
+    # Seed an old session directly.
+    store._sessions.clear()
+    store._sessions["old"] = Session(session_id="old", created_at=_time.time() - 10_000)
+    # Trigger sweep by creating a new session.
+    new = store.create()
+    assert "old" not in store._sessions
+    assert new.session_id in store._sessions
+    store.delete(new.session_id)

@@ -42,16 +42,21 @@ def enforce_k(
     # in the join too — otherwise NULL-keyed rows get silently suppressed even
     # when their equivalence class is large enough. Polars renamed
     # `join_nulls` to `nulls_equal` in 1.24; accept either.
-    class_sizes = df.group_by(qi_columns).len().rename({"len": "_cls_size"})
+    #
+    # Pick a size-column name that cannot collide with user data.
+    size_col = "_sdsa_cls_size"
+    while size_col in df.columns:
+        size_col += "_"
+    class_sizes = df.group_by(qi_columns).len().rename({"len": size_col})
     try:
         joined = df.join(class_sizes, on=qi_columns, how="left", nulls_equal=True)
     except TypeError:
         joined = df.join(class_sizes, on=qi_columns, how="left", join_nulls=True)
-    kept = joined.filter(pl.col("_cls_size") >= k).drop("_cls_size")
+    kept = joined.filter(pl.col(size_col) >= k).drop(size_col)
 
     suppressed = rows_total - kept.height
     classes_total = class_sizes.height
-    classes_below_k = class_sizes.filter(pl.col("_cls_size") < k).height
+    classes_below_k = class_sizes.filter(pl.col(size_col) < k).height
 
     if kept.height == 0:
         k_achieved = 0
