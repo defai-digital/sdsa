@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>Secure Data Sanitization App</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="hdr-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+             stroke-linejoin="round">
+          <path d="M12 3 4 6v6c0 4.6 3.2 8.5 8 10 4.8-1.5 8-5.4 8-10V6l-8-3z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <div class="brand-name">Secure Data Sanitization App</div>
+        <div class="brand-sub">Pseudonymization + differential privacy</div>
+      </div>
+    </div>
+
+    <nav class="stepper" aria-label="Progress">
+      <ol>
+        <li data-step="upload" class="step-item active">
+          <span class="step-num" aria-hidden="true">1</span>
+          <span class="step-label">Upload</span>
+        </li>
+        <li data-step="configure" class="step-item">
+          <span class="step-num" aria-hidden="true">2</span>
+          <span class="step-label">Configure</span>
+        </li>
+        <li data-step="review" class="step-item">
+          <span class="step-num" aria-hidden="true">3</span>
+          <span class="step-label">Review</span>
+        </li>
+      </ol>
+    </nav>
+
+    <div class="hdr-meta">
+      <span id="session-indicator" class="session-indicator hidden" aria-live="polite">
+        <span class="pulse" aria-hidden="true"></span>
+        <span class="sess-label">Session</span>
+        <span id="session-timer" class="sess-timer" aria-label="Time remaining">–:–</span>
+      </span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- STEP 1: UPLOAD -->
+  <section id="step-upload" class="step card active">
+    <header class="card-head">
+      <div>
+        <h2>Upload data</h2>
+        <p class="card-sub">CSV, delimited TXT, or single-table SQL dump. Max 300&nbsp;MB.</p>
+      </div>
+      <div class="card-head-meta">
+        <span class="kbd">⌘O</span>
+        <span class="muted">to browse</span>
+      </div>
+    </header>
+
+    <div id="dropzone" class="dropzone" tabindex="0" role="button"
+         aria-label="Drop a CSV, TXT, or SQL file here, or click to browse">
+      <div class="dropzone-inner">
+        <div class="dropzone-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none"
+               stroke="currentColor" stroke-width="1.6"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <div class="dropzone-primary">Drop a file to begin</div>
+        <div class="dropzone-secondary">
+          or <span class="link">click to browse</span>
+        </div>
+        <div class="format-pills" aria-hidden="true">
+          <span class="pill">.csv</span>
+          <span class="pill">.txt</span>
+          <span class="pill">.sql</span>
+        </div>
+        <div class="dropzone-file" id="dropzone-file"></div>
+      </div>
+      <input type="file" id="file-input"
+             accept=".csv,.txt,.sql,text/csv,text/plain,application/sql" hidden />
+    </div>
+
+    <ul class="upload-assurances">
+      <li>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/>
+        </svg>
+        <div>
+          <strong>No persistence.</strong>
+          <span>Data stays in RAM. Sessions expire after 30 minutes.</span>
+        </div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        <div>
+          <strong>Auto-detected.</strong>
+          <span>Emails, phones, IDs and quasi-identifiers flagged automatically.</span>
+        </div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 2"/>
+        </svg>
+        <div>
+          <strong>k-anonymity + bounded DP.</strong>
+          <span>Per-column ε; zero-row output is always refused.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- STEP 2: CONFIGURE -->
+  <section id="step-configure" class="step card">
+    <header class="card-head">
+      <div>
+        <h2>Configure per-column policy</h2>
+        <p class="card-sub" id="summary"></p>
+      </div>
+      <button id="reset-config" class="btn btn-quiet" type="button" title="Reset to auto-detected defaults">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 9 9 9 9 0 0 1-9 9 9 9 0 0 1-9-9z"/>
+          <path d="M3 12H1"/><path d="M23 12h-2"/>
+          <path d="M3 3l3 3"/><path d="M18 18l3 3"/>
+        </svg>
+        Reset
+      </button>
+    </header>
+
+    <div class="table-wrap">
+      <table id="columns-table">
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>
+              PII
+              <span class="help" tabindex="0"
+                    data-tip="Regex + column-name heuristics. Always shown as a suggestion — confirm before processing.">?</span>
+            </th>
+            <th>Action</th>
+            <th class="center">
+              QI
+              <span class="help" tabindex="0"
+                    data-tip="Quasi-identifier. Columns checked here participate in the k-anonymity check. High-cardinality QIs will be suppressed.">?</span>
+            </th>
+            <th class="dp-head">
+              ε
+              <span class="help" tabindex="0"
+                    data-tip="Differential privacy budget for Laplace noise. Lower = more privacy, more noise. Typical 0.3–3.">?</span>
+            </th>
+            <th class="dp-head">
+              Bounds
+              <span class="help" tabindex="0"
+                    data-tip="Declared min/max for the column. Sensitivity = upper − lower. Inputs outside are clamped.">?</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div id="preflight" class="preflight hidden" aria-live="polite"></div>
+
+    <div class="actions-bar">
+      <div class="actions-fields">
+        <label class="field">
+          <span class="field-label">
+            k
+            <span class="help" tabindex="0"
+                  data-tip="k-anonymity target. Each released row belongs to a group of at least k rows with identical QI values. k=5 → prosecutor risk ≤ 0.20.">?</span>
+          </span>
+          <input type="number" id="k-input" value="5" min="2" max="1000" />
+        </label>
+        <label class="field field-grow">
+          <span class="field-label">
+            Deterministic key
+            <span class="help" tabindex="0"
+                  data-tip="Optional. Named key makes hashes/tokens reproducible across sessions on this deployment. Not allowed on DP columns.">?</span>
+            <span class="muted">optional</span>
+          </span>
+          <input type="text" id="det-key" placeholder="e.g. project-alpha-2026" />
+        </label>
+        <label class="toggle"
+               title="Soft cap only. Zero-row output and > 50% suppression are always refused.">
+          <input type="checkbox" id="accept-weaker" />
+          <span class="toggle-label">Allow&nbsp;&gt;10%&nbsp;row&nbsp;suppression</span>
+        </label>
+      </div>
+      <button id="process-btn" class="btn btn-primary">
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+               stroke="currentColor" stroke-width="2.4"
+               stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </span>
+        <span class="btn-label">Process</span>
+        <span class="btn-spinner" aria-hidden="true"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- STEP 3: REVIEW -->
+  <section id="step-review" class="step card">
+    <header class="card-head">
+      <div>
+        <h2>Result</h2>
+        <p class="card-sub">Sanitized output and machine-readable privacy report are ready.</p>
+      </div>
+      <div class="review-head-meta">
+        <span class="success-pill">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+               stroke="currentColor" stroke-width="2.4"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Processed
+        </span>
+        <button id="review-restart" class="btn btn-quiet" type="button"
+                title="Start a new session">
+          ↻ Restart
+        </button>
+      </div>
+    </header>
+
+    <div id="stats" class="stat-grid"></div>
+
+    <div id="claim-box" class="claim" aria-live="polite">
+      <div class="claim-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round">
+          <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/>
+        </svg>
+      </div>
+      <div class="claim-text"></div>
+    </div>
+
+    <div class="download-row">
+      <a id="dl-csv" class="btn btn-primary" href="#" download>
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </span>
+        Sanitized CSV
+      </a>
+      <a id="dl-json" class="btn btn-ghost" href="#" download>Report&nbsp;·&nbsp;JSON</a>
+      <a id="dl-md" class="btn btn-ghost" href="#" download>Report&nbsp;·&nbsp;Markdown</a>
+    </div>
+
+    <details class="raw-report">
+      <summary>Inspect full report JSON</summary>
+      <pre id="report-raw"></pre>
+    </details>
+
+    <section class="next-card" aria-label="What's next">
+      <div class="next-card-info">
+        <div class="next-card-title">Done with this file?</div>
+        <div class="next-card-sub">
+          Your current session will be zeroized on start. Files already downloaded are yours to keep.
+        </div>
+      </div>
+      <button id="new-session" class="btn btn-primary" type="button">
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+               stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/>
+            <path d="M5 12h14"/>
+          </svg>
+        </span>
+        Sanitize another file
+      </button>
+    </section>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <span class="muted">
+    In-memory processing · TLS 1.2+ · session auto-deletes &lt;&thinsp;30&thinsp;min
+  </span>
+  <span class="muted mono">v0.1.0</span>
+</footer>
+
+<div id="tooltip" class="tip-pop" role="tooltip" aria-hidden="true"></div>
+<div id="error" class="toast hidden" role="alert" aria-live="assertive"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

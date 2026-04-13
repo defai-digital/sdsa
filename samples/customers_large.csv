@@ -1,0 +1,501 @@
+customer_id,姓名,email,電話,城市,住址,郵遞區號,birthdate,membership_tier,lifetime_value
+C0000001,劉志明,志明1@example.tw,+886933711661,高雄市左營區,博愛二路777號,813,1960-10-15,bronze,5612
+C0000002,曾文浩,文浩2@example.tw,+886995095872,高雄市左營區,博愛二路777號,813,1989-04-04,silver,15340
+C0000003,鄭文浩,文浩3@example.tw,+886992841860,新北市板橋區,縣民大道二段7號,220,1988-04-18,bronze,5504
+C0000004,楊建國,建國4@example.tw,+886956244860,高雄市左營區,博愛二路777號,813,2002-09-18,bronze,5238
+C0000005,Maria Chen,maria.chen5@shop.example,+13105554062,San Francisco,811 Market St,10014,1989-06-26,platinum,99868
+C0000006,周靜宜,靜宜6@example.tw,+886989184917,新竹市東區,光復路二段101號,300,2003-05-16,bronze,3221
+C0000007,謝柏翰,柏翰7@example.tw,+886915855005,台中市北屯區,文心路四段955號,406,1985-04-10,bronze,5036
+C0000008,Wendy Clark,wendy.clark8@shop.example,+12125556627,San Francisco,6013 Market St,94121,1980-01-29,bronze,5211
+C0000009,David Kowalski,david.kowalski9@shop.example,+14155557765,San Francisco,2437 Market St,94110,1986-05-07,platinum,119709
+C0000010,Eve Gomez,eve.gomez10@shop.example,+14155550110,Chicago,4587 Market St,94110,1977-04-13,silver,14612
+C0000011,David Gomez,david.gomez11@shop.example,+16175554301,San Francisco,8492 Market St,10013,2004-01-23,bronze,5136
+C0000012,洪文浩,文浩12@example.tw,+886983431194,桃園市桃園區,中正路1095號,330,1982-08-15,bronze,4561
+C0000013,李雅婷,雅婷13@example.tw,+886919980444,桃園市桃園區,中正路1095號,330,1984-08-01,bronze,4238
+C0000014,Yusuf Chen,yusuf.chen14@shop.example,+13105558739,Boston,4083 Market St,94103,2003-10-03,gold,55065
+C0000015,許維倫,維倫15@example.tw,+886928731500,桃園市桃園區,中正路1095號,330,1970-02-15,bronze,5193
+C0000016,鄭家豪,家豪16@example.tw,+886929525460,台北市信義區,信義路五段7號,110,1996-05-25,bronze,6675
+C0000017,Sophia Hansen,sophia.hansen17@shop.example,+16175559423,Chicago,3699 Market St,94114,1989-12-10,bronze,7581
+C0000018,劉佩珊,佩珊18@example.tw,+886991577959,新北市板橋區,縣民大道二段7號,220,1961-05-27,bronze,8442
+C0000019,張惠如,惠如19@example.tw,+886981611597,新竹市東區,光復路二段101號,300,1985-03-15,bronze,5931
+C0000020,Oscar Nguyen,oscar.nguyen20@shop.example,+12065551090,Boston,8978 Market St,10013,1985-11-25,platinum,99285
+C0000021,吳志明,志明21@example.tw,+886936148879,台北市信義區,信義路五段7號,110,1974-02-23,bronze,5287
+C0000022,Tomas Gomez,tomas.gomez22@shop.example,+16175556138,New York,9689 Market St,94117,1986-11-16,platinum,133188
+C0000023,洪俊傑,俊傑23@example.tw,+886998579279,新北市板橋區,縣民大道二段7號,220,2003-09-28,silver,13221
+C0000024,楊欣怡,欣怡24@example.tw,+886969724786,桃園市桃園區,中正路1095號,330,2003-02-09,platinum,184855
+C0000025,許欣怡,欣怡25@example.tw,+886935943672,台中市北屯區,文心路四段955號,406,1975-08-16,gold,29009
+C0000026,謝宗翰,宗翰26@example.tw,+886966986100,高雄市左營區,博愛二路777號,813,1984-06-28,bronze,5221
+C0000027,葉志明,志明27@example.tw,+886910610138,台中市西屯區,台灣大道三段99號,407,1978-12-03,gold,42788
+C0000028,Uma Rossi,uma.rossi28@shop.example,+16175558144,San Francisco,9485 Market St,10013,1975-01-30,bronze,5730
+C0000029,Xena Clark,xena.clark29@shop.example,+13105550153,Boston,2869 Market St,94103,1966-07-20,gold,18297
+C0000030,張俊傑,俊傑30@example.tw,+886969118910,台中市北屯區,文心路四段955號,406,1980-09-16,bronze,5427
+C0000031,謝美玲,美玲31@example.tw,+886917049197,台北市信義區,信義路五段7號,110,2004-07-08,bronze,5179
+C0000032,劉婉婷,婉婷32@example.tw,+886970265190,台中市西屯區,台灣大道三段99號,407,2003-09-18,gold,30718
+C0000033,林惠如,惠如33@example.tw,+886912116295,新竹市東區,光復路二段101號,300,1979-09-09,silver,20074
+C0000034,Kyle Baker,kyle.baker34@shop.example,+16175559150,San Francisco,6469 Market St,10002,1979-03-23,platinum,154905
+C0000035,Ian Novak,ian.novak35@shop.example,+14155558603,New York,3503 Market St,94107,1990-10-28,bronze,4857
+C0000036,曾惠如,惠如36@example.tw,+886983636924,台北市信義區,信義路五段7號,110,1997-10-27,bronze,5898
+C0000037,蘇惠如,惠如37@example.tw,+886928396973,台北市信義區,信義路五段7號,110,1988-08-16,bronze,5692
+C0000038,葉婉婷,婉婷38@example.tw,+886915251819,高雄市左營區,博愛二路777號,813,1983-05-10,bronze,6989
+C0000039,黃建國,建國39@example.tw,+886974751121,桃園市桃園區,中正路1095號,330,1987-06-30,gold,29279
+C0000040,楊欣怡,欣怡40@example.tw,+886990398775,新竹市東區,光復路二段101號,300,2000-11-09,platinum,55565
+C0000041,陳佩珊,佩珊41@example.tw,+886975755529,台中市北屯區,文心路四段955號,406,1989-03-23,bronze,6796
+C0000042,林怡君,怡君42@example.tw,+886982034990,台北市大安區,忠孝東路四段201號,106,2002-04-26,silver,13412
+C0000043,何宗翰,宗翰43@example.tw,+886991317150,台中市西屯區,台灣大道三段99號,407,1986-12-27,gold,54165
+C0000044,李惠如,惠如44@example.tw,+886950437176,新竹市東區,光復路二段101號,300,1993-03-18,silver,11944
+C0000045,謝雅筑,雅筑45@example.tw,+886920467802,台北市信義區,信義路五段7號,110,1962-01-10,gold,59149
+C0000046,Julia Wright,julia.wright46@shop.example,+13105552622,San Francisco,2694 Market St,94117,1997-06-18,silver,14616
+C0000047,許冠廷,冠廷47@example.tw,+886919167909,台北市信義區,信義路五段7號,110,1961-01-17,bronze,6801
+C0000048,蘇雅筑,雅筑48@example.tw,+886935530502,台中市北屯區,文心路四段955號,406,1975-12-17,bronze,4271
+C0000049,葉文浩,文浩49@example.tw,+886968013801,新竹市東區,光復路二段101號,300,1977-10-21,bronze,4607
+C0000050,蘇惠如,惠如50@example.tw,+886970148516,新竹市東區,光復路二段101號,300,1977-03-06,silver,18669
+C0000051,謝惠如,惠如51@example.tw,+886912769573,新北市板橋區,縣民大道二段7號,220,1994-12-12,bronze,3964
+C0000052,蔡柏翰,柏翰52@example.tw,+886967136038,台中市北屯區,文心路四段955號,406,1998-08-12,bronze,4886
+C0000053,黃柏翰,柏翰53@example.tw,+886970842559,台北市大安區,忠孝東路四段201號,106,1964-08-06,silver,16725
+C0000054,陳建國,建國54@example.tw,+886922202658,台北市信義區,信義路五段7號,110,1971-08-08,bronze,4731
+C0000055,林惠如,惠如55@example.tw,+886956049584,台北市信義區,信義路五段7號,110,1981-05-14,gold,50025
+C0000056,林建國,建國56@example.tw,+886933027707,台北市大安區,忠孝東路四段201號,106,2001-11-15,silver,19965
+C0000057,Vlad Kim,vlad.kim57@shop.example,+13105556099,New York,1431 Market St,10002,1992-12-03,bronze,3035
+C0000058,蘇冠廷,冠廷58@example.tw,+886948602292,台北市信義區,信義路五段7號,110,1973-08-25,gold,57509
+C0000059,黃婉婷,婉婷59@example.tw,+886929368836,高雄市鼓山區,明誠三路56號,804,1962-05-06,platinum,117192
+C0000060,Beth Patel,beth.patel60@shop.example,+13125556656,Chicago,729 Market St,10001,1968-05-05,bronze,4151
+C0000061,Ravi Tran,ravi.tran61@shop.example,+14155559180,San Francisco,2695 Market St,94114,1961-07-05,bronze,3257
+C0000062,葉志明,志明62@example.tw,+886990967074,高雄市鼓山區,明誠三路56號,804,1984-06-13,gold,32690
+C0000063,Jack Brown,jack.brown63@shop.example,+13105556802,San Francisco,2698 Market St,94107,1967-09-05,gold,38195
+C0000064,Irene Park,irene.park64@shop.example,+13125556823,San Francisco,6522 Market St,94107,1982-04-04,gold,38070
+C0000065,Oscar Anderson,oscar.anderson65@shop.example,+14155554719,Chicago,9626 Market St,10016,1988-04-28,bronze,5831
+C0000066,David Roberts,david.roberts66@shop.example,+12065553048,Chicago,3695 Market St,10016,1964-10-18,silver,21033
+C0000067,Jack Turner,jack.turner67@shop.example,+12125550576,San Francisco,4985 Market St,10013,1999-01-11,bronze,7004
+C0000068,葉維倫,維倫68@example.tw,+886982891810,台南市東區,東門路一段99號,701,1992-07-28,silver,13852
+C0000069,Kyle Adams,kyle.adams69@shop.example,+16175550569,Chicago,1038 Market St,10001,1997-11-19,silver,7307
+C0000070,葉宗翰,宗翰70@example.tw,+886965750959,新北市板橋區,縣民大道二段7號,220,2004-01-31,gold,46850
+C0000071,Noah Chen,noah.chen71@shop.example,+12125552344,Chicago,1283 Market St,10002,2005-11-02,platinum,77568
+C0000072,Quinn Clark,quinn.clark72@shop.example,+16175556358,San Francisco,5994 Market St,10003,1965-07-03,bronze,3283
+C0000073,Liam Walker,liam.walker73@shop.example,+13105556421,New York,5726 Market St,94110,1967-02-05,silver,19817
+C0000074,楊惠如,惠如74@example.tw,+886993137479,新竹市東區,光復路二段101號,300,1986-05-25,bronze,6032
+C0000075,蔡志明,志明75@example.tw,+886958469833,高雄市鼓山區,明誠三路56號,804,1969-04-30,gold,35687
+C0000076,Evan Walker,evan.walker76@shop.example,+12125557544,New York,3251 Market St,10003,1988-02-12,silver,16731
+C0000077,Evan Smith,evan.smith77@shop.example,+12125556787,Boston,859 Market St,10002,2004-11-13,silver,14835
+C0000078,Priya Silva,priya.silva78@shop.example,+13105557651,Boston,2843 Market St,10014,1996-09-05,bronze,2977
+C0000079,李靜宜,靜宜79@example.tw,+886961337115,台北市信義區,信義路五段7號,110,1998-12-03,bronze,6412
+C0000080,陳靜宜,靜宜80@example.tw,+886996185203,台北市大安區,忠孝東路四段201號,106,1990-10-30,gold,64805
+C0000081,Hannah Hill,hannah.hill81@shop.example,+14155552838,New York,4578 Market St,94114,1980-11-12,bronze,5041
+C0000082,黃婉婷,婉婷82@example.tw,+886910286258,台南市東區,東門路一段99號,701,1978-03-05,bronze,4010
+C0000083,李柏翰,柏翰83@example.tw,+886973522281,新竹市東區,光復路二段101號,300,1977-05-15,bronze,5832
+C0000084,謝怡君,怡君84@example.tw,+886998354511,高雄市鼓山區,明誠三路56號,804,1986-08-28,bronze,5849
+C0000085,劉淑芬,淑芬85@example.tw,+886944739318,台北市信義區,信義路五段7號,110,1983-10-08,platinum,146868
+C0000086,葉柏翰,柏翰86@example.tw,+886912337369,桃園市桃園區,中正路1095號,330,1971-12-26,silver,14588
+C0000087,吳靜宜,靜宜87@example.tw,+886987143961,台北市大安區,忠孝東路四段201號,106,1987-01-03,silver,7767
+C0000088,洪惠如,惠如88@example.tw,+886947370122,新北市板橋區,縣民大道二段7號,220,1962-08-09,bronze,3343
+C0000089,Alice Carter,alice.carter89@shop.example,+13125556572,San Francisco,9790 Market St,94121,2005-02-24,bronze,3507
+C0000090,黃文浩,文浩90@example.tw,+886975111345,台北市大安區,忠孝東路四段201號,106,1960-08-25,bronze,4165
+C0000091,Noah Murphy,noah.murphy91@shop.example,+13105550151,Chicago,9828 Market St,94110,1967-02-21,bronze,6232
+C0000092,Kyle Moore,kyle.moore92@shop.example,+13105551025,San Francisco,2869 Market St,10013,1963-06-18,bronze,4470
+C0000093,林宗翰,宗翰93@example.tw,+886972299474,台北市大安區,忠孝東路四段201號,106,1983-04-11,silver,22821
+C0000094,Vlad Chen,vlad.chen94@shop.example,+13125555769,Chicago,6069 Market St,94103,1984-08-22,bronze,8519
+C0000095,鄭冠廷,冠廷95@example.tw,+886916731788,高雄市鼓山區,明誠三路56號,804,1969-07-30,silver,16780
+C0000096,Grace Kim,grace.kim96@shop.example,+13125559683,Chicago,8574 Market St,10002,1997-04-06,gold,57334
+C0000097,許美玲,美玲97@example.tw,+886915166844,高雄市左營區,博愛二路777號,813,1965-07-05,gold,56419
+C0000098,Wendy Kim,wendy.kim98@shop.example,+13105550740,Boston,7697 Market St,10014,1963-08-28,gold,42507
+C0000099,許俊傑,俊傑99@example.tw,+886992113689,台北市信義區,信義路五段7號,110,1982-07-19,bronze,5405
+C0000100,黃維倫,維倫100@example.tw,+886938694761,台北市大安區,忠孝東路四段201號,106,1969-10-28,platinum,123457
+C0000101,周美玲,美玲101@example.tw,+886947701937,台南市東區,東門路一段99號,701,1996-06-13,bronze,4268
+C0000102,陳文浩,文浩102@example.tw,+886933087736,台北市信義區,信義路五段7號,110,2001-02-24,bronze,3547
+C0000103,王冠廷,冠廷103@example.tw,+886963491526,台北市大安區,忠孝東路四段201號,106,1977-12-09,bronze,6060
+C0000104,張淑芬,淑芬104@example.tw,+886977639807,台南市東區,東門路一段99號,701,1991-06-07,gold,38959
+C0000105,Paul Martinez,paul.martinez105@shop.example,+16175558102,New York,8761 Market St,10014,1967-09-22,platinum,90870
+C0000106,Ian Khan,ian.khan106@shop.example,+13125550929,San Francisco,4568 Market St,10016,1978-10-14,gold,39024
+C0000107,周家豪,家豪107@example.tw,+886950972510,高雄市鼓山區,明誠三路56號,804,1974-05-09,silver,15808
+C0000108,Marcus Wilson,marcus.wilson108@shop.example,+14155559939,San Francisco,3523 Market St,10001,1975-10-15,platinum,181997
+C0000109,周淑芬,淑芬109@example.tw,+886991366760,高雄市鼓山區,明誠三路56號,804,1989-07-23,bronze,4381
+C0000110,郭文浩,文浩110@example.tw,+886926588975,台北市信義區,信義路五段7號,110,1967-07-31,platinum,160489
+C0000111,吳佩珊,佩珊111@example.tw,+886929623345,台中市西屯區,台灣大道三段99號,407,1988-02-03,bronze,2805
+C0000112,許文浩,文浩112@example.tw,+886923071641,台中市西屯區,台灣大道三段99號,407,1967-12-19,silver,10370
+C0000113,林婉婷,婉婷113@example.tw,+886983857715,新竹市東區,光復路二段101號,300,2003-02-21,gold,38106
+C0000114,謝文浩,文浩114@example.tw,+886945937871,新竹市東區,光復路二段101號,300,1975-11-25,platinum,153672
+C0000115,Zane Fischer,zane.fischer115@shop.example,+12065555454,Chicago,9868 Market St,94121,1988-11-21,bronze,4909
+C0000116,Noah Roberts,noah.roberts116@shop.example,+13105558600,Chicago,4369 Market St,10001,1991-11-19,platinum,118809
+C0000117,張柏翰,柏翰117@example.tw,+886982212431,桃園市桃園區,中正路1095號,330,1962-05-31,silver,9674
+C0000118,吳志明,志明118@example.tw,+886971945439,台南市東區,東門路一段99號,701,1996-02-06,gold,46299
+C0000119,Samuel Lee,samuel.lee119@shop.example,+13125550684,Boston,1250 Market St,94110,1998-05-13,gold,63570
+C0000120,張俊傑,俊傑120@example.tw,+886994335834,台中市北屯區,文心路四段955號,406,1991-10-27,silver,17457
+C0000121,Rachel Murphy,rachel.murphy121@shop.example,+12065551192,Boston,7239 Market St,10002,1975-09-18,bronze,5238
+C0000122,Wendy Hall,wendy.hall122@shop.example,+13125555961,New York,6417 Market St,10013,1973-01-28,bronze,6551
+C0000123,Victor Johnson,victor.johnson123@shop.example,+14155552142,Chicago,4649 Market St,94121,1999-07-30,bronze,4850
+C0000124,Quinn Fischer,quinn.fischer124@shop.example,+12125556473,San Francisco,7009 Market St,10014,1967-10-27,platinum,119595
+C0000125,鄭文浩,文浩125@example.tw,+886914743574,台北市信義區,信義路五段7號,110,1978-05-02,bronze,3011
+C0000126,周志明,志明126@example.tw,+886957457368,高雄市左營區,博愛二路777號,813,1962-05-31,bronze,4497
+C0000127,鄭怡君,怡君127@example.tw,+886966678719,高雄市鼓山區,明誠三路56號,804,2002-01-05,silver,15019
+C0000128,Liam Nguyen,liam.nguyen128@shop.example,+12125557821,New York,7167 Market St,94110,1975-04-17,silver,17969
+C0000129,Sophia Roberts,sophia.roberts129@shop.example,+12125558200,Chicago,7201 Market St,10013,1964-10-17,bronze,5320
+C0000130,鄭欣怡,欣怡130@example.tw,+886963048155,台中市西屯區,台灣大道三段99號,407,1960-01-12,silver,20606
+C0000131,黃志明,志明131@example.tw,+886953032718,台中市西屯區,台灣大道三段99號,407,2005-12-01,silver,18464
+C0000132,周文浩,文浩132@example.tw,+886970018104,台中市北屯區,文心路四段955號,406,1970-07-14,bronze,3703
+C0000133,Ravi Chen,ravi.chen133@shop.example,+14155558600,Chicago,7249 Market St,94121,1986-06-26,gold,37573
+C0000134,Tina Baker,tina.baker134@shop.example,+16175554901,San Francisco,5442 Market St,10016,1991-12-12,bronze,5959
+C0000135,鄭佩珊,佩珊135@example.tw,+886985398255,新竹市東區,光復路二段101號,300,1999-07-26,silver,21851
+C0000136,Uma Turner,uma.turner136@shop.example,+13105559575,Boston,1840 Market St,10013,2001-12-31,silver,19105
+C0000137,Beth Suzuki,beth.suzuki137@shop.example,+16175555301,Chicago,2117 Market St,10014,1987-07-19,platinum,110568
+C0000138,Fiona Nguyen,fiona.nguyen138@shop.example,+13125554116,Boston,9579 Market St,10016,1962-09-12,bronze,3894
+C0000139,黃柏翰,柏翰139@example.tw,+886938180541,高雄市鼓山區,明誠三路56號,804,1976-12-24,bronze,5618
+C0000140,謝宗翰,宗翰140@example.tw,+886933086881,新北市板橋區,縣民大道二段7號,220,1999-04-06,bronze,6409
+C0000141,楊維倫,維倫141@example.tw,+886997902458,台北市信義區,信義路五段7號,110,1985-08-22,bronze,6663
+C0000142,Xena Anderson,xena.anderson142@shop.example,+14155558871,New York,2044 Market St,94110,1993-01-17,bronze,7313
+C0000143,Alice Wright,alice.wright143@shop.example,+16175551298,Boston,8766 Market St,94114,1982-01-14,bronze,5061
+C0000144,葉美玲,美玲144@example.tw,+886988636742,高雄市左營區,博愛二路777號,813,1997-07-01,silver,17423
+C0000145,Noah Lee,noah.lee145@shop.example,+16175555399,San Francisco,1316 Market St,10013,1978-02-24,gold,33600
+C0000146,曾怡君,怡君146@example.tw,+886977821006,高雄市左營區,博愛二路777號,813,2001-02-08,bronze,4969
+C0000147,Ian Patel,ian.patel147@shop.example,+16175554024,New York,9077 Market St,94103,1982-08-14,silver,18387
+C0000148,Will Rossi,will.rossi148@shop.example,+12065551624,Boston,6936 Market St,94103,1966-07-07,gold,39042
+C0000149,Priya Hall,priya.hall149@shop.example,+13105553041,Chicago,8376 Market St,10014,1981-11-13,silver,13830
+C0000150,葉文浩,文浩150@example.tw,+886999808404,高雄市左營區,博愛二路777號,813,1985-06-28,gold,28517
+C0000151,林冠廷,冠廷151@example.tw,+886915150060,台北市大安區,忠孝東路四段201號,106,1961-03-01,silver,16906
+C0000152,蔡佩珊,佩珊152@example.tw,+886933722696,新北市板橋區,縣民大道二段7號,220,1995-11-21,silver,15142
+C0000153,周欣怡,欣怡153@example.tw,+886923573638,台中市北屯區,文心路四段955號,406,1989-07-19,bronze,4983
+C0000154,吳宗翰,宗翰154@example.tw,+886998713748,高雄市左營區,博愛二路777號,813,1970-07-01,platinum,94346
+C0000155,周美玲,美玲155@example.tw,+886948124753,台北市信義區,信義路五段7號,110,1972-06-15,silver,19772
+C0000156,楊婉婷,婉婷156@example.tw,+886948139368,新竹市東區,光復路二段101號,300,1990-11-08,silver,6919
+C0000157,Alice Hill,alice.hill157@shop.example,+13125550784,Boston,814 Market St,94114,1990-11-29,silver,16151
+C0000158,Marcus Moore,marcus.moore158@shop.example,+13105551183,New York,7612 Market St,94107,1961-05-19,platinum,114806
+C0000159,Yusuf Chen,yusuf.chen159@shop.example,+16175550098,New York,769 Market St,10014,1983-05-09,platinum,70355
+C0000160,蘇俊傑,俊傑160@example.tw,+886967108693,桃園市桃園區,中正路1095號,330,1985-12-22,gold,54524
+C0000161,洪雅婷,雅婷161@example.tw,+886932201154,台中市西屯區,台灣大道三段99號,407,1996-05-08,bronze,6086
+C0000162,David Patel,david.patel162@shop.example,+12065557420,Chicago,3599 Market St,94107,2001-03-07,bronze,5154
+C0000163,Tomas Lee,tomas.lee163@shop.example,+16175551312,Boston,1868 Market St,94117,2003-09-14,gold,45624
+C0000164,Alice Carter,alice.carter164@shop.example,+12065556416,Chicago,1981 Market St,94110,1977-03-19,silver,19759
+C0000165,Julia Nguyen,julia.nguyen165@shop.example,+12125553795,San Francisco,2899 Market St,10013,1983-09-01,gold,56921
+C0000166,Una Suzuki,una.suzuki166@shop.example,+13125551981,San Francisco,8613 Market St,94103,1978-04-13,silver,22510
+C0000167,謝怡君,怡君167@example.tw,+886942057752,台中市北屯區,文心路四段955號,406,1966-07-08,silver,19592
+C0000168,蘇俊傑,俊傑168@example.tw,+886917708749,新竹市東區,光復路二段101號,300,1977-01-14,silver,18377
+C0000169,Samuel Lee,samuel.lee169@shop.example,+14155552628,Boston,6719 Market St,10013,1976-12-16,bronze,6426
+C0000170,Henry Johnson,henry.johnson170@shop.example,+13125552056,Boston,739 Market St,94107,1992-07-11,gold,43925
+C0000171,郭佩珊,佩珊171@example.tw,+886955994965,新竹市東區,光復路二段101號,300,1984-11-27,platinum,62286
+C0000172,郭雅筑,雅筑172@example.tw,+886999956690,新北市板橋區,縣民大道二段7號,220,1997-06-26,bronze,5215
+C0000173,林怡君,怡君173@example.tw,+886969165332,高雄市鼓山區,明誠三路56號,804,1981-02-19,bronze,4653
+C0000174,Eve Murphy,eve.murphy174@shop.example,+13125555643,Chicago,7862 Market St,10016,1982-10-07,bronze,5740
+C0000175,劉維倫,維倫175@example.tw,+886988831467,新北市板橋區,縣民大道二段7號,220,1983-05-27,silver,16193
+C0000176,Oscar Gomez,oscar.gomez176@shop.example,+12125559561,Chicago,6385 Market St,94103,1973-02-16,bronze,6702
+C0000177,Kyle Murphy,kyle.murphy177@shop.example,+13105559245,Chicago,2694 Market St,10002,1963-03-21,silver,17763
+C0000178,吳俊傑,俊傑178@example.tw,+886965791047,高雄市鼓山區,明誠三路56號,804,2002-08-24,platinum,112664
+C0000179,鄭佩珊,佩珊179@example.tw,+886916416936,新北市板橋區,縣民大道二段7號,220,1995-03-08,bronze,5041
+C0000180,Rachel Hansen,rachel.hansen180@shop.example,+16175553112,Chicago,9786 Market St,10001,1967-05-17,gold,54704
+C0000181,許美玲,美玲181@example.tw,+886958839251,高雄市鼓山區,明誠三路56號,804,1970-05-20,silver,19267
+C0000182,Noah Moore,noah.moore182@shop.example,+13105557447,San Francisco,2024 Market St,94117,1986-03-10,silver,17255
+C0000183,陳宗翰,宗翰183@example.tw,+886971304490,高雄市鼓山區,明誠三路56號,804,1988-06-01,bronze,5099
+C0000184,Hannah Fischer,hannah.fischer184@shop.example,+12065553376,Chicago,4116 Market St,94117,1975-12-27,bronze,6864
+C0000185,黃博文,博文185@example.tw,+886912028184,新竹市東區,光復路二段101號,300,1977-05-11,bronze,7463
+C0000186,鄭欣怡,欣怡186@example.tw,+886930394749,高雄市左營區,博愛二路777號,813,2000-12-16,platinum,111062
+C0000187,何雅筑,雅筑187@example.tw,+886989525842,台北市信義區,信義路五段7號,110,1961-08-26,bronze,4484
+C0000188,Zane Dubois,zane.dubois188@shop.example,+13105552124,Boston,5449 Market St,10002,1967-11-26,bronze,5205
+C0000189,曾靜宜,靜宜189@example.tw,+886919485497,高雄市鼓山區,明誠三路56號,804,1969-11-20,bronze,3445
+C0000190,張欣怡,欣怡190@example.tw,+886934030648,台南市東區,東門路一段99號,701,1970-01-31,bronze,5618
+C0000191,Eve Kim,eve.kim191@shop.example,+12125553848,Boston,2821 Market St,10003,1988-11-12,gold,43432
+C0000192,Priya Turner,priya.turner192@shop.example,+12065550372,San Francisco,9451 Market St,10003,2005-08-22,gold,49317
+C0000193,陳欣怡,欣怡193@example.tw,+886947606799,台南市東區,東門路一段99號,701,1986-04-08,silver,13548
+C0000194,蘇冠廷,冠廷194@example.tw,+886952840659,台中市西屯區,台灣大道三段99號,407,1963-10-09,silver,6224
+C0000195,謝婉婷,婉婷195@example.tw,+886943913941,高雄市左營區,博愛二路777號,813,1986-12-04,bronze,5233
+C0000196,陳冠廷,冠廷196@example.tw,+886938286610,台南市東區,東門路一段99號,701,1960-05-19,platinum,115460
+C0000197,Wendy Patel,wendy.patel197@shop.example,+16175555221,Boston,5820 Market St,10014,1994-06-23,gold,52066
+C0000198,陳柏翰,柏翰198@example.tw,+886950073497,高雄市鼓山區,明誠三路56號,804,2005-03-17,bronze,5500
+C0000199,Carol Anderson,carol.anderson199@shop.example,+14155554948,San Francisco,9847 Market St,10002,1974-07-25,bronze,7100
+C0000200,林佩珊,佩珊200@example.tw,+886912404771,高雄市左營區,博愛二路777號,813,1999-01-04,silver,10200
+C0000201,Una Walker,una.walker201@shop.example,+16175550497,New York,4425 Market St,94110,1970-08-29,bronze,7399
+C0000202,謝柏翰,柏翰202@example.tw,+886952403852,新竹市東區,光復路二段101號,300,1990-03-27,silver,15466
+C0000203,王博文,博文203@example.tw,+886925774425,桃園市桃園區,中正路1095號,330,1973-01-23,silver,10603
+C0000204,楊文浩,文浩204@example.tw,+886920207348,高雄市鼓山區,明誠三路56號,804,1983-01-18,gold,51659
+C0000205,Evan Davis,evan.davis205@shop.example,+12125553386,San Francisco,7960 Market St,10013,1968-10-23,gold,43038
+C0000206,Henry Patel,henry.patel206@shop.example,+12125552405,New York,7355 Market St,10014,1983-06-05,bronze,5605
+C0000207,Vlad Moore,vlad.moore207@shop.example,+13125550892,San Francisco,4219 Market St,10002,1997-10-06,silver,12010
+C0000208,何惠如,惠如208@example.tw,+886976986072,桃園市桃園區,中正路1095號,330,1980-04-26,gold,49400
+C0000209,Aaron Wright,aaron.wright209@shop.example,+12065552739,San Francisco,1991 Market St,10003,1996-10-17,bronze,6570
+C0000210,謝淑芬,淑芬210@example.tw,+886994443375,台中市北屯區,文心路四段955號,406,1979-02-17,silver,12652
+C0000211,楊家豪,家豪211@example.tw,+886956070475,新北市板橋區,縣民大道二段7號,220,1995-11-21,bronze,5523
+C0000212,劉博文,博文212@example.tw,+886987683425,新竹市東區,光復路二段101號,300,2000-02-28,gold,44284
+C0000213,王惠如,惠如213@example.tw,+886932054952,高雄市鼓山區,明誠三路56號,804,1990-06-09,platinum,148414
+C0000214,Quinn Martinez,quinn.martinez214@shop.example,+14155558251,Chicago,5561 Market St,94110,1982-10-02,silver,14958
+C0000215,陳惠如,惠如215@example.tw,+886976499456,台中市西屯區,台灣大道三段99號,407,1989-03-26,platinum,112810
+C0000216,Oscar Wright,oscar.wright216@shop.example,+13105553206,New York,389 Market St,94121,2003-05-24,bronze,2701
+C0000217,Julia Hall,julia.hall217@shop.example,+13125554653,Chicago,3895 Market St,94107,1960-04-20,bronze,4519
+C0000218,Hannah Brown,hannah.brown218@shop.example,+16175558191,San Francisco,2600 Market St,94121,1994-08-12,bronze,3236
+C0000219,Tomas Turner,tomas.turner219@shop.example,+12125557070,New York,5929 Market St,10003,1981-03-07,platinum,133102
+C0000220,李建國,建國220@example.tw,+886999167422,高雄市左營區,博愛二路777號,813,2001-11-03,gold,58178
+C0000221,Yara Anderson,yara.anderson221@shop.example,+13105559353,Chicago,629 Market St,10003,1977-11-28,bronze,7823
+C0000222,Sophia Davis,sophia.davis222@shop.example,+16175558615,San Francisco,6781 Market St,10014,1995-04-22,bronze,5946
+C0000223,Olivia Murphy,olivia.murphy223@shop.example,+12065559015,San Francisco,2523 Market St,10014,1986-12-20,bronze,3431
+C0000224,郭佩珊,佩珊224@example.tw,+886991947929,台中市西屯區,台灣大道三段99號,407,1973-08-09,bronze,5929
+C0000225,曾家豪,家豪225@example.tw,+886982240074,高雄市鼓山區,明誠三路56號,804,1973-10-11,platinum,171454
+C0000226,Will Turner,will.turner226@shop.example,+13125555739,Chicago,5976 Market St,10014,1984-05-12,gold,16679
+C0000227,李靜宜,靜宜227@example.tw,+886942806311,台南市東區,東門路一段99號,701,1972-11-12,silver,12517
+C0000228,周美玲,美玲228@example.tw,+886981765201,台中市西屯區,台灣大道三段99號,407,1970-04-12,silver,11853
+C0000229,蔡雅筑,雅筑229@example.tw,+886948285625,高雄市鼓山區,明誠三路56號,804,1965-02-03,bronze,3969
+C0000230,曾美玲,美玲230@example.tw,+886987422420,新竹市東區,光復路二段101號,300,1969-07-22,silver,17941
+C0000231,Kyle Gomez,kyle.gomez231@shop.example,+14155552582,San Francisco,7776 Market St,94103,1970-05-16,bronze,5732
+C0000232,曾佩珊,佩珊232@example.tw,+886984420798,台北市大安區,忠孝東路四段201號,106,1971-10-02,silver,14693
+C0000233,Lisa Young,lisa.young233@shop.example,+14155556400,Chicago,9213 Market St,10002,1965-11-16,platinum,131703
+C0000234,林靜宜,靜宜234@example.tw,+886918573935,高雄市左營區,博愛二路777號,813,1999-06-14,platinum,134126
+C0000235,Kyle Adams,kyle.adams235@shop.example,+12065554810,Chicago,318 Market St,10002,1974-07-16,gold,40283
+C0000236,鄭婉婷,婉婷236@example.tw,+886920169240,台北市大安區,忠孝東路四段201號,106,1973-04-16,bronze,6960
+C0000237,Lisa Tran,lisa.tran237@shop.example,+12125557311,Chicago,6085 Market St,94110,1964-12-21,bronze,3138
+C0000238,Ian Gomez,ian.gomez238@shop.example,+12065555985,Chicago,2131 Market St,94114,1986-05-27,silver,12940
+C0000239,楊淑芬,淑芬239@example.tw,+886961867613,高雄市左營區,博愛二路777號,813,1986-03-12,silver,8890
+C0000240,洪建國,建國240@example.tw,+886995989323,桃園市桃園區,中正路1095號,330,1970-05-14,bronze,4349
+C0000241,林美玲,美玲241@example.tw,+886964011595,新竹市東區,光復路二段101號,300,1980-11-02,bronze,5744
+C0000242,蔡文浩,文浩242@example.tw,+886931256746,新北市板橋區,縣民大道二段7號,220,1978-03-10,gold,41555
+C0000243,Uma Johnson,uma.johnson243@shop.example,+12065550062,Boston,3982 Market St,10001,1963-12-06,bronze,6203
+C0000244,許惠如,惠如244@example.tw,+886966475951,台南市東區,東門路一段99號,701,1977-07-09,gold,39286
+C0000245,陳俊傑,俊傑245@example.tw,+886926876665,台北市大安區,忠孝東路四段201號,106,1990-05-24,gold,41330
+C0000246,黃志明,志明246@example.tw,+886922157887,新北市板橋區,縣民大道二段7號,220,1980-05-10,bronze,5646
+C0000247,Vlad Brown,vlad.brown247@shop.example,+14155550303,San Francisco,2216 Market St,10002,2004-10-07,silver,14125
+C0000248,Tomas Baker,tomas.baker248@shop.example,+14155550998,Boston,6198 Market St,10001,1981-05-26,bronze,3246
+C0000249,劉志明,志明249@example.tw,+886926314849,台北市大安區,忠孝東路四段201號,106,1989-11-01,silver,11955
+C0000250,David Wilson,david.wilson250@shop.example,+14155554529,Boston,753 Market St,94114,1999-09-03,bronze,5708
+C0000251,葉志明,志明251@example.tw,+886911455817,台南市東區,東門路一段99號,701,1977-09-07,bronze,4814
+C0000252,許怡君,怡君252@example.tw,+886993723440,新北市板橋區,縣民大道二段7號,220,1995-08-22,bronze,6680
+C0000253,Irene Khan,irene.khan253@shop.example,+14155556271,New York,8001 Market St,94110,1972-09-29,bronze,7987
+C0000254,Lisa Hansen,lisa.hansen254@shop.example,+12065556948,Boston,5212 Market St,94103,1976-05-05,silver,12697
+C0000255,Frank Davis,frank.davis255@shop.example,+16175557366,Boston,2759 Market St,94107,1969-11-04,gold,43305
+C0000256,Xena Wilson,xena.wilson256@shop.example,+13105558794,Boston,115 Market St,10013,1998-05-13,silver,19498
+C0000257,黃淑芬,淑芬257@example.tw,+886966550965,新北市板橋區,縣民大道二段7號,220,1967-09-15,platinum,128448
+C0000258,Maria Kim,maria.kim258@shop.example,+12125558443,New York,5687 Market St,10014,1980-09-06,silver,10792
+C0000259,林志明,志明259@example.tw,+886943902368,桃園市桃園區,中正路1095號,330,2002-08-09,bronze,4665
+C0000260,周婉婷,婉婷260@example.tw,+886936043112,新北市板橋區,縣民大道二段7號,220,1980-09-21,platinum,84802
+C0000261,Hannah Khan,hannah.khan261@shop.example,+12125554814,San Francisco,4594 Market St,10014,1968-03-04,gold,26183
+C0000262,Wendy Park,wendy.park262@shop.example,+12125555541,Chicago,4829 Market St,10016,1988-10-09,bronze,6384
+C0000263,陳家豪,家豪263@example.tw,+886919397747,台中市西屯區,台灣大道三段99號,407,1971-11-10,bronze,5921
+C0000264,Jack Davis,jack.davis264@shop.example,+16175553114,San Francisco,1116 Market St,10002,1993-05-10,silver,9578
+C0000265,洪博文,博文265@example.tw,+886934090831,台中市西屯區,台灣大道三段99號,407,1962-07-28,bronze,5681
+C0000266,許冠廷,冠廷266@example.tw,+886921935218,高雄市鼓山區,明誠三路56號,804,1962-02-09,platinum,159952
+C0000267,王雅婷,雅婷267@example.tw,+886927600654,桃園市桃園區,中正路1095號,330,1980-08-02,bronze,4134
+C0000268,Hannah Lee,hannah.lee268@shop.example,+13105555335,San Francisco,7862 Market St,94107,1981-09-20,silver,15875
+C0000269,謝惠如,惠如269@example.tw,+886998500227,台中市西屯區,台灣大道三段99號,407,1967-10-14,silver,21852
+C0000270,蔡怡君,怡君270@example.tw,+886921762732,台南市東區,東門路一段99號,701,1972-09-08,bronze,4192
+C0000271,Victor Walker,victor.walker271@shop.example,+14155556066,San Francisco,4404 Market St,94114,1990-02-27,platinum,103181
+C0000272,Chris Anderson,chris.anderson272@shop.example,+12125551954,San Francisco,7000 Market St,94114,1966-01-08,gold,46758
+C0000273,Marcus Brown,marcus.brown273@shop.example,+14155555242,New York,5818 Market St,94114,1986-11-24,gold,24287
+C0000274,Ian Hill,ian.hill274@shop.example,+12125554755,New York,3152 Market St,94117,1999-05-18,bronze,3899
+C0000275,林志明,志明275@example.tw,+886999651400,台北市信義區,信義路五段7號,110,1976-05-01,gold,52984
+C0000276,蔡宗翰,宗翰276@example.tw,+886984474040,台北市大安區,忠孝東路四段201號,106,1982-12-15,bronze,3738
+C0000277,周佩珊,佩珊277@example.tw,+886982438776,新北市板橋區,縣民大道二段7號,220,1999-06-13,bronze,7161
+C0000278,謝俊傑,俊傑278@example.tw,+886919207486,桃園市桃園區,中正路1095號,330,1969-06-28,silver,11079
+C0000279,葉冠廷,冠廷279@example.tw,+886925124919,台北市信義區,信義路五段7號,110,1979-07-07,bronze,4417
+C0000280,張建國,建國280@example.tw,+886919224528,台南市東區,東門路一段99號,701,1992-07-17,silver,9935
+C0000281,Ravi Novak,ravi.novak281@shop.example,+13105556739,San Francisco,6836 Market St,10003,1985-03-22,bronze,4023
+C0000282,Bob Silva,bob.silva282@shop.example,+13125559183,Boston,3946 Market St,94110,2002-07-20,silver,19921
+C0000283,蘇柏翰,柏翰283@example.tw,+886926635360,高雄市鼓山區,明誠三路56號,804,1980-05-01,silver,21754
+C0000284,楊文浩,文浩284@example.tw,+886988226159,高雄市左營區,博愛二路777號,813,2000-08-13,bronze,5326
+C0000285,陳志明,志明285@example.tw,+886979033131,台北市信義區,信義路五段7號,110,1969-09-09,silver,11257
+C0000286,楊淑芬,淑芬286@example.tw,+886952721736,台南市東區,東門路一段99號,701,1963-05-17,bronze,5026
+C0000287,陳文浩,文浩287@example.tw,+886932190282,高雄市鼓山區,明誠三路56號,804,1969-12-16,bronze,5698
+C0000288,王文浩,文浩288@example.tw,+886940183212,台北市信義區,信義路五段7號,110,1976-02-25,platinum,122538
+C0000289,何博文,博文289@example.tw,+886910905379,桃園市桃園區,中正路1095號,330,1983-05-05,bronze,4378
+C0000290,Ian Novak,ian.novak290@shop.example,+12125550199,San Francisco,2984 Market St,94107,1968-07-06,gold,50318
+C0000291,洪怡君,怡君291@example.tw,+886943212845,台中市北屯區,文心路四段955號,406,1970-08-03,bronze,7081
+C0000292,許淑芬,淑芬292@example.tw,+886995988883,台北市大安區,忠孝東路四段201號,106,1960-11-16,silver,17454
+C0000293,Chris Smith,chris.smith293@shop.example,+12125558787,New York,7091 Market St,94121,1961-12-28,silver,12898
+C0000294,Priya Silva,priya.silva294@shop.example,+12065554786,New York,1885 Market St,10001,1992-04-06,bronze,5337
+C0000295,David Baker,david.baker295@shop.example,+13105558115,Boston,3794 Market St,94121,1977-03-07,gold,46309
+C0000296,郭欣怡,欣怡296@example.tw,+886915270719,新竹市東區,光復路二段101號,300,1982-11-15,silver,13743
+C0000297,葉美玲,美玲297@example.tw,+886911737524,高雄市左營區,博愛二路777號,813,1989-01-15,bronze,3368
+C0000298,楊家豪,家豪298@example.tw,+886969715294,台中市西屯區,台灣大道三段99號,407,1998-09-22,gold,27535
+C0000299,Paul Lee,paul.lee299@shop.example,+12065553094,New York,646 Market St,10001,1961-05-14,bronze,5321
+C0000300,張俊傑,俊傑300@example.tw,+886986754344,高雄市鼓山區,明誠三路56號,804,1981-04-25,bronze,4589
+C0000301,林博文,博文301@example.tw,+886986012183,高雄市鼓山區,明誠三路56號,804,1983-04-30,platinum,129210
+C0000302,Carol Lee,carol.lee302@shop.example,+16175558508,New York,3802 Market St,94110,1962-07-19,bronze,5170
+C0000303,曾博文,博文303@example.tw,+886926241812,台中市北屯區,文心路四段955號,406,1986-01-22,silver,19007
+C0000304,周雅婷,雅婷304@example.tw,+886944239244,台中市北屯區,文心路四段955號,406,2002-04-13,bronze,5750
+C0000305,Tomas Roberts,tomas.roberts305@shop.example,+12125554593,Boston,4484 Market St,10016,1987-05-19,gold,33931
+C0000306,Alice Walker,alice.walker306@shop.example,+16175559802,Chicago,4195 Market St,94103,1969-11-17,gold,34166
+C0000307,蘇志明,志明307@example.tw,+886951087686,台北市大安區,忠孝東路四段201號,106,1995-12-23,platinum,134235
+C0000308,Grace Davis,grace.davis308@shop.example,+13125550489,Chicago,8307 Market St,10014,1984-03-09,bronze,2357
+C0000309,Kyle Davis,kyle.davis309@shop.example,+12125558944,New York,8156 Market St,10003,1963-10-03,platinum,165310
+C0000310,吳欣怡,欣怡310@example.tw,+886929133012,台北市大安區,忠孝東路四段201號,106,1964-05-17,silver,14415
+C0000311,林靜宜,靜宜311@example.tw,+886912262012,桃園市桃園區,中正路1095號,330,1979-12-21,gold,19875
+C0000312,Una Smith,una.smith312@shop.example,+16175551315,San Francisco,7150 Market St,10013,1991-08-24,gold,49127
+C0000313,郭家豪,家豪313@example.tw,+886962179130,台北市大安區,忠孝東路四段201號,106,1992-12-19,silver,18035
+C0000314,張文浩,文浩314@example.tw,+886928646672,高雄市鼓山區,明誠三路56號,804,1967-05-21,silver,18088
+C0000315,Yara Adams,yara.adams315@shop.example,+13125559832,New York,3187 Market St,10001,1970-01-10,bronze,6150
+C0000316,蘇惠如,惠如316@example.tw,+886945584243,高雄市鼓山區,明誠三路56號,804,2001-02-28,gold,55913
+C0000317,Eve Murphy,eve.murphy317@shop.example,+13125558564,New York,1164 Market St,94114,1967-09-20,bronze,5393
+C0000318,Priya Hall,priya.hall318@shop.example,+14155555100,New York,1808 Market St,94121,1983-06-20,bronze,5441
+C0000319,楊俊傑,俊傑319@example.tw,+886952189596,桃園市桃園區,中正路1095號,330,1974-11-02,bronze,3960
+C0000320,葉維倫,維倫320@example.tw,+886921349787,台南市東區,東門路一段99號,701,2005-06-19,gold,61054
+C0000321,Evan Chen,evan.chen321@shop.example,+14155559541,Chicago,602 Market St,94114,1978-09-06,bronze,6527
+C0000322,黃惠如,惠如322@example.tw,+886982485852,台中市西屯區,台灣大道三段99號,407,1999-11-27,bronze,4308
+C0000323,蘇俊傑,俊傑323@example.tw,+886997672696,新竹市東區,光復路二段101號,300,1999-02-26,silver,9709
+C0000324,Beth Silva,beth.silva324@shop.example,+16175556411,New York,6748 Market St,94107,1978-01-12,bronze,5973
+C0000325,Sophia Clark,sophia.clark325@shop.example,+13125559436,Boston,1834 Market St,10014,2002-05-10,platinum,135617
+C0000326,Bob Turner,bob.turner326@shop.example,+14155551121,Boston,4389 Market St,94117,1986-08-14,bronze,4321
+C0000327,郭美玲,美玲327@example.tw,+886974027424,高雄市鼓山區,明誠三路56號,804,1976-02-29,bronze,2952
+C0000328,吳柏翰,柏翰328@example.tw,+886925908439,高雄市鼓山區,明誠三路56號,804,1976-03-25,bronze,3297
+C0000329,蔡志明,志明329@example.tw,+886949809980,台中市西屯區,台灣大道三段99號,407,1992-11-25,silver,13245
+C0000330,Alice Anderson,alice.anderson330@shop.example,+13105558150,New York,5677 Market St,94110,1968-12-17,bronze,2877
+C0000331,曾美玲,美玲331@example.tw,+886996455621,高雄市鼓山區,明誠三路56號,804,1995-10-14,silver,17917
+C0000332,Bob Carter,bob.carter332@shop.example,+12125553211,Boston,2362 Market St,94103,1978-02-06,silver,14453
+C0000333,周建國,建國333@example.tw,+886914784176,台中市北屯區,文心路四段955號,406,1966-08-05,bronze,4445
+C0000334,王建國,建國334@example.tw,+886917963395,台南市東區,東門路一段99號,701,1986-05-24,gold,54800
+C0000335,楊俊傑,俊傑335@example.tw,+886945461315,新北市板橋區,縣民大道二段7號,220,1999-07-12,bronze,5013
+C0000336,Bob Clark,bob.clark336@shop.example,+13105553371,San Francisco,6729 Market St,10001,1989-10-07,silver,18738
+C0000337,David Smith,david.smith337@shop.example,+12125556475,San Francisco,8277 Market St,10001,1991-03-24,silver,10187
+C0000338,洪雅婷,雅婷338@example.tw,+886956308372,台中市西屯區,台灣大道三段99號,407,1994-07-23,silver,17136
+C0000339,張雅婷,雅婷339@example.tw,+886946781035,台北市信義區,信義路五段7號,110,1983-03-09,gold,45933
+C0000340,許雅筑,雅筑340@example.tw,+886965430910,台中市西屯區,台灣大道三段99號,407,1991-04-20,bronze,3704
+C0000341,吳雅筑,雅筑341@example.tw,+886959677455,台南市東區,東門路一段99號,701,1995-04-24,silver,18359
+C0000342,鄭雅婷,雅婷342@example.tw,+886974558402,桃園市桃園區,中正路1095號,330,1980-10-06,silver,12093
+C0000343,林柏翰,柏翰343@example.tw,+886911537540,高雄市左營區,博愛二路777號,813,1992-07-17,silver,15828
+C0000344,林惠如,惠如344@example.tw,+886962841715,台南市東區,東門路一段99號,701,1986-02-05,bronze,4011
+C0000345,李冠廷,冠廷345@example.tw,+886984955621,台北市信義區,信義路五段7號,110,1992-12-16,silver,14639
+C0000346,鄭志明,志明346@example.tw,+886945503088,台北市大安區,忠孝東路四段201號,106,1995-07-09,bronze,5425
+C0000347,吳博文,博文347@example.tw,+886975218824,台北市信義區,信義路五段7號,110,1965-10-05,silver,14786
+C0000348,Eve Patel,eve.patel348@shop.example,+13125550295,Chicago,1172 Market St,10003,2001-05-22,gold,32191
+C0000349,Uma Young,uma.young349@shop.example,+12065558909,New York,8686 Market St,10016,1960-05-01,silver,21912
+C0000350,Xena Lee,xena.lee350@shop.example,+13105553466,Chicago,2888 Market St,10002,1983-10-06,platinum,103743
+C0000351,林雅筑,雅筑351@example.tw,+886970861752,台南市東區,東門路一段99號,701,2004-10-29,bronze,3865
+C0000352,鄭美玲,美玲352@example.tw,+886995474963,高雄市鼓山區,明誠三路56號,804,1962-01-06,bronze,4603
+C0000353,Kyle Adams,kyle.adams353@shop.example,+12125550678,Chicago,7072 Market St,94110,1980-01-29,silver,20607
+C0000354,Grace Novak,grace.novak354@shop.example,+14155558203,New York,833 Market St,94121,1964-05-22,gold,60663
+C0000355,陳淑芬,淑芬355@example.tw,+886920762899,新竹市東區,光復路二段101號,300,1996-07-03,silver,14170
+C0000356,郭俊傑,俊傑356@example.tw,+886969695647,新竹市東區,光復路二段101號,300,1965-06-06,gold,60107
+C0000357,Xena Silva,xena.silva357@shop.example,+16175554682,Chicago,5648 Market St,10003,2005-01-23,silver,11370
+C0000358,李淑芬,淑芬358@example.tw,+886923225724,新竹市東區,光復路二段101號,300,1981-08-21,bronze,5804
+C0000359,Carol Khan,carol.khan359@shop.example,+13105554092,New York,1813 Market St,10001,1962-11-09,bronze,5516
+C0000360,劉雅筑,雅筑360@example.tw,+886935713541,台北市信義區,信義路五段7號,110,1966-05-05,bronze,5334
+C0000361,Liam Green,liam.green361@shop.example,+14155553600,San Francisco,3422 Market St,94107,1960-10-18,bronze,4891
+C0000362,蘇博文,博文362@example.tw,+886990551193,台北市信義區,信義路五段7號,110,2002-10-15,gold,64444
+C0000363,郭雅筑,雅筑363@example.tw,+886937199354,台南市東區,東門路一段99號,701,1987-10-20,silver,17272
+C0000364,Yusuf Young,yusuf.young364@shop.example,+12125559618,New York,320 Market St,94114,2003-02-21,silver,13577
+C0000365,張俊傑,俊傑365@example.tw,+886972759529,台北市大安區,忠孝東路四段201號,106,1965-02-12,bronze,5222
+C0000366,洪柏翰,柏翰366@example.tw,+886981626003,新北市板橋區,縣民大道二段7號,220,1980-04-08,platinum,108950
+C0000367,許雅筑,雅筑367@example.tw,+886994232708,台北市信義區,信義路五段7號,110,1993-06-04,platinum,101230
+C0000368,李志明,志明368@example.tw,+886924965583,台中市北屯區,文心路四段955號,406,1979-07-30,bronze,4363
+C0000369,Julia Tran,julia.tran369@shop.example,+14155558754,Chicago,9050 Market St,10016,1964-08-07,bronze,4644
+C0000370,Lisa Kowalski,lisa.kowalski370@shop.example,+14155557110,Boston,5116 Market St,94103,1999-01-27,silver,16578
+C0000371,Maria Martinez,maria.martinez371@shop.example,+13105550829,Chicago,5223 Market St,94114,1992-05-13,silver,17268
+C0000372,Yara Hansen,yara.hansen372@shop.example,+12065555068,Chicago,7143 Market St,10003,1982-06-27,bronze,4732
+C0000373,林博文,博文373@example.tw,+886971286804,新北市板橋區,縣民大道二段7號,220,1964-05-20,bronze,5681
+C0000374,Chris Murphy,chris.murphy374@shop.example,+13105557244,Chicago,2505 Market St,94114,1973-03-07,silver,15609
+C0000375,林文浩,文浩375@example.tw,+886958590885,高雄市左營區,博愛二路777號,813,1992-08-12,platinum,154743
+C0000376,Yara Turner,yara.turner376@shop.example,+16175557235,Chicago,5681 Market St,10001,1976-02-28,bronze,3302
+C0000377,蘇俊傑,俊傑377@example.tw,+886999127259,台北市大安區,忠孝東路四段201號,106,1984-02-07,platinum,94220
+C0000378,Victor Nguyen,victor.nguyen378@shop.example,+12125558443,New York,376 Market St,10003,1984-02-19,bronze,4564
+C0000379,Alice Kim,alice.kim379@shop.example,+14155559968,Chicago,8172 Market St,10013,1978-06-24,silver,15161
+C0000380,洪惠如,惠如380@example.tw,+886929927664,台北市大安區,忠孝東路四段201號,106,1989-05-11,bronze,6071
+C0000381,Chris Wright,chris.wright381@shop.example,+14155551686,New York,1845 Market St,94107,1983-05-10,bronze,3438
+C0000382,Hannah Adams,hannah.adams382@shop.example,+12125554004,San Francisco,8731 Market St,10016,1965-02-10,gold,66499
+C0000383,Priya O'Brien,priya.obrien383@shop.example,+13105557451,New York,9666 Market St,94121,1976-02-07,gold,42683
+C0000384,郭美玲,美玲384@example.tw,+886956144079,台中市西屯區,台灣大道三段99號,407,1989-07-04,silver,13618
+C0000385,郭婉婷,婉婷385@example.tw,+886950286163,桃園市桃園區,中正路1095號,330,2000-12-21,silver,16182
+C0000386,Olivia Adams,olivia.adams386@shop.example,+13105551139,Chicago,3483 Market St,10016,1973-03-21,bronze,3433
+C0000387,Victor Yoshida,victor.yoshida387@shop.example,+13105554444,Boston,637 Market St,94121,1974-04-13,bronze,6743
+C0000388,Fiona Adams,fiona.adams388@shop.example,+16175556689,Boston,3857 Market St,10014,1974-10-26,silver,16074
+C0000389,張欣怡,欣怡389@example.tw,+886961412766,台中市北屯區,文心路四段955號,406,2002-05-03,gold,53003
+C0000390,Oscar Wright,oscar.wright390@shop.example,+16175553341,Chicago,3468 Market St,10013,1979-05-13,platinum,164699
+C0000391,Quinn Roberts,quinn.roberts391@shop.example,+16175553536,New York,794 Market St,94110,1996-10-03,gold,29120
+C0000392,洪靜宜,靜宜392@example.tw,+886949942566,台中市西屯區,台灣大道三段99號,407,1967-07-23,gold,59895
+C0000393,蘇家豪,家豪393@example.tw,+886936901699,桃園市桃園區,中正路1095號,330,1970-12-05,bronze,5102
+C0000394,吳怡君,怡君394@example.tw,+886990235751,新竹市東區,光復路二段101號,300,1981-10-26,silver,10611
+C0000395,Alice Davis,alice.davis395@shop.example,+13105558835,New York,8121 Market St,10002,1970-11-01,silver,22581
+C0000396,楊俊傑,俊傑396@example.tw,+886929310953,新竹市東區,光復路二段101號,300,1973-04-30,bronze,7364
+C0000397,鄭佩珊,佩珊397@example.tw,+886961050897,台中市西屯區,台灣大道三段99號,407,1987-12-03,bronze,5289
+C0000398,Alice O'Brien,alice.obrien398@shop.example,+12125553556,Boston,5466 Market St,10014,1970-08-30,gold,54473
+C0000399,Henry Carter,henry.carter399@shop.example,+13105552762,San Francisco,2468 Market St,94107,1966-10-24,bronze,4599
+C0000400,吳淑芬,淑芬400@example.tw,+886952612488,新竹市東區,光復路二段101號,300,1980-09-27,silver,19645
+C0000401,Eve Suzuki,eve.suzuki401@shop.example,+14155559971,Chicago,9254 Market St,10002,1980-04-11,gold,46132
+C0000402,Noah Davis,noah.davis402@shop.example,+13125555398,San Francisco,4972 Market St,10002,1961-12-22,silver,13930
+C0000403,Una Green,una.green403@shop.example,+14155552410,New York,6942 Market St,10016,1973-01-27,bronze,6750
+C0000404,Carol Roberts,carol.roberts404@shop.example,+13105555825,Chicago,4669 Market St,10013,1999-03-11,silver,18691
+C0000405,曾博文,博文405@example.tw,+886935182598,高雄市鼓山區,明誠三路56號,804,1965-11-09,gold,67907
+C0000406,楊欣怡,欣怡406@example.tw,+886985085031,台北市信義區,信義路五段7號,110,1980-10-14,silver,14100
+C0000407,曾惠如,惠如407@example.tw,+886982569118,台中市北屯區,文心路四段955號,406,1964-07-15,bronze,3579
+C0000408,周柏翰,柏翰408@example.tw,+886946848581,台中市西屯區,台灣大道三段99號,407,1969-12-06,silver,9229
+C0000409,Sophia Rossi,sophia.rossi409@shop.example,+13125554156,Chicago,3206 Market St,94110,1967-10-09,gold,36206
+C0000410,蔡博文,博文410@example.tw,+886971778158,台北市信義區,信義路五段7號,110,2000-06-19,bronze,6336
+C0000411,Quinn Khan,quinn.khan411@shop.example,+12125551891,Chicago,1998 Market St,10013,1969-01-25,gold,63708
+C0000412,王淑芬,淑芬412@example.tw,+886965647147,台中市西屯區,台灣大道三段99號,407,1974-01-27,bronze,5285
+C0000413,Yusuf Moore,yusuf.moore413@shop.example,+13125550405,New York,1566 Market St,94121,1970-07-02,gold,56544
+C0000414,郭志明,志明414@example.tw,+886981310629,台北市大安區,忠孝東路四段201號,106,1995-12-04,silver,17257
+C0000415,楊維倫,維倫415@example.tw,+886982444614,新北市板橋區,縣民大道二段7號,220,1986-11-27,silver,14442
+C0000416,Julia Yoshida,julia.yoshida416@shop.example,+16175552814,Boston,1592 Market St,10016,1976-06-20,bronze,4827
+C0000417,周冠廷,冠廷417@example.tw,+886953716979,新竹市東區,光復路二段101號,300,1990-07-01,silver,16525
+C0000418,蔡欣怡,欣怡418@example.tw,+886947414649,台中市北屯區,文心路四段955號,406,1992-01-30,gold,48162
+C0000419,郭雅婷,雅婷419@example.tw,+886961767159,新竹市東區,光復路二段101號,300,1996-03-21,bronze,5049
+C0000420,蘇淑芬,淑芬420@example.tw,+886915501876,台中市北屯區,文心路四段955號,406,2005-05-07,bronze,3205
+C0000421,曾美玲,美玲421@example.tw,+886926368390,台北市信義區,信義路五段7號,110,1974-12-27,gold,44884
+C0000422,陳美玲,美玲422@example.tw,+886984962491,台中市北屯區,文心路四段955號,406,1961-10-07,bronze,5823
+C0000423,Grace Davis,grace.davis423@shop.example,+12065555829,New York,3121 Market St,10013,1999-10-17,gold,48406
+C0000424,何佩珊,佩珊424@example.tw,+886990401075,新竹市東區,光復路二段101號,300,1962-08-21,silver,10335
+C0000425,謝美玲,美玲425@example.tw,+886943365360,新北市板橋區,縣民大道二段7號,220,2000-01-26,silver,18792
+C0000426,Sophia Walker,sophia.walker426@shop.example,+14155554118,Boston,2655 Market St,10001,1989-01-20,bronze,2609
+C0000427,Bob Yoshida,bob.yoshida427@shop.example,+13125559466,Chicago,9595 Market St,10013,2005-08-15,gold,42821
+C0000428,Yusuf Davis,yusuf.davis428@shop.example,+12065559694,New York,4036 Market St,94117,1970-10-15,silver,17265
+C0000429,黃志明,志明429@example.tw,+886932625779,台中市北屯區,文心路四段955號,406,1965-04-25,silver,12618
+C0000430,Jack Green,jack.green430@shop.example,+13125556617,New York,1052 Market St,94103,1999-10-21,silver,17036
+C0000431,吳柏翰,柏翰431@example.tw,+886958983120,高雄市左營區,博愛二路777號,813,1960-04-23,silver,10465
+C0000432,Uma Carter,uma.carter432@shop.example,+14155552841,Boston,8520 Market St,94121,2003-02-24,bronze,6839
+C0000433,黃雅婷,雅婷433@example.tw,+886987429594,台中市西屯區,台灣大道三段99號,407,1997-06-11,bronze,5110
+C0000434,劉雅筑,雅筑434@example.tw,+886991424736,台中市西屯區,台灣大道三段99號,407,1995-08-23,silver,12501
+C0000435,Yusuf Gomez,yusuf.gomez435@shop.example,+12065551230,New York,9676 Market St,94121,1966-08-27,gold,45619
+C0000436,Alice Fischer,alice.fischer436@shop.example,+13125555450,Chicago,1478 Market St,10014,1967-11-11,bronze,4434
+C0000437,Paul Khan,paul.khan437@shop.example,+16175555423,Chicago,7355 Market St,94110,1970-01-08,silver,7928
+C0000438,許家豪,家豪438@example.tw,+886970950643,新北市板橋區,縣民大道二段7號,220,1971-12-12,silver,9896
+C0000439,Aaron Hall,aaron.hall439@shop.example,+13125558698,New York,8258 Market St,10003,1989-12-22,bronze,4897
+C0000440,葉怡君,怡君440@example.tw,+886969496107,新北市板橋區,縣民大道二段7號,220,1988-06-24,silver,16483
+C0000441,Aaron Fischer,aaron.fischer441@shop.example,+12125554052,San Francisco,2512 Market St,94107,1985-01-08,silver,17719
+C0000442,Priya Martinez,priya.martinez442@shop.example,+12125557147,Chicago,8406 Market St,10002,1987-03-16,silver,19737
+C0000443,Kyle Suzuki,kyle.suzuki443@shop.example,+12125555604,San Francisco,1868 Market St,10003,1982-10-20,bronze,4271
+C0000444,劉雅筑,雅筑444@example.tw,+886920780960,高雄市左營區,博愛二路777號,813,1987-01-10,silver,14913
+C0000445,劉靜宜,靜宜445@example.tw,+886935111862,高雄市左營區,博愛二路777號,813,2001-02-04,silver,17819
+C0000446,葉志明,志明446@example.tw,+886919624203,台北市大安區,忠孝東路四段201號,106,1966-08-13,bronze,3477
+C0000447,郭宗翰,宗翰447@example.tw,+886938065991,高雄市左營區,博愛二路777號,813,1961-02-15,silver,16821
+C0000448,Tomas Fischer,tomas.fischer448@shop.example,+16175554996,Chicago,7907 Market St,10014,1973-07-26,silver,16473
+C0000449,蔡婉婷,婉婷449@example.tw,+886965212048,台中市北屯區,文心路四段955號,406,1965-02-14,platinum,171984
+C0000450,周婉婷,婉婷450@example.tw,+886925679793,台中市西屯區,台灣大道三段99號,407,1961-09-18,silver,11223
+C0000451,Liam Wilson,liam.wilson451@shop.example,+12125550359,Chicago,5853 Market St,10003,1986-01-24,bronze,3678
+C0000452,何淑芬,淑芬452@example.tw,+886977114110,台北市信義區,信義路五段7號,110,2004-08-18,bronze,6867
+C0000453,曾宗翰,宗翰453@example.tw,+886998928503,新竹市東區,光復路二段101號,300,1964-12-26,bronze,4647
+C0000454,葉佩珊,佩珊454@example.tw,+886943832880,台北市大安區,忠孝東路四段201號,106,1975-09-25,gold,38838
+C0000455,Jack Turner,jack.turner455@shop.example,+12125554931,San Francisco,8493 Market St,94121,1977-04-20,silver,13493
+C0000456,Alice Novak,alice.novak456@shop.example,+12065552018,Boston,8193 Market St,10003,1961-07-17,bronze,4441
+C0000457,洪雅筑,雅筑457@example.tw,+886943186778,台中市北屯區,文心路四段955號,406,1986-10-28,gold,44477
+C0000458,林惠如,惠如458@example.tw,+886939620935,台中市西屯區,台灣大道三段99號,407,1969-11-07,silver,15983
+C0000459,劉建國,建國459@example.tw,+886997764876,高雄市鼓山區,明誠三路56號,804,1975-12-23,bronze,3732
+C0000460,Nora Park,nora.park460@shop.example,+12065554988,San Francisco,9434 Market St,10013,1980-11-30,gold,33746
+C0000461,何文浩,文浩461@example.tw,+886910359367,台中市西屯區,台灣大道三段99號,407,1987-06-17,bronze,5843
+C0000462,Tomas Baker,tomas.baker462@shop.example,+12125559771,San Francisco,8577 Market St,10014,1964-07-06,silver,5577
+C0000463,Olivia Rossi,olivia.rossi463@shop.example,+12125556621,New York,9295 Market St,94117,1986-11-15,bronze,4202
+C0000464,Ravi Hall,ravi.hall464@shop.example,+12065554445,New York,6791 Market St,94103,2002-05-07,bronze,4610
+C0000465,Noah Nguyen,noah.nguyen465@shop.example,+16175551998,San Francisco,5903 Market St,10016,1964-07-08,bronze,2293
+C0000466,許柏翰,柏翰466@example.tw,+886941201241,台中市西屯區,台灣大道三段99號,407,2002-08-15,platinum,112117
+C0000467,張冠廷,冠廷467@example.tw,+886964427860,台南市東區,東門路一段99號,701,1989-12-04,silver,13597
+C0000468,Dana Carter,dana.carter468@shop.example,+14155550649,Boston,857 Market St,94121,1987-07-25,silver,19087
+C0000469,Vlad Baker,vlad.baker469@shop.example,+12065556829,Boston,5729 Market St,94117,1973-05-20,gold,46273
+C0000470,Chris Wilson,chris.wilson470@shop.example,+13125553508,Chicago,6891 Market St,10013,1981-05-11,bronze,5902
+C0000471,林佩珊,佩珊471@example.tw,+886992839378,台北市大安區,忠孝東路四段201號,106,1960-10-09,silver,19100
+C0000472,Paul Baker,paul.baker472@shop.example,+13105559859,San Francisco,2970 Market St,10016,1972-04-25,bronze,4344
+C0000473,黃雅婷,雅婷473@example.tw,+886910362721,新竹市東區,光復路二段101號,300,1994-06-08,bronze,5414
+C0000474,Marcus Hill,marcus.hill474@shop.example,+14155559928,Boston,9498 Market St,10003,2000-07-08,silver,15813
+C0000475,蘇俊傑,俊傑475@example.tw,+886993394595,桃園市桃園區,中正路1095號,330,1981-05-03,silver,10786
+C0000476,Grace Hill,grace.hill476@shop.example,+12065555173,San Francisco,1853 Market St,10003,1963-02-11,bronze,6456
+C0000477,郭欣怡,欣怡477@example.tw,+886973031338,高雄市鼓山區,明誠三路56號,804,1976-10-17,bronze,5176
+C0000478,林惠如,惠如478@example.tw,+886959404487,高雄市左營區,博愛二路777號,813,1994-12-16,gold,32348
+C0000479,黃博文,博文479@example.tw,+886991032720,新竹市東區,光復路二段101號,300,1979-10-05,platinum,126412
+C0000480,何雅筑,雅筑480@example.tw,+886934074909,台南市東區,東門路一段99號,701,1970-08-07,silver,20180
+C0000481,李惠如,惠如481@example.tw,+886943994974,桃園市桃園區,中正路1095號,330,1982-01-20,gold,47638
+C0000482,張怡君,怡君482@example.tw,+886934500053,桃園市桃園區,中正路1095號,330,1989-11-23,bronze,6513
+C0000483,Ravi Tran,ravi.tran483@shop.example,+13105558508,San Francisco,9011 Market St,94114,2004-03-11,bronze,7595
+C0000484,Alice Rossi,alice.rossi484@shop.example,+12065554006,Chicago,1434 Market St,94110,1995-11-21,bronze,4956
+C0000485,劉欣怡,欣怡485@example.tw,+886966066482,台北市大安區,忠孝東路四段201號,106,1980-03-16,bronze,4383
+C0000486,Karen Tran,karen.tran486@shop.example,+16175551391,New York,6908 Market St,94114,1991-05-02,silver,12204
+C0000487,曾婉婷,婉婷487@example.tw,+886985832002,桃園市桃園區,中正路1095號,330,1998-06-06,platinum,59591
+C0000488,王志明,志明488@example.tw,+886932151238,台南市東區,東門路一段99號,701,1977-05-29,silver,8415
+C0000489,李文浩,文浩489@example.tw,+886996738986,台南市東區,東門路一段99號,701,1986-06-13,bronze,6041
+C0000490,Noah Kim,noah.kim490@shop.example,+13125556081,San Francisco,7612 Market St,10003,1979-12-21,silver,15601
+C0000491,鄭文浩,文浩491@example.tw,+886970580652,台北市大安區,忠孝東路四段201號,106,1961-09-11,platinum,130673
+C0000492,Henry Patel,henry.patel492@shop.example,+16175554283,Chicago,550 Market St,94114,2004-06-29,silver,19627
+C0000493,Carol Hansen,carol.hansen493@shop.example,+16175552368,Chicago,7691 Market St,94114,1963-05-06,bronze,5139
+C0000494,陳俊傑,俊傑494@example.tw,+886921840910,台北市信義區,信義路五段7號,110,1963-06-02,bronze,4729
+C0000495,Tomas Clark,tomas.clark495@shop.example,+12065550714,Boston,4236 Market St,10016,1965-02-12,bronze,4207
+C0000496,許美玲,美玲496@example.tw,+886974911622,新北市板橋區,縣民大道二段7號,220,1995-01-24,silver,14582
+C0000497,蔡家豪,家豪497@example.tw,+886982799177,台中市北屯區,文心路四段955號,406,2001-06-06,platinum,137117
+C0000498,許雅婷,雅婷498@example.tw,+886933816207,新竹市東區,光復路二段101號,300,1986-02-18,silver,20990
+C0000499,郭柏翰,柏翰499@example.tw,+886915714270,台中市西屯區,台灣大道三段99號,407,2003-12-11,bronze,4281
+C0000500,葉婉婷,婉婷500@example.tw,+886961475308,台北市大安區,忠孝東路四段201號,106,1977-05-04,silver,14608

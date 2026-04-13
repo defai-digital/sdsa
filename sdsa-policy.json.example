@@ -1,0 +1,24 @@
+{
+  "fields": {
+    "employee_id": {
+      "action": "tokenize"
+    },
+    "full_name": {
+      "action": "redact"
+    },
+    "dob": {
+      "action": "date_truncate",
+      "params": { "granularity": "year" },
+      "is_quasi_identifier": true
+    },
+    "zip": {
+      "action": "string_truncate",
+      "params": { "keep": 3 },
+      "is_quasi_identifier": true
+    },
+    "salary": {
+      "action": "dp_laplace",
+      "dp_params": { "epsilon": 0.8, "lower": 40000, "upper": 180000 }
+    }
+  }
+}

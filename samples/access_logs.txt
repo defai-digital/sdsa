@@ -1,0 +1,16 @@
+timestamp|user_email|src_ip|path|status|bytes|user_agent
+2026-04-01T08:14:02Z|alice.johnson@acme.example|10.1.2.34|/api/orders|200|1823|Mozilla/5.0
+2026-04-01T08:14:11Z|bob.smith@acme.example|10.1.2.35|/api/orders|200|1640|Mozilla/5.0
+2026-04-01T08:14:47Z|carol.davis@acme.example|10.1.2.36|/api/profile|200|420|curl/8.1.2
+2026-04-01T08:15:03Z|david.lee@acme.example|10.1.2.37|/api/orders|500|87|Mozilla/5.0
+2026-04-01T08:15:28Z|eve.martinez@acme.example|10.1.2.38|/api/orders|200|2104|Mozilla/5.0
+2026-04-01T08:16:02Z|frank.turner@acme.example|10.1.2.39|/api/billing|403|56|curl/8.1.2
+2026-04-01T08:16:40Z|grace.park@acme.example|10.1.2.40|/api/orders|200|1895|Mozilla/5.0
+2026-04-01T08:17:15Z|henry.wilson@acme.example|10.1.2.41|/api/profile|200|410|Mozilla/5.0
+2026-04-01T08:17:49Z|irene.chen@acme.example|10.1.2.42|/api/orders|200|1712|Mozilla/5.0
+2026-04-01T08:18:02Z|jack.brown@acme.example|10.1.2.43|/api/orders|404|74|Mozilla/5.0
+2026-04-01T08:18:31Z|karen.nguyen@acme.example|10.1.2.44|/api/billing|200|980|Mozilla/5.0
+2026-04-01T08:19:05Z|liam.murphy@acme.example|10.1.2.45|/api/orders|200|1580|Mozilla/5.0
+2026-04-01T08:19:39Z|maria.silva@acme.example|10.1.2.46|/api/profile|200|430|Mozilla/5.0
+2026-04-01T08:20:11Z|noah.kim@acme.example|10.1.2.47|/api/orders|200|2020|Mozilla/5.0
+2026-04-01T08:20:44Z|olivia.tran@acme.example|10.1.2.48|/api/billing|200|1105|Mozilla/5.0

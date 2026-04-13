@@ -1,0 +1,22 @@
+{
+  "defaults": {
+    "by_pii_kind": {
+      "email": { "action": "hash" },
+      "phone": { "action": "mask", "params": { "keep_prefix": 1, "keep_suffix": 1 } },
+      "credit_card": { "action": "mask", "params": { "keep_prefix": 0, "keep_suffix": 4 } },
+      "government_id": { "action": "hash" },
+      "name": { "action": "redact" },
+      "address": { "action": "redact" },
+      "date_of_birth": { "action": "date_truncate", "params": { "granularity": "month" } },
+      "identifier": { "action": "tokenize" }
+    },
+    "by_kind": {
+      "numeric": { "action": "retain" },
+      "datetime": { "action": "retain" },
+      "categorical": { "action": "retain" },
+      "boolean": { "action": "retain" },
+      "string": { "action": "retain" }
+    }
+  },
+  "fields": {}
+}

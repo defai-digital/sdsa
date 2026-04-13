@@ -1,0 +1,16 @@
+customer_id,姓名,email,電話,住址,birthdate,membership_tier,lifetime_value
+C000001,林怡君,yichun.lin@example.tw,+886223112233,台北市信義區松仁路1號,1988-05-12,gold,48200
+C000002,王建國,jianguo.wang@example.tw,+886223112234,台北市信義區松仁路1號,1985-11-03,gold,52100
+C000003,陳美玲,meiling.chen@example.tw,+886223112235,台北市信義區松仁路1號,1992-02-28,silver,18400
+C000004,張志明,zhiming.zhang@example.tw,+886223112236,台北市信義區松仁路1號,1990-08-16,silver,21900
+C000005,李雅婷,yating.li@example.tw,+886223112237,台北市信義區松仁路1號,1987-12-30,silver,19750
+C000006,黃俊傑,junjie.huang@example.tw,+886427234400,台中市西屯區台灣大道三段99號,1983-06-07,gold,61500
+C000007,吳佩珊,peishan.wu@example.tw,+886427234401,台中市西屯區台灣大道三段99號,1995-03-19,bronze,6800
+C000008,蔡宗翰,zonghan.tsai@example.tw,+886427234402,台中市西屯區台灣大道三段99號,1991-10-11,silver,22300
+C000009,林雅筑,yachu.lin@example.tw,+886427234403,台中市西屯區台灣大道三段99號,1989-01-25,gold,47200
+C000010,許文浩,wenhao.hsu@example.tw,+886427234404,台中市西屯區台灣大道三段99號,1986-09-04,silver,25600
+C000011,楊婉婷,wanting.yang@example.tw,+886725323232,高雄市鼓山區明誠三路56號,1993-07-22,bronze,8400
+C000012,鄭博文,bowen.zheng@example.tw,+886725323233,高雄市鼓山區明誠三路56號,1984-04-14,gold,55300
+C000013,謝惠如,huiru.xie@example.tw,+886725323234,高雄市鼓山區明誠三路56號,1996-11-29,bronze,4900
+C000014,洪維倫,weilun.hong@example.tw,+886725323235,高雄市鼓山區明誠三路56號,1982-02-08,gold,68700
+C000015,葉靜宜,jingyi.ye@example.tw,+886725323236,高雄市鼓山區明誠三路56號,1994-08-31,silver,17100

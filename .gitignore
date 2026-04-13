@@ -1,0 +1,38 @@
+# Python
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+backend/.venv/
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# SDSA-specific
+# Huge generated sample (200 MB) — regenerate with `python3 samples/generate.py --huge`
+samples/employees_huge.csv
+
+# Runtime secrets / overrides (not shipped)
+sdsa-policy.json
+.env
+.env.local

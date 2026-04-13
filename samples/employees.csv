@@ -1,0 +1,21 @@
+employee_id,full_name,email,phone,dob,zip,department,salary,hire_date
+E00001,Alice Johnson,alice.johnson@acme.example,+14155552671,1990-03-14,94103,Engineering,95000,2019-06-01
+E00002,Bob Smith,bob.smith@acme.example,+14155552672,1985-07-22,94103,Engineering,105000,2017-02-15
+E00003,Carol Davis,carol.davis@acme.example,+14155552673,1992-11-05,94103,Engineering,88000,2020-09-10
+E00004,David Lee,david.lee@acme.example,+14155552674,1988-01-30,94103,Engineering,115000,2016-11-20
+E00005,Eve Martinez,eve.martinez@acme.example,+14155552675,1995-06-18,94103,Engineering,82000,2022-03-07
+E00006,Frank Turner,frank.turner@acme.example,+14155552676,1980-09-12,94107,Sales,78000,2015-04-14
+E00007,Grace Park,grace.park@acme.example,+14155552677,1987-12-02,94107,Sales,92000,2018-08-19
+E00008,Henry Wilson,henry.wilson@acme.example,+14155552678,1991-04-25,94107,Sales,84000,2021-01-11
+E00009,Irene Chen,irene.chen@acme.example,+14155552679,1983-10-08,94107,Sales,98000,2014-07-03
+E00010,Jack Brown,jack.brown@acme.example,+14155552680,1993-02-14,94107,Sales,76000,2023-05-22
+E00011,Karen Nguyen,karen.nguyen@acme.example,+14155552681,1989-08-19,94110,Marketing,81000,2018-12-05
+E00012,Liam Murphy,liam.murphy@acme.example,+14155552682,1986-05-03,94110,Marketing,93000,2016-10-30
+E00013,Maria Silva,maria.silva@acme.example,+14155552683,1994-07-27,94110,Marketing,74000,2022-11-15
+E00014,Noah Kim,noah.kim@acme.example,+14155552684,1990-11-11,94110,Marketing,86000,2019-03-28
+E00015,Olivia Tran,olivia.tran@acme.example,+14155552685,1984-03-06,94110,Marketing,102000,2015-09-17
+E00016,Paul Anderson,paul.anderson@acme.example,+14155552686,1996-01-23,94121,HR,68000,2023-08-01
+E00017,Quinn Roberts,quinn.roberts@acme.example,+14155552687,1982-06-14,94121,HR,89000,2013-02-09
+E00018,Rachel Gomez,rachel.gomez@acme.example,+14155552688,1991-09-30,94121,HR,77000,2020-05-25
+E00019,Samuel Patel,samuel.patel@acme.example,+14155552689,1988-12-17,94121,HR,95000,2017-07-12
+E00020,Tina Yoshida,tina.yoshida@acme.example,+14155552690,1993-04-09,94121,HR,72000,2022-09-06

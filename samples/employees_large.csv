@@ -1,0 +1,1001 @@
+employee_id,full_name,email,phone,dob,zip,department,job_title,salary,hire_date
+E000001,Oscar Wilson,oscar.wilson1@acme.example,+14155554506,1980-12-26,94114,Engineering,SWE I,61549,2011-12-14
+E000002,Lisa Kowalski,lisa.kowalski2@acme.example,+14155550488,1974-03-16,94114,Engineering,Principal SWE,40000,2010-08-06
+E000003,Julia Silva,julia.silva3@acme.example,+12065558928,1988-10-26,94114,Marketing,Sr Marketing Mgr,80750,2013-07-31
+E000004,Tomas Kowalski,tomas.kowalski4@acme.example,+13105554552,1976-12-22,94114,Data Science,Senior DS,107023,2012-04-17
+E000005,Frank Novak,frank.novak5@acme.example,+14155555881,1985-06-06,10013,Sales,AE,71851,2018-06-28
+E000006,Frank Baker,frank.baker6@acme.example,+13105555925,1995-11-25,94114,Operations,Ops Analyst,51556,2024-10-31
+E000007,Olivia Patel,olivia.patel7@acme.example,+14155553814,1974-07-13,10001,Sales,Sales Manager,84775,2025-01-12
+E000008,Rachel Martinez,rachel.martinez8@acme.example,+13125552803,1993-12-17,10016,Engineering,Staff SWE,104984,2018-07-06
+E000009,Rachel Baker,rachel.baker9@acme.example,+12125555313,1972-07-05,94114,Finance,Controller,88378,2022-09-21
+E000010,Una Khan,una.khan10@acme.example,+12125558179,1987-10-01,10014,Marketing,Sr Marketing Mgr,83876,2013-02-17
+E000011,Paul Baker,paul.baker11@acme.example,+13125554304,1996-03-22,10001,Legal,Sr Counsel,64320,2013-02-07
+E000012,Greg Wright,greg.wright12@acme.example,+14155550771,1974-12-02,94110,Operations,Ops Director,109367,2019-06-21
+E000013,Marcus Martinez,marcus.martinez13@acme.example,+16175556252,1996-09-24,10002,Customer Support,CS Manager,56169,2012-07-27
+E000014,Sophia Hill,sophia.hill14@acme.example,+13105555573,1975-01-02,94117,Marketing,Sr Marketing Mgr,77901,2010-01-27
+E000015,Vlad Roberts,vlad.roberts15@acme.example,+13125552927,1992-10-09,94107,Legal,Sr Counsel,136210,2014-06-18
+E000016,Jack Dubois,jack.dubois16@acme.example,+12125558837,1993-10-16,94103,Customer Support,CS Lead,43019,2010-06-09
+E000017,Henry Dubois,henry.dubois17@acme.example,+13105553923,1972-08-07,94114,Legal,Legal Counsel,144765,2011-07-21
+E000018,Xena Hill,xena.hill18@acme.example,+12125552103,1999-08-06,10002,Data Science,DS II,126558,2015-12-12
+E000019,Hannah Walker,hannah.walker19@acme.example,+16175553470,1994-03-11,10016,Operations,Ops Director,51484,2024-07-29
+E000020,Xavier O'Brien,xavier.obrien20@acme.example,+13125557397,1975-06-06,94114,Engineering,Senior SWE,160554,2010-06-22
+E000021,Lisa Baker,lisa.baker21@acme.example,+12125559641,1979-11-18,94103,Engineering,EM,93708,2010-09-15
+E000022,Victor Martinez,victor.martinez22@acme.example,+13125553899,1982-06-29,10014,Marketing,Growth Lead,82431,2012-12-19
+E000023,Vlad Clark,vlad.clark23@acme.example,+13125557744,1980-11-25,10002,Finance,Sr Analyst,121767,2017-12-12
+E000024,Beth Suzuki,beth.suzuki24@acme.example,+16175550887,2000-03-16,10014,Product,PM,123026,2011-05-12
+E000025,Zane Rossi,zane.rossi25@acme.example,+14155554073,1978-08-06,94114,Customer Support,CS Rep,46448,2015-08-09
+E000026,Eve O'Brien,eve.obrien26@acme.example,+13125551604,1972-04-08,10014,Product,PM,113380,2012-02-04
+E000027,Xena Anderson,xena.anderson27@acme.example,+12125556658,1991-10-14,10002,Engineering,Staff SWE,97265,2010-01-18
+E000028,Yara Roberts,yara.roberts28@acme.example,+16175554673,1988-12-22,10016,Data Science,ML Engineer,100338,2013-06-22
+E000029,Maria Patel,maria.patel29@acme.example,+12125550958,1995-12-25,10016,Customer Support,CS Manager,53502,2020-09-10
+E000030,Greg Adams,greg.adams30@acme.example,+12125550931,1992-10-12,94107,Finance,Analyst,101501,2023-05-07
+E000031,Eve Anderson,eve.anderson31@acme.example,+16175551964,1995-07-22,94114,Customer Support,CS Rep,45847,2023-02-03
+E000032,Kyle Adams,kyle.adams32@acme.example,+13105554272,1979-03-01,10014,Operations,Ops Analyst,59340,2015-12-16
+E000033,Zane Chen,zane.chen33@acme.example,+12065554915,1990-07-06,94121,Data Science,DS I,148946,2022-08-18
+E000034,Grace Martinez,grace.martinez34@acme.example,+13125553492,1992-09-10,94117,Engineering,Senior SWE,87038,2011-07-18
+E000035,Paul Dubois,paul.dubois35@acme.example,+13105552584,1989-08-28,10003,Operations,Ops Director,97072,2021-11-12
+E000036,Alice Baker,alice.baker36@acme.example,+13105551697,1976-01-10,94117,Engineering,SWE I,80407,2022-05-30
+E000037,Jack Gomez,jack.gomez37@acme.example,+13105559909,1979-06-13,10016,Sales,Sales Manager,59799,2011-02-21
+E000038,Frank Kowalski,frank.kowalski38@acme.example,+13105550722,1970-02-28,94121,HR,HR Director,71638,2015-11-16
+E000039,Karen O'Brien,karen.obrien39@acme.example,+13125557007,1995-02-28,94103,Engineering,EM,110851,2018-04-13
+E000040,Lisa Baker,lisa.baker40@acme.example,+12125557041,1975-09-20,94103,Sales,AE,60741,2018-01-10
+E000041,Noah Anderson,noah.anderson41@acme.example,+12065551684,1985-11-12,10003,Legal,Sr Counsel,161036,2015-04-24
+E000042,Karen Murphy,karen.murphy42@acme.example,+16175550406,1978-01-17,10016,Data Science,ML Engineer,102376,2025-01-09
+E000043,Will Anderson,will.anderson43@acme.example,+13105552608,2001-06-16,94107,Sales,AE,83946,2020-04-28
+E000044,Wendy Yoshida,wendy.yoshida44@acme.example,+12125553652,1971-01-23,10014,Engineering,Senior SWE,71237,2016-04-01
+E000045,Eve Gomez,eve.gomez45@acme.example,+13105558346,1987-12-06,10014,Product,Director of Product,102460,2015-11-10
+E000046,Liam Young,liam.young46@acme.example,+13105550626,1974-11-12,10013,Marketing,Growth Lead,83717,2017-01-13
+E000047,Beth Walker,beth.walker47@acme.example,+13125551894,1987-04-13,10013,Engineering,SWE I,84628,2022-01-28
+E000048,Sophia Silva,sophia.silva48@acme.example,+13105557066,1973-02-20,10014,Data Science,Senior DS,108425,2024-11-17
+E000049,Henry Yoshida,henry.yoshida49@acme.example,+13125555067,1999-12-01,10001,Sales,Sales Manager,62702,2024-11-30
+E000050,Yara Murphy,yara.murphy50@acme.example,+13125559324,1983-07-02,10001,Customer Support,CS Rep,52374,2016-10-25
+E000051,Samuel Kim,samuel.kim51@acme.example,+16175559502,1997-03-19,10014,Sales,SDR,62037,2020-08-12
+E000052,Will Nguyen,will.nguyen52@acme.example,+12065551389,1982-09-24,10003,Operations,Ops Director,73697,2017-07-08
+E000053,Frank Anderson,frank.anderson53@acme.example,+12065555085,1980-01-29,94114,Engineering,SWE I,85920,2011-08-20
+E000054,Dana Suzuki,dana.suzuki54@acme.example,+12065559431,1978-09-21,10016,Operations,Ops Manager,87023,2018-12-18
+E000055,Paul Brown,paul.brown55@acme.example,+12065550090,1974-10-13,10001,Engineering,EM,77026,2015-08-04
+E000056,Henry Carter,henry.carter56@acme.example,+12125557612,1999-12-12,10003,Product,Director of Product,104205,2017-02-12
+E000057,Xena O'Brien,xena.obrien57@acme.example,+13125558270,1989-02-21,10003,Marketing,Marketing Specialist,79186,2015-10-25
+E000058,Xena Anderson,xena.anderson58@acme.example,+12065554543,1993-05-20,10002,Operations,Ops Manager,52993,2019-11-13
+E000059,Eve Patel,eve.patel59@acme.example,+12125554451,1985-01-24,94121,Legal,Legal Counsel,131700,2025-07-25
+E000060,Jack Kim,jack.kim60@acme.example,+14155556797,1988-04-14,94121,Customer Support,CS Lead,61649,2011-05-26
+E000061,Noah Suzuki,noah.suzuki61@acme.example,+16175559569,2001-03-14,94103,Finance,Finance Director,42931,2016-09-12
+E000062,Xena Novak,xena.novak62@acme.example,+16175558818,2002-12-15,10003,Finance,Sr Analyst,102584,2020-12-13
+E000063,Olivia Gomez,olivia.gomez63@acme.example,+16175557956,1971-04-21,10001,Sales,SDR,68810,2012-11-11
+E000064,Nora Hill,nora.hill64@acme.example,+14155556455,1996-07-20,10013,Operations,Ops Analyst,41636,2024-06-01
+E000065,Beth Chen,beth.chen65@acme.example,+16175552977,1972-04-03,94117,Sales,Senior AE,57581,2018-07-03
+E000066,Rachel Suzuki,rachel.suzuki66@acme.example,+13105551341,1991-02-05,94103,HR,HR Partner,75567,2017-11-06
+E000067,Olivia Martinez,olivia.martinez67@acme.example,+12065550659,1971-05-24,94114,Engineering,SWE I,71652,2020-08-15
+E000068,Ravi Wilson,ravi.wilson68@acme.example,+13125553571,1990-11-11,10016,Sales,Sales Manager,64802,2013-10-06
+E000069,Marcus Walker,marcus.walker69@acme.example,+12065551876,1977-05-07,94117,Engineering,SWE I,114526,2018-06-02
+E000070,Zane Silva,zane.silva70@acme.example,+14155559700,2000-12-24,10014,Engineering,EM,70853,2016-10-06
+E000071,Sophia Walker,sophia.walker71@acme.example,+14155559272,1971-11-04,94121,Customer Support,CS Manager,45208,2017-08-27
+E000072,Alice Suzuki,alice.suzuki72@acme.example,+16175551729,1989-06-12,94121,Operations,Ops Manager,82942,2025-11-12
+E000073,Jack Kowalski,jack.kowalski73@acme.example,+12125558548,1999-03-07,94117,Customer Support,CS Manager,57069,2023-04-16
+E000074,Rachel Khan,rachel.khan74@acme.example,+12125551419,1982-07-06,10002,Engineering,Staff SWE,57378,2022-10-13
+E000075,Nora Novak,nora.novak75@acme.example,+13105550470,1992-03-04,94121,Engineering,SWE II,73170,2016-04-09
+E000076,Marcus Gomez,marcus.gomez76@acme.example,+13125550166,1993-03-05,94114,Engineering,EM,100286,2019-02-12
+E000077,Fiona Baker,fiona.baker77@acme.example,+12125557800,1998-12-22,10016,Marketing,Marketing Specialist,90625,2025-07-08
+E000078,Paul Yoshida,paul.yoshida78@acme.example,+12065559528,1986-07-22,10002,Customer Support,CS Lead,59688,2019-07-18
+E000079,Will Baker,will.baker79@acme.example,+13105555764,2001-07-12,10002,Sales,Sales Manager,78900,2017-01-28
+E000080,Henry Hill,henry.hill80@acme.example,+12065553033,1978-08-05,94114,HR,Recruiter,94212,2023-03-23
+E000081,Xena Adams,xena.adams81@acme.example,+13125554636,1974-07-06,94114,Sales,Sales Manager,76448,2021-12-24
+E000082,Irene Gomez,irene.gomez82@acme.example,+14155550893,1994-10-28,94117,Operations,Ops Analyst,72287,2024-04-22
+E000083,Xena Wright,xena.wright83@acme.example,+14155550200,1995-10-02,94117,Marketing,Sr Marketing Mgr,54798,2015-08-31
+E000084,Evan Wilson,evan.wilson84@acme.example,+14155556565,1992-01-22,94107,Customer Support,CS Manager,81217,2011-03-16
+E000085,Jack Brown,jack.brown85@acme.example,+13125554978,1973-10-27,94114,Engineering,Staff SWE,50287,2015-01-23
+E000086,Yusuf Adams,yusuf.adams86@acme.example,+16175557381,1989-11-10,94117,Legal,Sr Counsel,92610,2016-11-06
+E000087,Kyle Hall,kyle.hall87@acme.example,+14155559988,1974-06-14,94114,Operations,Ops Manager,65322,2013-11-24
+E000088,Julia Martinez,julia.martinez88@acme.example,+12125550043,1988-04-29,10002,Operations,Ops Manager,62584,2016-07-13
+E000089,Carol Tran,carol.tran89@acme.example,+13105554632,2001-07-14,10002,Engineering,SWE II,124086,2024-01-08
+E000090,Lisa Silva,lisa.silva90@acme.example,+16175551880,1994-06-06,94114,Operations,Ops Manager,57848,2013-03-11
+E000091,Eve Lee,eve.lee91@acme.example,+12125555039,1996-09-10,10016,Finance,Controller,72044,2016-10-27
+E000092,Tomas Hansen,tomas.hansen92@acme.example,+13105558199,1994-03-23,10002,Marketing,Growth Lead,87552,2010-11-23
+E000093,Beth Khan,beth.khan93@acme.example,+13125554102,1971-02-28,94107,Engineering,EM,101822,2010-06-19
+E000094,Xena Gomez,xena.gomez94@acme.example,+13125550659,1977-11-10,10002,Customer Support,CS Lead,41533,2016-03-28
+E000095,Liam Young,liam.young95@acme.example,+16175558056,1974-02-03,10002,Sales,Sales Manager,70941,2013-08-10
+E000096,Victor Suzuki,victor.suzuki96@acme.example,+12065558117,1982-12-06,10014,Data Science,DS I,121872,2020-03-14
+E000097,Frank Khan,frank.khan97@acme.example,+13105555296,1975-03-15,10001,Legal,Legal Counsel,102859,2019-04-09
+E000098,David Silva,david.silva98@acme.example,+13125555927,1997-12-06,10002,Operations,Ops Analyst,54309,2014-07-26
+E000099,Rachel Baker,rachel.baker99@acme.example,+12125554719,1989-08-27,10016,Marketing,Marketing Specialist,104313,2015-05-15
+E000100,Una Nguyen,una.nguyen100@acme.example,+13105559024,1970-08-13,10003,Marketing,Marketing Specialist,75858,2012-07-18
+E000101,Dana Wilson,dana.wilson101@acme.example,+12065552522,1992-05-10,10016,Sales,Sales Manager,55205,2020-08-04
+E000102,Paul Carter,paul.carter102@acme.example,+13125552369,1987-03-17,94114,Data Science,DS II,126275,2011-07-26
+E000103,Rachel Suzuki,rachel.suzuki103@acme.example,+13105558318,1981-12-26,94103,Sales,Sales Manager,88760,2024-10-20
+E000104,Fiona Brown,fiona.brown104@acme.example,+16175558824,1991-09-23,94121,Sales,Account Director,52538,2018-06-18
+E000105,Dana Khan,dana.khan105@acme.example,+12125553912,1995-08-26,10001,Engineering,Staff SWE,124768,2025-10-26
+E000106,Yara Novak,yara.novak106@acme.example,+12065552492,1992-03-21,94103,Engineering,Principal SWE,96188,2017-06-12
+E000107,Grace O'Brien,grace.obrien107@acme.example,+14155558617,1990-07-01,94103,HR,Recruiter,97532,2011-09-05
+E000108,Evan Roberts,evan.roberts108@acme.example,+13105556512,1999-02-24,94107,Finance,Finance Director,52773,2017-02-07
+E000109,Oscar Wright,oscar.wright109@acme.example,+13125550588,1997-09-12,94107,Engineering,EM,160893,2012-01-11
+E000110,Beth Park,beth.park110@acme.example,+12065551646,1989-11-26,94110,Operations,Ops Analyst,45312,2011-01-12
+E000111,Uma Lee,uma.lee111@acme.example,+13105555873,1986-10-25,10001,Engineering,Principal SWE,52798,2014-01-15
+E000112,Karen Murphy,karen.murphy112@acme.example,+14155559985,1987-02-28,10013,Operations,Ops Manager,81915,2023-01-30
+E000113,Jack Tran,jack.tran113@acme.example,+16175554161,1990-08-13,94117,Operations,Ops Manager,88360,2013-07-18
+E000114,Eve O'Brien,eve.obrien114@acme.example,+13105559626,1983-06-03,10014,Product,Director of Product,85747,2015-08-11
+E000115,Dana Yoshida,dana.yoshida115@acme.example,+12125556302,1991-09-04,94107,Engineering,Principal SWE,71758,2025-09-07
+E000116,Samuel Smith,samuel.smith116@acme.example,+12065556484,1982-04-25,94103,Customer Support,CS Manager,62786,2011-02-06
+E000117,Marcus Wright,marcus.wright117@acme.example,+13105553770,1997-03-26,94121,Engineering,SWE II,57718,2024-10-14
+E000118,Sophia Chen,sophia.chen118@acme.example,+12065551591,1998-02-23,10014,Engineering,Staff SWE,59091,2010-10-01
+E000119,Lisa Dubois,lisa.dubois119@acme.example,+12065552153,1974-01-16,94117,Sales,SDR,79796,2022-02-05
+E000120,Xavier Adams,xavier.adams120@acme.example,+13125554465,1977-05-19,94117,Data Science,ML Engineer,123311,2016-08-14
+E000121,Will Rossi,will.rossi121@acme.example,+14155557673,1973-05-18,94110,HR,HR Partner,86339,2018-11-30
+E000122,Julia Dubois,julia.dubois122@acme.example,+14155556464,1970-08-17,94117,Customer Support,CS Lead,40170,2018-04-08
+E000123,Sophia Roberts,sophia.roberts123@acme.example,+13125556242,1998-08-23,94121,Engineering,SWE II,50801,2022-08-05
+E000124,Uma Hall,uma.hall124@acme.example,+12125551035,1998-07-03,10002,Data Science,Senior DS,116939,2024-07-24
+E000125,Aaron Wilson,aaron.wilson125@acme.example,+12125550742,1971-09-02,94117,Product,PM,142658,2013-01-16
+E000126,Yara Carter,yara.carter126@acme.example,+13105558850,1988-10-19,10013,HR,HR Partner,88773,2019-04-22
+E000127,Priya Park,priya.park127@acme.example,+16175556686,1982-07-20,94103,Operations,Ops Analyst,40000,2018-02-19
+E000128,Grace Dubois,grace.dubois128@acme.example,+13125555876,1972-09-19,10001,Sales,AE,92082,2020-03-14
+E000129,Frank Kim,frank.kim129@acme.example,+12065559783,1970-12-16,94103,Finance,Sr Analyst,133594,2014-08-09
+E000130,Eve Baker,eve.baker130@acme.example,+12125559607,1979-09-09,94114,Sales,Senior AE,72532,2023-05-15
+E000131,Alice Gomez,alice.gomez131@acme.example,+12125552129,1994-03-26,94117,Finance,Analyst,92334,2010-05-02
+E000132,Wendy Anderson,wendy.anderson132@acme.example,+13125555304,1970-09-16,94110,Sales,Senior AE,71124,2019-06-11
+E000133,Hannah Wilson,hannah.wilson133@acme.example,+12065551041,1991-05-13,10002,HR,HR Director,59228,2014-12-20
+E000134,Nora Davis,nora.davis134@acme.example,+12065558543,1983-07-13,10002,Operations,Ops Analyst,60867,2011-05-14
+E000135,Evan Hansen,evan.hansen135@acme.example,+16175551768,1991-12-29,10016,Data Science,DS I,129908,2013-04-30
+E000136,Eve Chen,eve.chen136@acme.example,+13105559590,1994-08-07,10016,Sales,Account Director,64568,2021-11-25
+E000137,Samuel Carter,samuel.carter137@acme.example,+13125559919,1989-04-19,94107,Finance,Analyst,114211,2022-05-14
+E000138,Vlad Kim,vlad.kim138@acme.example,+16175557398,1980-04-01,10001,Sales,SDR,51828,2018-12-11
+E000139,Aaron Park,aaron.park139@acme.example,+13105556992,1984-01-08,10014,Sales,Senior AE,66232,2012-01-18
+E000140,Frank Turner,frank.turner140@acme.example,+16175551582,1986-09-19,94110,Customer Support,CS Manager,42450,2022-08-06
+E000141,Julia Rossi,julia.rossi141@acme.example,+12065552002,1988-06-05,94121,Legal,Sr Counsel,146996,2016-06-14
+E000142,Marcus Yoshida,marcus.yoshida142@acme.example,+13105551697,1995-12-04,10003,Engineering,EM,55552,2020-10-25
+E000143,Olivia Park,olivia.park143@acme.example,+13105559113,1986-06-28,94107,HR,HR Director,74212,2022-08-01
+E000144,Yusuf Hall,yusuf.hall144@acme.example,+13125559121,1971-03-07,10013,Data Science,Senior DS,139315,2010-08-26
+E000145,Liam Gomez,liam.gomez145@acme.example,+12065555062,1985-03-30,94121,Engineering,SWE II,61864,2013-03-08
+E000146,Will Smith,will.smith146@acme.example,+14155558691,1979-08-26,10001,Marketing,Sr Marketing Mgr,72627,2013-07-13
+E000147,Xavier Yoshida,xavier.yoshida147@acme.example,+12065555314,1995-06-18,10013,Engineering,SWE I,108422,2011-02-12
+E000148,Sophia Turner,sophia.turner148@acme.example,+13105557259,1999-09-11,10001,Marketing,Sr Marketing Mgr,105010,2019-04-16
+E000149,Rachel Kim,rachel.kim149@acme.example,+13125551864,1985-06-26,10001,Engineering,EM,72460,2024-12-18
+E000150,Tina Davis,tina.davis150@acme.example,+12125556475,1996-11-19,94103,Engineering,Senior SWE,58996,2014-09-27
+E000151,Yusuf Chen,yusuf.chen151@acme.example,+13105554742,1984-09-19,94107,Engineering,EM,73079,2021-12-11
+E000152,Una Tran,una.tran152@acme.example,+13125559154,1999-12-20,94121,Engineering,EM,90550,2010-12-13
+E000153,Beth Smith,beth.smith153@acme.example,+16175551275,1984-01-17,10013,Marketing,Sr Marketing Mgr,75288,2012-08-01
+E000154,Zane Smith,zane.smith154@acme.example,+13105552815,1997-09-23,10002,Finance,Controller,72858,2011-12-23
+E000155,Beth Park,beth.park155@acme.example,+12125557138,1996-06-01,10001,Customer Support,CS Lead,68643,2014-12-21
+E000156,Victor Nguyen,victor.nguyen156@acme.example,+14155558363,1998-05-28,94107,Customer Support,CS Rep,40567,2017-11-02
+E000157,Wendy Brown,wendy.brown157@acme.example,+12125551684,1976-07-27,94117,Engineering,Principal SWE,109176,2011-09-10
+E000158,Liam Wright,liam.wright158@acme.example,+16175559236,1995-12-30,10002,Operations,Ops Director,90741,2024-06-03
+E000159,Oscar Hall,oscar.hall159@acme.example,+13105555179,1976-10-09,10002,Engineering,Staff SWE,54754,2023-04-07
+E000160,David Fischer,david.fischer160@acme.example,+13125551215,1983-12-04,10002,Marketing,Marketing Specialist,56401,2018-04-09
+E000161,Samuel Martinez,samuel.martinez161@acme.example,+12065551479,1997-08-03,10013,Customer Support,CS Lead,40000,2010-12-03
+E000162,Chris Clark,chris.clark162@acme.example,+12065553084,1984-06-03,10013,Marketing,Marketing Specialist,58382,2011-05-22
+E000163,Chris Park,chris.park163@acme.example,+13105551381,1992-08-19,10014,Engineering,SWE II,64812,2021-10-03
+E000164,Hannah Hall,hannah.hall164@acme.example,+12125555962,1986-09-22,94117,Sales,Sales Manager,40000,2025-03-24
+E000165,Marcus Lee,marcus.lee165@acme.example,+12065555482,1972-12-15,94121,Engineering,EM,70587,2024-09-22
+E000166,Marcus Brown,marcus.brown166@acme.example,+13105551335,1996-02-21,10014,Engineering,Senior SWE,97457,2016-12-16
+E000167,Priya Hansen,priya.hansen167@acme.example,+12125559749,2001-10-18,94107,Sales,SDR,63928,2012-11-12
+E000168,Ravi Adams,ravi.adams168@acme.example,+14155556937,1992-10-23,94121,Engineering,Senior SWE,67501,2014-01-16
+E000169,Noah Rossi,noah.rossi169@acme.example,+16175553145,1980-02-29,94110,Engineering,Senior SWE,91455,2022-02-08
+E000170,Will Adams,will.adams170@acme.example,+14155555517,1997-09-21,94110,Customer Support,CS Rep,50406,2013-08-22
+E000171,Liam Hall,liam.hall171@acme.example,+12125557170,1971-12-17,10001,Sales,Senior AE,101968,2020-01-26
+E000172,Olivia Hill,olivia.hill172@acme.example,+12125555070,1991-01-15,94114,Sales,Account Director,69783,2019-11-19
+E000173,Dana Patel,dana.patel173@acme.example,+16175558239,1993-08-29,10001,Product,PM,108801,2015-08-11
+E000174,David Moore,david.moore174@acme.example,+13105559085,1974-08-08,10016,Finance,Analyst,83609,2016-05-24
+E000175,Frank Nguyen,frank.nguyen175@acme.example,+13105557361,1993-01-10,94110,Finance,Analyst,109714,2020-02-13
+E000176,Wendy Smith,wendy.smith176@acme.example,+16175550872,1987-10-14,10003,Sales,SDR,70318,2011-10-31
+E000177,Xavier Tran,xavier.tran177@acme.example,+14155555221,1974-06-12,10016,Operations,Ops Analyst,78005,2020-08-06
+E000178,Tomas Chen,tomas.chen178@acme.example,+12065557685,1990-02-14,10013,Engineering,SWE I,100641,2010-06-05
+E000179,Quinn Kim,quinn.kim179@acme.example,+12125558991,2002-08-16,10013,Customer Support,CS Rep,56447,2012-09-25
+E000180,David Anderson,david.anderson180@acme.example,+16175557489,1972-10-26,94107,Finance,Finance Director,79012,2023-05-21
+E000181,Ian Smith,ian.smith181@acme.example,+12065558443,1995-10-18,94114,Operations,Ops Manager,51295,2015-05-25
+E000182,Kyle Suzuki,kyle.suzuki182@acme.example,+12125551402,1993-06-25,94121,Engineering,Principal SWE,99853,2022-03-16
+E000183,Greg Green,greg.green183@acme.example,+13125550333,1987-07-08,10002,Engineering,Staff SWE,103988,2010-05-14
+E000184,Wendy Martinez,wendy.martinez184@acme.example,+13105553950,2002-11-17,10014,Operations,Ops Director,68636,2017-06-16
+E000185,Irene Davis,irene.davis185@acme.example,+13105558945,1985-03-09,10014,Engineering,EM,47401,2024-03-03
+E000186,Liam Chen,liam.chen186@acme.example,+14155557498,1971-08-29,94117,Engineering,SWE II,93498,2010-12-10
+E000187,Uma Yoshida,uma.yoshida187@acme.example,+13125556524,1994-05-12,10002,Sales,Senior AE,66044,2011-01-27
+E000188,Priya Rossi,priya.rossi188@acme.example,+13105552039,1986-07-05,10001,Legal,GC,168493,2019-11-12
+E000189,Yara Rossi,yara.rossi189@acme.example,+12125558129,2001-01-16,10002,Sales,Account Director,74129,2019-07-10
+E000190,Frank Kowalski,frank.kowalski190@acme.example,+13125552956,1994-06-21,94117,Sales,AE,83260,2017-05-10
+E000191,Ravi Patel,ravi.patel191@acme.example,+13105557305,1997-01-12,10016,Marketing,Growth Lead,61608,2017-11-28
+E000192,Nora Kowalski,nora.kowalski192@acme.example,+13105550939,1973-05-14,10014,Operations,Ops Manager,75637,2021-07-05
+E000193,Will Nguyen,will.nguyen193@acme.example,+14155552339,1997-04-03,10014,Finance,Analyst,106326,2024-06-21
+E000194,Xavier Dubois,xavier.dubois194@acme.example,+16175559293,1971-06-15,10013,Engineering,Staff SWE,98071,2018-04-27
+E000195,Xavier O'Brien,xavier.obrien195@acme.example,+14155559403,1976-03-05,10003,Sales,Sales Manager,66057,2012-07-18
+E000196,Bob Murphy,bob.murphy196@acme.example,+16175558482,1987-05-12,10003,Engineering,Senior SWE,69703,2025-10-16
+E000197,Chris Kim,chris.kim197@acme.example,+13125554678,2001-02-17,10002,Engineering,SWE II,101509,2025-12-31
+E000198,Chris Turner,chris.turner198@acme.example,+12065555236,1999-12-16,94121,Operations,Ops Director,56863,2022-02-28
+E000199,Samuel Yoshida,samuel.yoshida199@acme.example,+12125552852,1986-03-20,10003,Engineering,SWE II,89801,2021-01-30
+E000200,Bob Dubois,bob.dubois200@acme.example,+13125559376,1986-07-20,10002,Finance,Sr Analyst,79390,2023-09-23
+E000201,Frank Martinez,frank.martinez201@acme.example,+13105556523,2002-02-28,10016,Marketing,Sr Marketing Mgr,84026,2011-08-28
+E000202,Irene Khan,irene.khan202@acme.example,+12065551215,1990-03-09,10002,Operations,Ops Manager,42272,2012-11-17
+E000203,Yusuf Baker,yusuf.baker203@acme.example,+12065559630,1978-03-01,94110,Marketing,Marketing Specialist,90644,2016-10-27
+E000204,Karen Nguyen,karen.nguyen204@acme.example,+13105553694,1985-07-10,10003,Legal,Legal Counsel,93657,2015-08-15
+E000205,Maria Baker,maria.baker205@acme.example,+13105552050,1998-01-14,94117,Customer Support,CS Rep,47708,2023-01-09
+E000206,Jack Nguyen,jack.nguyen206@acme.example,+12065559914,1985-02-22,10013,Engineering,SWE I,84754,2011-10-28
+E000207,Carol Clark,carol.clark207@acme.example,+13105553453,1995-08-31,10001,Customer Support,CS Rep,40000,2016-06-30
+E000208,Priya Yoshida,priya.yoshida208@acme.example,+16175554012,2000-09-22,10001,Sales,AE,75346,2025-06-12
+E000209,David Nguyen,david.nguyen209@acme.example,+16175556809,1991-09-21,10002,Engineering,Principal SWE,115794,2017-02-28
+E000210,Vlad Fischer,vlad.fischer210@acme.example,+16175552142,1986-08-15,10003,Customer Support,CS Lead,73730,2015-06-04
+E000211,Dana Wilson,dana.wilson211@acme.example,+13105557366,1981-02-13,94110,Engineering,Senior SWE,132041,2019-05-19
+E000212,Paul Nguyen,paul.nguyen212@acme.example,+13105559464,2002-05-07,94121,Engineering,SWE II,68192,2021-03-05
+E000213,Greg Carter,greg.carter213@acme.example,+16175555055,1992-04-23,94103,Engineering,Staff SWE,40000,2014-10-29
+E000214,Lisa Fischer,lisa.fischer214@acme.example,+14155550828,1982-08-15,10002,Customer Support,CS Manager,53929,2025-01-31
+E000215,Evan Patel,evan.patel215@acme.example,+13125550133,1974-10-28,10001,Engineering,Senior SWE,79017,2018-03-17
+E000216,Carol Hansen,carol.hansen216@acme.example,+14155559343,1995-03-15,94114,Sales,Sales Manager,41359,2011-08-26
+E000217,Yara Green,yara.green217@acme.example,+16175559008,1982-07-19,10013,Operations,Ops Analyst,74672,2018-05-16
+E000218,Victor Baker,victor.baker218@acme.example,+13105552363,1978-12-06,10013,Customer Support,CS Manager,58914,2010-11-26
+E000219,Carol Davis,carol.davis219@acme.example,+12125555456,1991-04-02,10003,Marketing,Growth Lead,87733,2023-10-02
+E000220,Uma Nguyen,uma.nguyen220@acme.example,+16175554902,1996-08-19,94121,Customer Support,CS Manager,50903,2021-12-09
+E000221,Fiona Clark,fiona.clark221@acme.example,+13105557780,1970-09-30,94121,Sales,AE,101267,2025-06-07
+E000222,Oscar Smith,oscar.smith222@acme.example,+13125557775,1981-11-29,10014,Finance,Sr Analyst,91331,2011-02-25
+E000223,Lisa Moore,lisa.moore223@acme.example,+12125558589,1998-03-20,10016,Customer Support,CS Lead,65862,2010-09-16
+E000224,Kyle Wilson,kyle.wilson224@acme.example,+12125550310,1989-10-13,94121,Marketing,Sr Marketing Mgr,101779,2025-06-27
+E000225,Noah Suzuki,noah.suzuki225@acme.example,+13125557726,2002-08-18,94103,Operations,Ops Director,73522,2024-11-07
+E000226,Evan Adams,evan.adams226@acme.example,+16175555140,1977-10-08,10002,Data Science,Senior DS,133941,2022-04-03
+E000227,Wendy Roberts,wendy.roberts227@acme.example,+13125557932,1978-08-17,94114,Sales,Sales Manager,83450,2016-09-04
+E000228,Yusuf Patel,yusuf.patel228@acme.example,+12065553396,2000-12-17,10016,Marketing,Sr Marketing Mgr,127755,2017-10-28
+E000229,Julia Gomez,julia.gomez229@acme.example,+13105551996,1995-09-22,10014,Customer Support,CS Lead,67431,2013-04-14
+E000230,Samuel Davis,samuel.davis230@acme.example,+13105551294,1985-07-15,10002,Operations,Ops Director,40000,2020-09-29
+E000231,Noah Silva,noah.silva231@acme.example,+13125554442,1995-03-19,10016,Sales,AE,55128,2015-06-10
+E000232,David Adams,david.adams232@acme.example,+12125553814,1972-05-10,94107,Marketing,Growth Lead,64097,2020-08-05
+E000233,Grace Chen,grace.chen233@acme.example,+14155559016,1977-01-31,10001,Operations,Ops Manager,60095,2016-06-11
+E000234,Uma Patel,uma.patel234@acme.example,+12065550969,1974-01-05,10014,Customer Support,CS Manager,56130,2010-11-02
+E000235,Liam Suzuki,liam.suzuki235@acme.example,+12125550595,1987-10-23,10002,Engineering,EM,140448,2010-11-03
+E000236,Alice Yoshida,alice.yoshida236@acme.example,+13125559875,1974-10-25,94121,Sales,Account Director,64242,2021-10-05
+E000237,Fiona Chen,fiona.chen237@acme.example,+13125557668,1982-03-29,94114,Finance,Controller,107741,2015-10-09
+E000238,Una Murphy,una.murphy238@acme.example,+14155555523,1983-03-27,10013,Operations,Ops Analyst,84175,2013-12-08
+E000239,Nora Hansen,nora.hansen239@acme.example,+16175558442,1984-09-16,94107,Marketing,Marketing Specialist,83948,2017-04-04
+E000240,Paul Johnson,paul.johnson240@acme.example,+13105556284,1980-07-25,10002,HR,Recruiter,79069,2016-10-09
+E000241,Lisa Clark,lisa.clark241@acme.example,+14155554285,1999-04-28,94121,Operations,Ops Analyst,61709,2013-08-01
+E000242,Zane Green,zane.green242@acme.example,+12065555095,2000-12-18,94107,Operations,Ops Manager,55403,2018-03-30
+E000243,Nora Tran,nora.tran243@acme.example,+12125552188,1991-06-14,94110,Marketing,Growth Lead,60368,2020-07-24
+E000244,Xena Hill,xena.hill244@acme.example,+12065553578,1981-02-06,10014,HR,HR Partner,87535,2021-10-14
+E000245,Chris Adams,chris.adams245@acme.example,+12065555927,1973-07-03,10013,Engineering,Principal SWE,98770,2022-01-14
+E000246,Jack Nguyen,jack.nguyen246@acme.example,+13105558525,1989-10-27,94107,Operations,Ops Director,64223,2023-01-30
+E000247,Fiona Turner,fiona.turner247@acme.example,+13125557298,1972-06-30,10002,Engineering,Staff SWE,76694,2020-05-15
+E000248,Sophia Yoshida,sophia.yoshida248@acme.example,+12065550356,1987-10-06,94117,Finance,Sr Analyst,97034,2022-12-21
+E000249,Eve Davis,eve.davis249@acme.example,+16175555644,2001-06-02,94107,Customer Support,CS Rep,59160,2020-08-03
+E000250,Carol Patel,carol.patel250@acme.example,+16175552948,1976-01-28,10014,Product,Director of Product,101676,2019-06-06
+E000251,Xavier Novak,xavier.novak251@acme.example,+16175556184,1986-11-07,94107,Operations,Ops Director,75651,2017-10-19
+E000252,Henry Murphy,henry.murphy252@acme.example,+13125556439,1993-09-21,94110,HR,HR Partner,66697,2010-01-29
+E000253,Xena Smith,xena.smith253@acme.example,+13105557585,2000-03-18,10016,Customer Support,CS Manager,48708,2020-05-01
+E000254,Wendy Brown,wendy.brown254@acme.example,+13105553088,2002-07-10,94107,Engineering,EM,97423,2019-05-28
+E000255,Nora Smith,nora.smith255@acme.example,+12125553376,1973-01-07,94107,Customer Support,CS Lead,40000,2011-02-03
+E000256,Paul Davis,paul.davis256@acme.example,+16175557191,1980-07-06,10003,Engineering,SWE I,62534,2013-02-21
+E000257,Greg Patel,greg.patel257@acme.example,+12125559438,1984-04-21,10013,Customer Support,CS Manager,58676,2013-03-19
+E000258,Ravi Adams,ravi.adams258@acme.example,+12125556775,1983-06-25,94117,Engineering,Principal SWE,68287,2013-12-05
+E000259,Oscar Kowalski,oscar.kowalski259@acme.example,+13125558120,1972-02-08,94121,Data Science,ML Engineer,115472,2019-05-04
+E000260,Aaron Brown,aaron.brown260@acme.example,+13105556167,1978-04-01,10003,Marketing,Marketing Specialist,64627,2016-09-29
+E000261,Una Brown,una.brown261@acme.example,+16175550944,1995-03-25,10001,Product,Director of Product,83569,2015-09-20
+E000262,Noah Rossi,noah.rossi262@acme.example,+12065551295,1990-03-06,94121,Engineering,EM,80356,2014-04-10
+E000263,David Gomez,david.gomez263@acme.example,+16175559911,1997-01-17,94103,Legal,Legal Counsel,131202,2025-01-22
+E000264,Julia Kim,julia.kim264@acme.example,+16175553422,1984-12-08,94117,Data Science,DS I,74909,2014-10-02
+E000265,Maria Wilson,maria.wilson265@acme.example,+12065557846,1980-11-18,10016,Customer Support,CS Rep,47931,2017-03-19
+E000266,Yusuf Patel,yusuf.patel266@acme.example,+16175557639,1993-12-09,10014,Sales,Sales Manager,83947,2018-01-25
+E000267,Greg Wright,greg.wright267@acme.example,+16175551615,2002-05-29,10002,HR,Recruiter,83569,2019-04-14
+E000268,Carol Clark,carol.clark268@acme.example,+12125552390,1970-09-23,94117,Customer Support,CS Manager,49079,2022-12-28
+E000269,Vlad Suzuki,vlad.suzuki269@acme.example,+13105552497,1978-10-20,94121,Engineering,Principal SWE,99707,2024-09-06
+E000270,Sophia Rossi,sophia.rossi270@acme.example,+13105558005,2002-06-16,10014,HR,Recruiter,57741,2013-10-10
+E000271,Vlad Fischer,vlad.fischer271@acme.example,+12125552293,2002-04-24,10003,Marketing,Growth Lead,125111,2021-10-02
+E000272,Carol Martinez,carol.martinez272@acme.example,+12065550794,1970-04-15,10001,Engineering,EM,81186,2015-03-11
+E000273,Eve Brown,eve.brown273@acme.example,+14155553583,1992-09-07,10002,Sales,Account Director,44774,2020-11-02
+E000274,Ravi Wright,ravi.wright274@acme.example,+14155550108,1993-11-15,10003,Marketing,Marketing Specialist,48057,2021-11-15
+E000275,Vlad Gomez,vlad.gomez275@acme.example,+13125554697,1970-10-08,10003,Finance,Finance Director,111678,2012-05-26
+E000276,Grace Adams,grace.adams276@acme.example,+12125553948,1978-08-11,10013,Customer Support,CS Lead,40000,2015-12-30
+E000277,Zane Turner,zane.turner277@acme.example,+13105556652,1990-08-04,10013,Engineering,EM,90735,2011-10-23
+E000278,Priya Davis,priya.davis278@acme.example,+14155556640,1987-01-05,10001,Customer Support,CS Rep,73007,2024-04-13
+E000279,Alice Nguyen,alice.nguyen279@acme.example,+14155558189,1989-06-19,10014,Finance,Analyst,133949,2015-02-26
+E000280,Noah Clark,noah.clark280@acme.example,+16175554441,1972-02-02,94107,Operations,Ops Manager,49345,2022-03-07
+E000281,Kyle Davis,kyle.davis281@acme.example,+12125555152,1970-09-14,94114,Customer Support,CS Manager,66889,2016-09-17
+E000282,Karen Clark,karen.clark282@acme.example,+12125559284,1987-06-16,10014,Legal,Sr Counsel,68129,2018-08-11
+E000283,Xena Chen,xena.chen283@acme.example,+12065551284,1992-06-18,10016,Product,PM,118072,2011-09-15
+E000284,Victor Walker,victor.walker284@acme.example,+13125559758,1987-10-18,94121,Engineering,Senior SWE,95466,2020-02-08
+E000285,Fiona Tran,fiona.tran285@acme.example,+13105559060,1986-11-03,10001,Engineering,Principal SWE,79367,2023-11-16
+E000286,Samuel Anderson,samuel.anderson286@acme.example,+12065551204,1973-09-06,94117,Engineering,EM,76041,2024-03-20
+E000287,Jack Novak,jack.novak287@acme.example,+13105555909,1974-10-12,94107,Engineering,Senior SWE,45206,2012-04-17
+E000288,Irene Turner,irene.turner288@acme.example,+12125557061,1990-02-18,10003,Customer Support,CS Lead,61913,2012-04-26
+E000289,Bob Turner,bob.turner289@acme.example,+13105559080,1974-03-05,10013,Customer Support,CS Lead,56239,2019-04-13
+E000290,Yara Turner,yara.turner290@acme.example,+12065559167,1980-11-21,10013,Customer Support,CS Manager,53571,2018-07-16
+E000291,Karen Chen,karen.chen291@acme.example,+13105554933,1982-01-15,10002,Engineering,SWE II,61031,2020-11-10
+E000292,Eve Dubois,eve.dubois292@acme.example,+13105554040,2002-05-04,10014,Marketing,Growth Lead,87510,2014-05-21
+E000293,Dana Park,dana.park293@acme.example,+12125554991,1970-04-21,10001,Sales,Account Director,45992,2019-11-16
+E000294,Victor Kowalski,victor.kowalski294@acme.example,+12065559738,1976-02-09,94117,Sales,Senior AE,102278,2020-09-29
+E000295,Uma Murphy,uma.murphy295@acme.example,+16175555228,1983-01-28,10016,Operations,Ops Manager,95645,2017-04-23
+E000296,Yara Gomez,yara.gomez296@acme.example,+16175555980,1975-02-09,10013,Engineering,Principal SWE,76222,2014-01-13
+E000297,Sophia Baker,sophia.baker297@acme.example,+14155557563,2001-10-10,94114,Marketing,Sr Marketing Mgr,83331,2019-03-06
+E000298,Sophia Wright,sophia.wright298@acme.example,+12125554961,1980-11-09,94117,Operations,Ops Director,65046,2019-06-29
+E000299,Yara Martinez,yara.martinez299@acme.example,+16175559796,1991-07-01,10013,Marketing,Growth Lead,112217,2019-05-20
+E000300,Ian Davis,ian.davis300@acme.example,+13105558796,1996-08-21,10014,Data Science,DS I,83865,2015-07-27
+E000301,Ravi Fischer,ravi.fischer301@acme.example,+12125550725,1995-04-07,10014,Operations,Ops Manager,83173,2019-08-28
+E000302,Grace Johnson,grace.johnson302@acme.example,+14155554239,1979-12-17,10003,HR,HR Director,69398,2023-01-08
+E000303,Tomas Clark,tomas.clark303@acme.example,+12125557303,1986-10-13,10001,Marketing,Growth Lead,61994,2017-09-26
+E000304,Bob Moore,bob.moore304@acme.example,+14155554840,1988-08-29,94107,Engineering,EM,69438,2013-03-06
+E000305,Wendy Yoshida,wendy.yoshida305@acme.example,+13105557460,1979-04-13,10003,Marketing,Sr Marketing Mgr,103551,2020-02-24
+E000306,Uma Martinez,uma.martinez306@acme.example,+13105550732,2001-11-19,94107,Engineering,Senior SWE,108027,2024-07-14
+E000307,Grace Nguyen,grace.nguyen307@acme.example,+12065553996,1993-02-23,94110,Customer Support,CS Lead,40000,2015-03-15
+E000308,Zane Murphy,zane.murphy308@acme.example,+12125557080,1987-09-30,94103,HR,HR Partner,59032,2020-01-31
+E000309,Lisa Kowalski,lisa.kowalski309@acme.example,+16175550072,2001-08-12,94114,Engineering,EM,88241,2012-04-13
+E000310,Ian Murphy,ian.murphy310@acme.example,+13105555340,1978-11-03,10002,Engineering,EM,76618,2020-12-23
+E000311,Hannah Khan,hannah.khan311@acme.example,+13125556367,1997-06-03,10001,Customer Support,CS Lead,47062,2013-11-14
+E000312,Sophia Yoshida,sophia.yoshida312@acme.example,+13125559669,1973-10-20,10014,Engineering,SWE I,107176,2015-05-09
+E000313,Tina Wilson,tina.wilson313@acme.example,+12125556116,2001-02-08,94110,Customer Support,CS Lead,42099,2019-06-28
+E000314,Liam Wright,liam.wright314@acme.example,+12065558804,2001-02-08,10014,Data Science,DS II,89146,2022-06-12
+E000315,Karen Wright,karen.wright315@acme.example,+13105552298,1978-05-24,94121,Finance,Analyst,130968,2020-11-13
+E000316,Irene Silva,irene.silva316@acme.example,+16175559200,1992-09-03,10014,Marketing,Growth Lead,46841,2021-01-11
+E000317,Aaron O'Brien,aaron.obrien317@acme.example,+16175552740,1973-09-16,10013,Engineering,SWE II,79761,2022-01-22
+E000318,Samuel Nguyen,samuel.nguyen318@acme.example,+16175559267,1992-03-21,10003,Customer Support,CS Manager,64286,2012-07-24
+E000319,Rachel Hill,rachel.hill319@acme.example,+13105558880,1971-11-13,10016,Marketing,Marketing Specialist,88350,2024-08-29
+E000320,Xena Anderson,xena.anderson320@acme.example,+13105550528,1990-03-05,94117,Sales,AE,74403,2019-11-06
+E000321,Henry Anderson,henry.anderson321@acme.example,+12125559632,2000-11-29,94121,Legal,GC,109882,2013-02-14
+E000322,Noah Kim,noah.kim322@acme.example,+14155559340,1985-09-26,10003,Sales,Account Director,66074,2013-10-11
+E000323,Uma Patel,uma.patel323@acme.example,+13105559383,1981-12-29,10003,Product,Director of Product,109729,2019-03-26
+E000324,David Gomez,david.gomez324@acme.example,+12065552078,2001-06-19,94110,Engineering,EM,72620,2017-03-23
+E000325,Paul Hansen,paul.hansen325@acme.example,+16175552329,1995-11-26,10014,Sales,SDR,69390,2012-02-02
+E000326,Zane Green,zane.green326@acme.example,+12065554558,2001-03-01,94121,Marketing,Sr Marketing Mgr,85038,2017-05-05
+E000327,Lisa Johnson,lisa.johnson327@acme.example,+12065551526,2002-10-15,10002,Operations,Ops Director,66588,2021-12-27
+E000328,Zane Kim,zane.kim328@acme.example,+16175553470,1992-03-11,94117,Sales,Sales Manager,80626,2017-07-29
+E000329,Julia Clark,julia.clark329@acme.example,+12125559275,1991-10-09,94121,Legal,Legal Counsel,153620,2020-04-22
+E000330,Bob Wilson,bob.wilson330@acme.example,+12125557230,1990-06-24,94103,Product,Sr PM,113786,2014-07-16
+E000331,Tomas Chen,tomas.chen331@acme.example,+12065554945,1977-02-17,94117,Engineering,Senior SWE,84941,2024-07-21
+E000332,Karen Lee,karen.lee332@acme.example,+16175555005,2002-07-26,10016,HR,Recruiter,85501,2024-09-13
+E000333,Frank Park,frank.park333@acme.example,+14155553496,1991-05-23,94107,Engineering,SWE II,58070,2010-03-08
+E000334,Tomas Rossi,tomas.rossi334@acme.example,+14155556919,2001-02-18,94110,Marketing,Marketing Specialist,77619,2018-08-05
+E000335,Frank Park,frank.park335@acme.example,+14155555133,1986-06-28,94117,Engineering,SWE II,61326,2011-07-15
+E000336,Hannah Clark,hannah.clark336@acme.example,+14155559999,1999-02-27,94110,Marketing,Growth Lead,58975,2014-10-12
+E000337,Oscar Brown,oscar.brown337@acme.example,+16175557248,1979-09-30,94107,Legal,Legal Counsel,120513,2018-08-12
+E000338,Wendy Kowalski,wendy.kowalski338@acme.example,+13105552290,1981-02-11,94117,Operations,Ops Analyst,49984,2022-05-31
+E000339,Marcus Walker,marcus.walker339@acme.example,+12065559954,1982-10-13,10016,Engineering,EM,97051,2023-08-12
+E000340,Greg Silva,greg.silva340@acme.example,+12065556418,1983-04-05,10014,Engineering,SWE II,73074,2021-02-06
+E000341,Yara Wilson,yara.wilson341@acme.example,+12125558185,1998-08-16,10013,Engineering,SWE I,143079,2012-12-17
+E000342,Yara Clark,yara.clark342@acme.example,+16175555986,1994-07-05,10014,Engineering,Staff SWE,80202,2011-08-21
+E000343,Bob Young,bob.young343@acme.example,+14155550225,1981-10-05,94114,Engineering,SWE I,108888,2016-06-04
+E000344,Oscar Green,oscar.green344@acme.example,+16175556939,2001-06-25,10001,Engineering,Principal SWE,77019,2022-01-22
+E000345,Nora Brown,nora.brown345@acme.example,+13105551369,1983-11-26,94107,Customer Support,CS Rep,61883,2017-04-30
+E000346,Zane Young,zane.young346@acme.example,+12065551083,1983-11-30,10016,Marketing,Marketing Specialist,78319,2011-04-20
+E000347,Paul Turner,paul.turner347@acme.example,+16175551900,1990-05-04,10013,Customer Support,CS Lead,46154,2013-12-09
+E000348,Henry Johnson,henry.johnson348@acme.example,+12065552248,2001-06-20,94103,Engineering,Senior SWE,53350,2021-09-24
+E000349,Hannah Roberts,hannah.roberts349@acme.example,+12125556092,1975-09-11,10016,Finance,Controller,93820,2010-08-29
+E000350,Victor Kowalski,victor.kowalski350@acme.example,+13105558582,1972-11-12,94117,Operations,Ops Director,62524,2024-01-28
+E000351,Eve Wright,eve.wright351@acme.example,+16175558368,1986-02-26,94103,Marketing,Growth Lead,85253,2012-04-22
+E000352,Kyle Wilson,kyle.wilson352@acme.example,+12125558336,1970-02-12,94103,Finance,Analyst,106156,2015-06-27
+E000353,Carol Moore,carol.moore353@acme.example,+13105556274,1976-09-24,94110,Data Science,DS I,51374,2024-09-15
+E000354,Aaron Tran,aaron.tran354@acme.example,+13105554067,1988-09-02,10016,Sales,AE,60555,2022-10-27
+E000355,Xavier Wilson,xavier.wilson355@acme.example,+13125550862,1978-01-17,94114,Finance,Analyst,102971,2020-06-07
+E000356,Samuel Yoshida,samuel.yoshida356@acme.example,+13105551415,1994-10-23,10002,Engineering,SWE II,82312,2016-07-16
+E000357,Kyle Yoshida,kyle.yoshida357@acme.example,+12065553974,1990-10-23,94121,Customer Support,CS Lead,75752,2022-04-05
+E000358,Xena Anderson,xena.anderson358@acme.example,+12125550104,1988-05-24,94103,Engineering,Senior SWE,84399,2024-04-06
+E000359,Tomas Johnson,tomas.johnson359@acme.example,+13105550023,1999-06-27,10001,Finance,Controller,116465,2015-05-06
+E000360,Aaron Wright,aaron.wright360@acme.example,+14155552332,2001-12-03,94117,Engineering,SWE II,103664,2021-08-28
+E000361,Aaron Dubois,aaron.dubois361@acme.example,+16175551391,1996-01-20,94107,Customer Support,CS Manager,57014,2022-09-26
+E000362,David Kowalski,david.kowalski362@acme.example,+12065552141,1980-08-15,94117,Sales,Sales Manager,67862,2018-10-25
+E000363,Tomas Khan,tomas.khan363@acme.example,+13105557417,1982-03-14,94114,Engineering,SWE II,113126,2012-06-11
+E000364,Jack Park,jack.park364@acme.example,+12125557365,1990-11-27,94121,Marketing,Growth Lead,103296,2018-01-14
+E000365,Yusuf Kim,yusuf.kim365@acme.example,+16175555051,1990-10-14,94117,Finance,Analyst,113366,2025-10-21
+E000366,Tomas Walker,tomas.walker366@acme.example,+14155553522,1984-09-14,94110,Engineering,SWE II,116822,2017-12-24
+E000367,Zane Green,zane.green367@acme.example,+14155554896,1981-09-02,94110,Engineering,Staff SWE,104461,2022-05-04
+E000368,Paul Park,paul.park368@acme.example,+16175551669,1976-04-09,94107,Engineering,SWE II,59780,2012-12-06
+E000369,Maria Hansen,maria.hansen369@acme.example,+13105551376,1996-02-14,10013,Sales,AE,82233,2024-06-27
+E000370,Chris Chen,chris.chen370@acme.example,+14155555432,1975-07-01,94103,Data Science,DS I,111396,2013-10-08
+E000371,Kyle Kowalski,kyle.kowalski371@acme.example,+12065556471,1992-04-03,94103,Sales,SDR,81483,2014-03-14
+E000372,Rachel Gomez,rachel.gomez372@acme.example,+16175552435,1971-07-22,10013,Customer Support,CS Rep,62381,2024-07-08
+E000373,Samuel Wright,samuel.wright373@acme.example,+16175559022,1991-06-28,94103,Engineering,Staff SWE,95851,2021-10-17
+E000374,Paul Hill,paul.hill374@acme.example,+14155556266,2001-12-31,94121,Marketing,Sr Marketing Mgr,89117,2017-09-19
+E000375,Kyle Green,kyle.green375@acme.example,+13105556363,1982-02-17,94110,Engineering,Principal SWE,95283,2016-04-20
+E000376,David Moore,david.moore376@acme.example,+13125555856,1996-03-13,94114,Product,PM,150901,2015-07-24
+E000377,Ravi Anderson,ravi.anderson377@acme.example,+13105558743,1972-07-05,94114,Customer Support,CS Lead,40960,2013-11-24
+E000378,Liam Anderson,liam.anderson378@acme.example,+13125555210,2001-04-17,94121,Data Science,DS I,152340,2025-10-11
+E000379,Tomas Fischer,tomas.fischer379@acme.example,+13125559234,1976-05-17,10013,Data Science,ML Engineer,93208,2010-11-07
+E000380,Frank Lee,frank.lee380@acme.example,+12125559857,1979-10-25,94103,Customer Support,CS Rep,53049,2017-06-10
+E000381,Nora Silva,nora.silva381@acme.example,+12125555582,2002-02-28,94110,Data Science,Senior DS,124735,2025-10-21
+E000382,Jack Wilson,jack.wilson382@acme.example,+13125555978,1973-04-03,94121,Operations,Ops Director,73100,2018-11-15
+E000383,Lisa Park,lisa.park383@acme.example,+13105554944,1984-06-21,94110,Product,Director of Product,141970,2020-12-05
+E000384,Priya Khan,priya.khan384@acme.example,+12125559207,2001-02-10,10013,Finance,Sr Analyst,82651,2024-12-05
+E000385,Lisa Murphy,lisa.murphy385@acme.example,+16175555026,2002-12-04,10016,Sales,Senior AE,68534,2022-11-06
+E000386,Zane Clark,zane.clark386@acme.example,+14155552983,1997-01-08,94121,Data Science,DS II,42341,2024-05-06
+E000387,Kyle Park,kyle.park387@acme.example,+16175552304,1984-11-08,10016,Engineering,Senior SWE,100064,2011-12-28
+E000388,Una Rossi,una.rossi388@acme.example,+16175550186,1981-11-24,94114,Engineering,SWE I,83325,2017-11-11
+E000389,Quinn Park,quinn.park389@acme.example,+12065550020,1972-02-28,10001,Marketing,Sr Marketing Mgr,116700,2021-01-22
+E000390,Yara Fischer,yara.fischer390@acme.example,+13125556149,1974-07-20,10002,Finance,Sr Analyst,86181,2013-08-25
+E000391,Chris Martinez,chris.martinez391@acme.example,+14155554831,1970-11-25,94121,Sales,AE,85910,2018-06-03
+E000392,Karen Martinez,karen.martinez392@acme.example,+13125551525,1985-02-27,10013,Product,Sr PM,111039,2025-10-20
+E000393,Bob Kowalski,bob.kowalski393@acme.example,+12065552703,1997-03-30,10001,Engineering,SWE I,51985,2019-03-07
+E000394,Tomas Baker,tomas.baker394@acme.example,+12065558849,1981-11-25,10014,Sales,Senior AE,122270,2012-02-25
+E000395,David Hansen,david.hansen395@acme.example,+13125559005,1992-01-09,94110,Engineering,SWE I,66239,2024-11-06
+E000396,Oscar Walker,oscar.walker396@acme.example,+16175553271,1974-05-09,94103,Engineering,EM,94175,2016-07-18
+E000397,Frank Moore,frank.moore397@acme.example,+14155555052,1987-10-31,10002,Marketing,Growth Lead,77572,2018-09-10
+E000398,Liam Dubois,liam.dubois398@acme.example,+16175556052,1978-05-15,10002,Engineering,Staff SWE,120668,2020-06-06
+E000399,Quinn Tran,quinn.tran399@acme.example,+13105559244,1972-10-06,94110,HR,HR Director,89072,2022-02-22
+E000400,Aaron Young,aaron.young400@acme.example,+12125559070,1972-09-26,10001,Finance,Finance Director,113655,2022-01-04
+E000401,Sophia Moore,sophia.moore401@acme.example,+13125553860,1991-05-14,94117,Engineering,EM,116763,2021-08-04
+E000402,Kyle Hall,kyle.hall402@acme.example,+12125551970,1990-02-22,94110,Data Science,DS II,117888,2014-10-02
+E000403,Maria Chen,maria.chen403@acme.example,+14155556936,1973-07-07,10014,Marketing,Growth Lead,94486,2017-03-04
+E000404,Vlad Martinez,vlad.martinez404@acme.example,+14155556358,1994-12-16,10001,Customer Support,CS Lead,67926,2021-08-28
+E000405,Dana Johnson,dana.johnson405@acme.example,+12065559626,1993-06-10,10001,Engineering,SWE II,104871,2012-03-31
+E000406,Grace Clark,grace.clark406@acme.example,+14155554687,1994-01-10,94121,Legal,Sr Counsel,146709,2018-08-04
+E000407,Priya Wright,priya.wright407@acme.example,+13125559977,1991-03-22,94103,Engineering,Staff SWE,106183,2025-07-23
+E000408,Zane Davis,zane.davis408@acme.example,+16175555431,2000-12-22,94114,Engineering,Staff SWE,111907,2016-01-10
+E000409,Xavier Smith,xavier.smith409@acme.example,+13105554965,1983-12-13,94117,Finance,Analyst,110589,2016-09-27
+E000410,Will O'Brien,will.obrien410@acme.example,+13105554414,2002-09-10,10001,Customer Support,CS Rep,53516,2014-03-20
+E000411,Chris Kim,chris.kim411@acme.example,+16175557937,1993-03-03,94121,Finance,Sr Analyst,126696,2019-01-18
+E000412,Irene Adams,irene.adams412@acme.example,+13125550474,1977-10-17,94114,Legal,Legal Counsel,135753,2011-04-18
+E000413,Paul Davis,paul.davis413@acme.example,+16175550828,1986-03-02,10016,Engineering,Senior SWE,98214,2024-04-02
+E000414,Henry Smith,henry.smith414@acme.example,+12125556102,1991-12-05,10013,Marketing,Sr Marketing Mgr,60887,2023-03-01
+E000415,Julia Fischer,julia.fischer415@acme.example,+13105552679,1981-08-08,10016,Finance,Analyst,90246,2013-08-27
+E000416,Kyle Kim,kyle.kim416@acme.example,+12125553688,2000-05-26,94114,Sales,SDR,94294,2021-07-06
+E000417,Bob Johnson,bob.johnson417@acme.example,+16175552167,1999-01-15,94110,Customer Support,CS Rep,57696,2016-11-07
+E000418,Una Gomez,una.gomez418@acme.example,+16175556168,1985-08-23,10002,Sales,SDR,102013,2016-10-11
+E000419,Sophia Adams,sophia.adams419@acme.example,+13125556506,1996-03-21,94107,Engineering,EM,131755,2022-08-05
+E000420,Priya Walker,priya.walker420@acme.example,+13125554631,1983-05-23,10014,Engineering,SWE I,75006,2017-07-17
+E000421,Rachel Khan,rachel.khan421@acme.example,+13105554278,1999-06-07,10016,Data Science,Senior DS,122764,2015-05-23
+E000422,David Walker,david.walker422@acme.example,+16175555236,2000-07-15,94110,HR,HR Director,87646,2021-02-26
+E000423,Samuel Roberts,samuel.roberts423@acme.example,+16175556628,1987-06-02,10016,Engineering,EM,130976,2017-09-12
+E000424,Vlad Tran,vlad.tran424@acme.example,+12065558759,1998-08-20,10002,Data Science,Senior DS,108302,2021-05-18
+E000425,Tina Nguyen,tina.nguyen425@acme.example,+12065559146,1978-02-15,94117,Engineering,SWE II,82709,2022-07-16
+E000426,Xena Murphy,xena.murphy426@acme.example,+12065555499,1999-05-11,94107,Engineering,SWE II,44884,2016-11-20
+E000427,Aaron Rossi,aaron.rossi427@acme.example,+13105554269,1996-04-07,94117,Marketing,Marketing Specialist,44502,2023-02-02
+E000428,Lisa Hall,lisa.hall428@acme.example,+14155557736,1978-09-23,10003,Engineering,EM,94233,2018-07-24
+E000429,Hannah Yoshida,hannah.yoshida429@acme.example,+16175550885,1976-10-06,94110,Product,Sr PM,80965,2020-04-06
+E000430,Jack Khan,jack.khan430@acme.example,+12065552954,1973-08-17,10002,Sales,Senior AE,89023,2017-01-11
+E000431,Oscar Lee,oscar.lee431@acme.example,+14155557406,1982-04-09,94114,HR,HR Partner,64704,2011-12-23
+E000432,Irene Hall,irene.hall432@acme.example,+16175557035,1988-02-05,10001,Product,Sr PM,99041,2010-02-08
+E000433,Carol Hill,carol.hill433@acme.example,+12125556112,1970-08-19,94121,HR,HR Director,79675,2024-01-21
+E000434,Vlad Anderson,vlad.anderson434@acme.example,+12125555641,1984-01-01,94110,Engineering,Principal SWE,119983,2023-03-16
+E000435,Tina Nguyen,tina.nguyen435@acme.example,+14155550749,1983-05-18,94117,Marketing,Growth Lead,66562,2025-05-28
+E000436,Irene Rossi,irene.rossi436@acme.example,+16175555885,1978-06-15,94110,Data Science,ML Engineer,95529,2010-06-06
+E000437,Olivia Tran,olivia.tran437@acme.example,+12065552149,1979-06-23,10016,Engineering,Principal SWE,96643,2024-08-04
+E000438,Carol Novak,carol.novak438@acme.example,+12065554190,1993-12-27,10013,Engineering,SWE I,105862,2024-11-05
+E000439,Grace Smith,grace.smith439@acme.example,+14155551897,1988-09-11,10002,Sales,Account Director,74465,2014-08-11
+E000440,Tomas Johnson,tomas.johnson440@acme.example,+13105556895,1999-09-06,94107,Operations,Ops Manager,93333,2023-12-20
+E000441,Marcus Chen,marcus.chen441@acme.example,+16175551718,1992-12-12,10016,Customer Support,CS Lead,59290,2014-06-16
+E000442,Marcus Silva,marcus.silva442@acme.example,+13105558571,1979-01-18,94121,Operations,Ops Manager,74669,2013-08-06
+E000443,Carol Baker,carol.baker443@acme.example,+16175553402,2000-11-14,10002,Sales,AE,83608,2012-06-23
+E000444,Kyle Wright,kyle.wright444@acme.example,+12125551475,1992-12-14,94107,HR,HR Partner,72484,2015-09-28
+E000445,Priya Tran,priya.tran445@acme.example,+16175554850,1981-11-06,10002,Engineering,SWE II,119384,2018-01-29
+E000446,Sophia Khan,sophia.khan446@acme.example,+16175551898,1974-04-06,94103,Engineering,SWE II,50243,2024-11-17
+E000447,Priya Nguyen,priya.nguyen447@acme.example,+13105555857,1989-08-20,10013,Sales,AE,62239,2012-07-21
+E000448,Zane Hansen,zane.hansen448@acme.example,+16175554453,1987-04-21,10016,Finance,Finance Director,109463,2024-07-21
+E000449,Karen Wilson,karen.wilson449@acme.example,+12125550960,1977-02-24,94107,Marketing,Growth Lead,56787,2019-10-30
+E000450,Liam Hall,liam.hall450@acme.example,+16175555875,1997-06-04,94103,Legal,GC,123524,2012-12-06
+E000451,Evan Wright,evan.wright451@acme.example,+14155556738,1989-10-08,94103,Engineering,EM,69667,2025-03-16
+E000452,Hannah Clark,hannah.clark452@acme.example,+12065559257,1980-01-18,10014,Legal,GC,155903,2021-09-25
+E000453,Tomas Hall,tomas.hall453@acme.example,+14155557091,1999-09-07,10016,Engineering,Senior SWE,66525,2013-05-02
+E000454,Julia Hall,julia.hall454@acme.example,+14155550190,1998-11-11,94110,Customer Support,CS Lead,40279,2021-02-13
+E000455,Karen Martinez,karen.martinez455@acme.example,+16175555253,1980-10-21,94121,Product,PM,77205,2018-06-29
+E000456,Zane Anderson,zane.anderson456@acme.example,+14155557521,1989-12-04,10013,Marketing,Sr Marketing Mgr,79009,2020-01-11
+E000457,Uma Wilson,uma.wilson457@acme.example,+16175550291,1974-08-09,10001,Marketing,Growth Lead,47932,2023-07-21
+E000458,Nora Yoshida,nora.yoshida458@acme.example,+13125559213,1979-04-13,10014,Operations,Ops Manager,61484,2018-02-24
+E000459,David Tran,david.tran459@acme.example,+16175555439,1995-02-16,10013,Customer Support,CS Manager,44515,2012-07-23
+E000460,Grace Tran,grace.tran460@acme.example,+14155555592,1985-12-06,10014,Product,Sr PM,75868,2022-04-14
+E000461,Hannah Dubois,hannah.dubois461@acme.example,+12065551741,1972-01-21,94110,Marketing,Growth Lead,79131,2015-09-15
+E000462,Nora Silva,nora.silva462@acme.example,+12125551978,1987-08-17,94114,Marketing,Marketing Specialist,61553,2017-07-31
+E000463,Grace Suzuki,grace.suzuki463@acme.example,+14155559647,1975-07-12,10002,Marketing,Growth Lead,89316,2021-03-10
+E000464,Alice Adams,alice.adams464@acme.example,+12065550795,1994-10-26,10001,Finance,Finance Director,91784,2021-05-27
+E000465,Yusuf Murphy,yusuf.murphy465@acme.example,+12065559479,1977-10-16,10016,Finance,Analyst,72348,2017-03-21
+E000466,Greg Novak,greg.novak466@acme.example,+16175559977,2001-01-24,94114,Sales,Sales Manager,92609,2016-08-06
+E000467,Chris Chen,chris.chen467@acme.example,+12125556762,1997-01-10,10016,Legal,GC,108240,2017-01-15
+E000468,Una Baker,una.baker468@acme.example,+12065553560,1979-01-05,94114,Operations,Ops Manager,92232,2025-05-26
+E000469,Wendy Chen,wendy.chen469@acme.example,+12065552913,1992-08-08,10003,Operations,Ops Manager,63745,2022-08-12
+E000470,Evan Young,evan.young470@acme.example,+13125556839,2000-03-30,10016,Legal,GC,79021,2016-05-31
+E000471,Beth Johnson,beth.johnson471@acme.example,+13125551744,1971-02-19,10001,Engineering,EM,103470,2013-08-11
+E000472,Samuel Roberts,samuel.roberts472@acme.example,+12125551016,2000-12-23,94117,Engineering,Principal SWE,91861,2010-09-22
+E000473,Wendy O'Brien,wendy.obrien473@acme.example,+14155559205,1980-01-24,10016,Operations,Ops Manager,72046,2025-08-12
+E000474,Samuel Lee,samuel.lee474@acme.example,+16175556349,1988-09-08,10014,Sales,Account Director,109924,2011-03-17
+E000475,Alice Roberts,alice.roberts475@acme.example,+12125557259,1980-02-13,10014,Operations,Ops Director,56527,2023-07-14
+E000476,Maria Silva,maria.silva476@acme.example,+13105557353,1977-12-16,10014,Engineering,SWE II,109603,2021-07-11
+E000477,Henry Novak,henry.novak477@acme.example,+14155557020,1982-07-09,10003,Sales,Senior AE,61741,2017-05-31
+E000478,Dana Brown,dana.brown478@acme.example,+14155552518,1984-06-21,10013,Engineering,EM,75340,2023-10-23
+E000479,Ravi Yoshida,ravi.yoshida479@acme.example,+16175559382,1994-09-05,94121,Engineering,EM,77712,2014-02-15
+E000480,Hannah Martinez,hannah.martinez480@acme.example,+13125552611,1988-08-28,10003,Customer Support,CS Rep,62701,2017-11-02
+E000481,Olivia Kim,olivia.kim481@acme.example,+12065555437,1984-11-07,94121,Sales,Account Director,40000,2024-07-25
+E000482,Alice Wilson,alice.wilson482@acme.example,+12065555668,1989-12-28,94114,Data Science,DS II,92005,2010-11-23
+E000483,Sophia Khan,sophia.khan483@acme.example,+16175551857,1987-04-24,94117,Customer Support,CS Lead,69300,2018-05-30
+E000484,Greg Green,greg.green484@acme.example,+16175557975,1971-12-20,94117,Legal,Legal Counsel,124662,2017-03-09
+E000485,Greg Turner,greg.turner485@acme.example,+14155552742,1994-02-18,10003,Engineering,SWE I,93594,2014-10-13
+E000486,Sophia Kowalski,sophia.kowalski486@acme.example,+14155553368,1994-02-14,10016,Legal,GC,154166,2019-10-06
+E000487,Priya Martinez,priya.martinez487@acme.example,+12065552519,1971-01-25,10002,Operations,Ops Analyst,74272,2015-08-26
+E000488,Julia Martinez,julia.martinez488@acme.example,+13125553729,1981-08-08,10001,Sales,SDR,78492,2019-09-18
+E000489,Uma Smith,uma.smith489@acme.example,+16175551938,1993-12-28,94103,Operations,Ops Director,92897,2011-01-08
+E000490,Tomas Martinez,tomas.martinez490@acme.example,+13105558238,1974-10-05,94117,Finance,Controller,109093,2023-08-09
+E000491,Frank Patel,frank.patel491@acme.example,+16175556249,1987-09-22,10014,Engineering,SWE II,71760,2018-10-09
+E000492,Ian Patel,ian.patel492@acme.example,+12065552360,1983-05-16,10014,Legal,GC,117174,2024-07-13
+E000493,Xavier Johnson,xavier.johnson493@acme.example,+13125559094,1976-05-05,94107,Engineering,Principal SWE,59517,2011-11-29
+E000494,Tina Kim,tina.kim494@acme.example,+12065555633,1979-07-02,10001,Data Science,DS II,90167,2013-08-11
+E000495,Liam Tran,liam.tran495@acme.example,+13125554140,1978-09-19,94107,Engineering,Principal SWE,114249,2022-04-24
+E000496,Dana Baker,dana.baker496@acme.example,+14155554762,2000-02-17,94107,Sales,Senior AE,43733,2023-01-09
+E000497,Fiona Rossi,fiona.rossi497@acme.example,+13105552100,2000-02-11,10014,Engineering,Senior SWE,45770,2017-02-16
+E000498,Fiona O'Brien,fiona.obrien498@acme.example,+13105555008,2001-02-08,10013,Engineering,Principal SWE,48384,2018-03-05
+E000499,Uma Kowalski,uma.kowalski499@acme.example,+12125550079,1984-01-19,94114,Finance,Finance Director,91535,2025-03-30
+E000500,Vlad Rossi,vlad.rossi500@acme.example,+16175557583,1989-12-23,94121,HR,Recruiter,85030,2022-05-17
+E000501,Grace Murphy,grace.murphy501@acme.example,+12065559938,1973-09-05,94117,Finance,Sr Analyst,106286,2024-01-21
+E000502,Eve Martinez,eve.martinez502@acme.example,+14155558309,1998-05-02,94103,Finance,Finance Director,85817,2023-03-27
+E000503,Noah Davis,noah.davis503@acme.example,+13125554269,1994-05-19,10003,Marketing,Marketing Specialist,71488,2023-03-24
+E000504,Vlad Patel,vlad.patel504@acme.example,+12125557613,1992-06-24,10003,Engineering,Senior SWE,98271,2021-04-06
+E000505,Alice Anderson,alice.anderson505@acme.example,+13125552717,1993-01-23,94110,Marketing,Marketing Specialist,58741,2013-04-12
+E000506,Will Moore,will.moore506@acme.example,+13105550662,1979-10-26,10002,Engineering,Senior SWE,71923,2018-04-15
+E000507,Olivia Davis,olivia.davis507@acme.example,+12065553387,1993-03-26,94121,Sales,SDR,79199,2024-07-18
+E000508,Uma Park,uma.park508@acme.example,+12065558542,1998-06-03,94117,Finance,Controller,90747,2022-12-24
+E000509,Ian Clark,ian.clark509@acme.example,+12125556171,1999-04-28,10001,Sales,AE,55672,2014-12-31
+E000510,Hannah Hansen,hannah.hansen510@acme.example,+13105555653,1991-11-03,10002,Legal,Legal Counsel,117461,2021-04-04
+E000511,Irene O'Brien,irene.obrien511@acme.example,+12125553768,1973-06-17,10003,Operations,Ops Analyst,75149,2023-07-03
+E000512,Una Wilson,una.wilson512@acme.example,+12065553773,1988-08-07,94121,HR,Recruiter,78635,2025-02-22
+E000513,Evan Moore,evan.moore513@acme.example,+12125559679,1977-03-26,10014,Finance,Analyst,95458,2023-04-15
+E000514,Karen Chen,karen.chen514@acme.example,+12065558399,1971-10-05,10013,Engineering,SWE II,98068,2015-10-17
+E000515,Liam Adams,liam.adams515@acme.example,+16175559819,1995-04-14,10014,Engineering,EM,78600,2011-12-04
+E000516,Noah O'Brien,noah.obrien516@acme.example,+13125557723,1991-08-10,94110,Engineering,Staff SWE,40000,2023-06-24
+E000517,Jack Young,jack.young517@acme.example,+12125558369,1981-11-12,94110,HR,Recruiter,88662,2011-07-18
+E000518,Olivia Novak,olivia.novak518@acme.example,+16175552166,1974-11-14,94103,Engineering,Principal SWE,69211,2025-05-08
+E000519,Aaron Brown,aaron.brown519@acme.example,+13125551577,1977-12-16,10002,Data Science,DS I,134797,2012-08-20
+E000520,Frank Moore,frank.moore520@acme.example,+12065552135,1997-01-26,10003,Finance,Finance Director,76179,2021-09-16
+E000521,Aaron Dubois,aaron.dubois521@acme.example,+14155558680,1989-03-30,94114,Data Science,ML Engineer,116749,2023-03-19
+E000522,Will Clark,will.clark522@acme.example,+14155556971,1976-01-03,94117,Marketing,Marketing Specialist,62905,2011-11-18
+E000523,Samuel Walker,samuel.walker523@acme.example,+13125556695,1981-07-25,94114,Engineering,EM,93051,2012-08-23
+E000524,Hannah Johnson,hannah.johnson524@acme.example,+16175553365,2000-11-07,94121,Marketing,Marketing Specialist,57078,2013-06-21
+E000525,Beth Young,beth.young525@acme.example,+13105554281,1994-01-18,10001,Customer Support,CS Manager,52101,2014-07-27
+E000526,Aaron Baker,aaron.baker526@acme.example,+13125557904,1978-01-07,94121,Customer Support,CS Lead,72897,2015-09-10
+E000527,Tina Clark,tina.clark527@acme.example,+13105556522,1976-03-12,10014,Engineering,SWE II,48405,2013-08-18
+E000528,Grace Kim,grace.kim528@acme.example,+13125556562,1985-03-07,10003,Customer Support,CS Manager,61126,2025-11-08
+E000529,David Nguyen,david.nguyen529@acme.example,+16175550086,1974-02-01,94110,Marketing,Growth Lead,73982,2014-12-22
+E000530,Xavier Turner,xavier.turner530@acme.example,+13125550618,2002-07-02,10001,Data Science,ML Engineer,114025,2023-10-09
+E000531,Priya Adams,priya.adams531@acme.example,+13105559788,1972-07-30,94110,Operations,Ops Manager,99181,2021-08-15
+E000532,Samuel Silva,samuel.silva532@acme.example,+14155559822,1992-11-25,10003,Operations,Ops Director,71967,2013-10-20
+E000533,Sophia Davis,sophia.davis533@acme.example,+13105553919,1999-05-20,94103,Product,PM,143258,2017-12-02
+E000534,Ravi Hansen,ravi.hansen534@acme.example,+16175559602,1978-12-26,10003,Engineering,EM,84130,2011-07-17
+E000535,Frank Baker,frank.baker535@acme.example,+13105559160,1996-02-24,94121,Sales,Sales Manager,82623,2020-03-14
+E000536,Zane Clark,zane.clark536@acme.example,+14155554277,1977-11-07,10001,Customer Support,CS Manager,85480,2011-08-16
+E000537,Greg Patel,greg.patel537@acme.example,+13105551917,1993-01-09,94117,Legal,GC,119976,2018-06-17
+E000538,Kyle Moore,kyle.moore538@acme.example,+12125555565,1990-08-01,10014,Marketing,Growth Lead,99466,2010-08-13
+E000539,Evan Wilson,evan.wilson539@acme.example,+13105551106,1987-03-02,10014,Finance,Sr Analyst,87951,2017-01-30
+E000540,Aaron Fischer,aaron.fischer540@acme.example,+13125558776,1970-06-09,10016,Finance,Sr Analyst,80744,2016-06-11
+E000541,Frank Hansen,frank.hansen541@acme.example,+12065555603,1973-05-30,10003,Data Science,ML Engineer,102318,2022-11-13
+E000542,Rachel Murphy,rachel.murphy542@acme.example,+12065553115,1992-05-20,10016,Engineering,EM,101163,2015-06-06
+E000543,Quinn Kim,quinn.kim543@acme.example,+12125553322,1981-03-15,10013,Sales,AE,80899,2024-11-17
+E000544,Fiona Hall,fiona.hall544@acme.example,+14155558871,1971-11-24,10002,Sales,Sales Manager,80531,2021-01-16
+E000545,Kyle Gomez,kyle.gomez545@acme.example,+16175552996,1992-12-05,94117,Sales,Account Director,91918,2019-06-29
+E000546,Evan Hill,evan.hill546@acme.example,+14155558232,1985-07-30,10001,Legal,Legal Counsel,142029,2020-04-03
+E000547,Henry Adams,henry.adams547@acme.example,+16175555171,2000-12-01,94103,Engineering,SWE II,76630,2018-02-10
+E000548,Nora Roberts,nora.roberts548@acme.example,+12125558987,1981-10-16,94114,Sales,Account Director,81334,2017-09-11
+E000549,Xavier Murphy,xavier.murphy549@acme.example,+16175556945,1979-06-12,10001,Operations,Ops Manager,59958,2020-02-10
+E000550,Liam Clark,liam.clark550@acme.example,+12125559435,2000-10-09,94114,Finance,Controller,111689,2015-04-16
+E000551,Julia Kowalski,julia.kowalski551@acme.example,+16175553212,1976-07-17,10016,Engineering,SWE I,98090,2024-02-23
+E000552,Hannah Hill,hannah.hill552@acme.example,+12065555172,1991-10-30,94117,Sales,Account Director,96076,2011-01-26
+E000553,Zane Park,zane.park553@acme.example,+12065552676,1972-09-10,94114,Finance,Finance Director,100251,2017-07-04
+E000554,Quinn Dubois,quinn.dubois554@acme.example,+13105559180,1995-01-03,94117,Sales,SDR,67370,2012-09-20
+E000555,Wendy Walker,wendy.walker555@acme.example,+12125559451,1995-11-01,10014,Operations,Ops Analyst,82174,2017-04-17
+E000556,Sophia Green,sophia.green556@acme.example,+16175557322,1973-07-08,10001,Customer Support,CS Lead,53731,2024-03-02
+E000557,Jack Nguyen,jack.nguyen557@acme.example,+12065555527,1988-12-03,10014,Customer Support,CS Lead,57688,2013-08-20
+E000558,Victor Tran,victor.tran558@acme.example,+13105555191,1999-04-17,94117,Operations,Ops Director,65308,2024-06-16
+E000559,Zane Gomez,zane.gomez559@acme.example,+16175555950,1996-04-30,10003,Product,Sr PM,126434,2012-10-21
+E000560,Vlad Anderson,vlad.anderson560@acme.example,+12065554122,2001-06-07,10016,Engineering,SWE II,127588,2018-11-27
+E000561,Grace Park,grace.park561@acme.example,+14155557752,1994-08-08,94103,Engineering,Staff SWE,40000,2012-05-01
+E000562,Quinn Hall,quinn.hall562@acme.example,+12125551381,1999-05-17,10001,Sales,Senior AE,65020,2016-05-16
+E000563,Chris Chen,chris.chen563@acme.example,+12125558630,1977-08-27,94103,Engineering,Senior SWE,99174,2020-09-05
+E000564,Dana Hill,dana.hill564@acme.example,+13105558987,1989-12-15,94110,Product,Director of Product,89994,2022-02-04
+E000565,Liam Young,liam.young565@acme.example,+13125557480,1998-04-23,10016,Operations,Ops Director,50329,2021-12-21
+E000566,Tina Fischer,tina.fischer566@acme.example,+16175558841,1980-03-10,94107,Marketing,Sr Marketing Mgr,90219,2019-03-31
+E000567,Quinn Brown,quinn.brown567@acme.example,+13105550172,1970-01-02,10003,Finance,Sr Analyst,81226,2010-03-10
+E000568,Tomas Wright,tomas.wright568@acme.example,+16175554908,1970-05-30,10001,Finance,Sr Analyst,115576,2010-03-01
+E000569,Julia Dubois,julia.dubois569@acme.example,+12125556745,1995-02-23,10001,Sales,Senior AE,68702,2018-06-27
+E000570,Olivia Roberts,olivia.roberts570@acme.example,+14155556917,1998-01-19,94114,Customer Support,CS Manager,40000,2025-07-25
+E000571,Sophia Gomez,sophia.gomez571@acme.example,+13105558715,1982-01-22,10001,Engineering,SWE I,93518,2024-04-14
+E000572,Dana Hall,dana.hall572@acme.example,+16175554458,2001-06-03,10013,Marketing,Sr Marketing Mgr,93563,2010-06-08
+E000573,Jack Lee,jack.lee573@acme.example,+13125550362,1978-05-05,94107,Sales,Senior AE,68007,2015-03-23
+E000574,Frank Brown,frank.brown574@acme.example,+14155558086,1979-09-29,94121,Marketing,Sr Marketing Mgr,51682,2018-05-01
+E000575,Dana Davis,dana.davis575@acme.example,+13105551314,1976-07-21,94103,Sales,SDR,95312,2014-04-24
+E000576,Quinn Novak,quinn.novak576@acme.example,+14155551998,2002-01-22,94114,Sales,SDR,84775,2015-07-18
+E000577,Will Davis,will.davis577@acme.example,+12125557550,2002-12-26,94107,Customer Support,CS Rep,40000,2016-12-31
+E000578,Uma Nguyen,uma.nguyen578@acme.example,+12065550691,1994-08-27,10003,Engineering,Staff SWE,91425,2024-04-27
+E000579,Tina Silva,tina.silva579@acme.example,+13105550853,1999-11-28,94114,Product,PM,91922,2013-10-03
+E000580,Rachel Young,rachel.young580@acme.example,+14155556484,1980-11-26,94103,Product,Director of Product,90553,2025-06-29
+E000581,Evan Walker,evan.walker581@acme.example,+12125556084,1974-01-06,94114,Engineering,SWE I,76099,2024-01-09
+E000582,David Lee,david.lee582@acme.example,+13105552521,2001-06-17,10003,Finance,Sr Analyst,76600,2020-12-10
+E000583,Olivia Khan,olivia.khan583@acme.example,+13125555690,1989-09-05,10016,Engineering,EM,56129,2015-08-16
+E000584,Carol Wright,carol.wright584@acme.example,+12065557168,1995-01-29,94117,Customer Support,CS Lead,68384,2014-04-04
+E000585,Kyle Murphy,kyle.murphy585@acme.example,+13125555696,1984-07-09,10016,Marketing,Growth Lead,99664,2011-07-19
+E000586,Hannah Brown,hannah.brown586@acme.example,+16175554844,1981-10-24,10003,Sales,AE,61981,2024-04-23
+E000587,Greg Novak,greg.novak587@acme.example,+12065553039,1970-11-03,10013,Finance,Sr Analyst,91580,2022-02-02
+E000588,Yara Silva,yara.silva588@acme.example,+13125558151,1994-09-27,94110,Customer Support,CS Lead,58920,2019-03-12
+E000589,Priya Khan,priya.khan589@acme.example,+14155551577,1993-06-21,10014,Engineering,SWE II,87732,2012-05-26
+E000590,Fiona Silva,fiona.silva590@acme.example,+14155550521,1995-08-13,10014,Finance,Finance Director,99998,2021-10-17
+E000591,Nora Young,nora.young591@acme.example,+13105550804,1986-06-08,94114,Customer Support,CS Rep,81949,2024-09-15
+E000592,Fiona Turner,fiona.turner592@acme.example,+16175550994,1986-03-11,10003,HR,Recruiter,74591,2018-04-12
+E000593,Una Lee,una.lee593@acme.example,+13125554355,1993-09-24,94103,HR,Recruiter,80617,2021-08-26
+E000594,Grace Park,grace.park594@acme.example,+12065553784,1993-11-06,10001,Engineering,Principal SWE,93201,2024-09-25
+E000595,Paul Clark,paul.clark595@acme.example,+12065552931,1995-01-19,10016,Customer Support,CS Manager,68494,2018-01-11
+E000596,Sophia Carter,sophia.carter596@acme.example,+12065556997,1974-09-02,94110,Finance,Finance Director,114319,2021-04-27
+E000597,Victor Nguyen,victor.nguyen597@acme.example,+13125559829,1989-11-15,94121,Data Science,Senior DS,126206,2024-03-15
+E000598,Beth Khan,beth.khan598@acme.example,+13125553943,1995-04-06,10003,Engineering,Principal SWE,63666,2015-09-13
+E000599,Xavier O'Brien,xavier.obrien599@acme.example,+16175556505,1970-01-04,10016,Engineering,Senior SWE,60115,2016-10-08
+E000600,Alice Yoshida,alice.yoshida600@acme.example,+12125553519,1984-02-16,94103,HR,HR Director,62431,2016-03-10
+E000601,Julia Green,julia.green601@acme.example,+13125559349,1995-08-23,94110,Engineering,Staff SWE,76592,2018-03-27
+E000602,Lisa Anderson,lisa.anderson602@acme.example,+12125554198,1983-06-22,94107,Customer Support,CS Manager,60159,2014-11-17
+E000603,Vlad Martinez,vlad.martinez603@acme.example,+12065555319,1991-08-24,94110,Marketing,Growth Lead,70276,2012-02-21
+E000604,Marcus Yoshida,marcus.yoshida604@acme.example,+14155559441,1987-02-12,94107,Finance,Controller,56063,2017-10-21
+E000605,Beth Suzuki,beth.suzuki605@acme.example,+14155553714,1999-04-14,10013,Data Science,ML Engineer,142181,2017-02-28
+E000606,Ian Clark,ian.clark606@acme.example,+12125555354,1992-07-15,10016,Engineering,SWE I,95167,2025-02-09
+E000607,Vlad Hansen,vlad.hansen607@acme.example,+16175559750,1995-10-21,10003,Engineering,Staff SWE,78807,2012-12-18
+E000608,Victor Turner,victor.turner608@acme.example,+16175559362,1972-03-18,10003,Sales,AE,94406,2018-12-09
+E000609,Greg Kowalski,greg.kowalski609@acme.example,+12065552136,1976-01-19,10002,Customer Support,CS Lead,42639,2022-08-03
+E000610,Nora Adams,nora.adams610@acme.example,+12125553970,1973-03-19,94117,HR,Recruiter,83140,2025-05-11
+E000611,Kyle Turner,kyle.turner611@acme.example,+14155556776,1988-12-31,94121,Sales,Sales Manager,58662,2016-11-02
+E000612,Karen Fischer,karen.fischer612@acme.example,+13125557245,1997-12-15,94110,Marketing,Marketing Specialist,101776,2014-06-24
+E000613,Sophia Dubois,sophia.dubois613@acme.example,+12125551405,1975-01-16,10016,Engineering,Principal SWE,130137,2016-06-14
+E000614,Alice Rossi,alice.rossi614@acme.example,+12065551823,1983-09-09,10002,Marketing,Sr Marketing Mgr,63884,2014-09-09
+E000615,Will Hill,will.hill615@acme.example,+12125553339,1994-07-06,10003,HR,HR Director,49476,2013-03-03
+E000616,Tomas Smith,tomas.smith616@acme.example,+16175559551,1999-10-07,10003,Engineering,SWE II,89306,2011-05-08
+E000617,Samuel Silva,samuel.silva617@acme.example,+12065554444,1972-05-19,10002,Operations,Ops Analyst,90142,2024-11-14
+E000618,Ravi Dubois,ravi.dubois618@acme.example,+14155550312,1983-02-14,10014,Sales,SDR,86943,2021-05-28
+E000619,Una Park,una.park619@acme.example,+13105557940,1996-10-13,10003,Engineering,SWE II,57331,2025-12-24
+E000620,Bob Davis,bob.davis620@acme.example,+12125558673,1983-09-05,94121,Marketing,Growth Lead,79919,2013-07-10
+E000621,Bob Fischer,bob.fischer621@acme.example,+12065555765,1985-12-10,10014,Sales,Account Director,73842,2015-10-12
+E000622,Yara Smith,yara.smith622@acme.example,+13125554590,1980-02-13,94110,Sales,SDR,82062,2024-09-25
+E000623,Irene Turner,irene.turner623@acme.example,+12065556262,1993-05-11,10014,Customer Support,CS Manager,50156,2022-11-07
+E000624,Jack Kowalski,jack.kowalski624@acme.example,+13105559918,1984-10-09,10002,Customer Support,CS Rep,43507,2024-08-20
+E000625,Irene Young,irene.young625@acme.example,+13125553314,1976-03-12,94117,Operations,Ops Director,83407,2013-04-04
+E000626,Priya Clark,priya.clark626@acme.example,+12125555201,1973-01-16,10003,Customer Support,CS Manager,48152,2012-08-27
+E000627,Liam Khan,liam.khan627@acme.example,+12125550483,1984-04-18,10001,Product,Sr PM,56991,2024-04-14
+E000628,Will Gomez,will.gomez628@acme.example,+12125553079,1974-10-16,94110,Engineering,Principal SWE,105418,2023-11-03
+E000629,Rachel Walker,rachel.walker629@acme.example,+13125553783,1996-10-01,94114,Engineering,SWE I,60810,2020-09-09
+E000630,Irene Green,irene.green630@acme.example,+13125557680,2001-12-09,10014,Sales,SDR,98615,2021-01-08
+E000631,Evan Chen,evan.chen631@acme.example,+12125553166,1980-02-25,94103,Marketing,Marketing Specialist,119338,2014-12-29
+E000632,Will Silva,will.silva632@acme.example,+12125551083,1977-12-11,10002,Legal,Sr Counsel,92350,2025-06-05
+E000633,Uma Carter,uma.carter633@acme.example,+12125557005,1988-02-29,94103,Customer Support,CS Lead,52764,2022-10-30
+E000634,Marcus Hill,marcus.hill634@acme.example,+13125550630,1993-05-10,94107,Marketing,Marketing Specialist,62295,2015-07-06
+E000635,Hannah Hill,hannah.hill635@acme.example,+16175550643,1995-01-07,10001,Customer Support,CS Manager,62573,2019-11-10
+E000636,Zane Yoshida,zane.yoshida636@acme.example,+13105557558,1977-06-20,10001,Sales,AE,71978,2025-06-23
+E000637,Hannah Brown,hannah.brown637@acme.example,+16175557400,1974-01-21,10016,Customer Support,CS Rep,60079,2025-08-12
+E000638,Ian Chen,ian.chen638@acme.example,+16175556775,1984-07-05,10002,Engineering,Staff SWE,40000,2023-03-29
+E000639,Una Silva,una.silva639@acme.example,+16175551477,1981-03-21,94121,Operations,Ops Director,76876,2012-10-09
+E000640,Frank Wilson,frank.wilson640@acme.example,+12065557362,1998-06-11,94121,Engineering,EM,46886,2018-08-13
+E000641,Vlad Green,vlad.green641@acme.example,+13125552619,1986-12-27,10003,Sales,Senior AE,96997,2024-10-16
+E000642,Jack Nguyen,jack.nguyen642@acme.example,+12125552930,2001-12-10,94103,Marketing,Sr Marketing Mgr,67826,2020-01-04
+E000643,Samuel Murphy,samuel.murphy643@acme.example,+14155552155,1979-02-06,94103,Operations,Ops Manager,87549,2021-03-08
+E000644,Ian Johnson,ian.johnson644@acme.example,+13125558084,1980-09-02,94114,Customer Support,CS Lead,56079,2020-03-06
+E000645,Aaron O'Brien,aaron.obrien645@acme.example,+14155559850,1996-12-02,94103,Engineering,Principal SWE,78817,2014-08-28
+E000646,David Murphy,david.murphy646@acme.example,+12125550902,1999-04-22,94121,Engineering,SWE I,119641,2024-12-17
+E000647,Kyle Walker,kyle.walker647@acme.example,+13105555424,1973-12-07,94103,Engineering,SWE II,95813,2024-10-28
+E000648,Tomas Walker,tomas.walker648@acme.example,+13125559210,1977-12-16,10002,HR,Recruiter,81721,2010-10-21
+E000649,Frank Yoshida,frank.yoshida649@acme.example,+13105556038,1986-12-31,94107,HR,HR Director,86499,2012-09-26
+E000650,Tomas Gomez,tomas.gomez650@acme.example,+13105558635,1988-07-24,10003,Engineering,SWE II,96190,2023-09-23
+E000651,David Park,david.park651@acme.example,+13125558666,1973-12-07,10002,HR,HR Director,109516,2016-06-10
+E000652,Beth Walker,beth.walker652@acme.example,+13105554254,1993-07-27,10013,Product,Sr PM,79000,2012-11-28
+E000653,Nora Clark,nora.clark653@acme.example,+16175558514,2002-09-16,10014,Marketing,Marketing Specialist,89755,2016-07-07
+E000654,Maria Johnson,maria.johnson654@acme.example,+14155550392,1990-11-08,10014,Finance,Sr Analyst,84310,2023-10-20
+E000655,Aaron Suzuki,aaron.suzuki655@acme.example,+14155555468,1985-09-07,10003,Finance,Sr Analyst,109709,2016-04-26
+E000656,Quinn Martinez,quinn.martinez656@acme.example,+13105554919,1992-09-23,10003,Sales,AE,75951,2012-07-21
+E000657,Sophia Rossi,sophia.rossi657@acme.example,+13105556488,2002-06-30,10013,Customer Support,CS Rep,58885,2017-07-31
+E000658,Sophia Moore,sophia.moore658@acme.example,+16175550582,1998-12-18,94110,Marketing,Growth Lead,69714,2020-05-01
+E000659,Ian Rossi,ian.rossi659@acme.example,+16175556782,1972-07-06,10003,Sales,Sales Manager,71343,2022-12-14
+E000660,Sophia Rossi,sophia.rossi660@acme.example,+13105551084,1976-09-12,94117,Finance,Controller,93547,2018-06-01
+E000661,Oscar Hill,oscar.hill661@acme.example,+12125559354,1997-03-03,10001,Engineering,SWE I,112510,2025-10-26
+E000662,Uma Davis,uma.davis662@acme.example,+13105556780,1973-11-23,10002,Legal,Sr Counsel,88635,2020-02-20
+E000663,Tina Kim,tina.kim663@acme.example,+13125554953,1977-11-07,94107,Sales,AE,82685,2019-12-15
+E000664,Greg Smith,greg.smith664@acme.example,+16175558192,1976-11-29,94114,Sales,SDR,40000,2021-09-29
+E000665,Tina Khan,tina.khan665@acme.example,+12125551609,1993-02-25,10014,Product,PM,101118,2021-09-19
+E000666,Henry Johnson,henry.johnson666@acme.example,+13105550721,2000-10-26,10013,Legal,Sr Counsel,92626,2020-06-21
+E000667,Carol Park,carol.park667@acme.example,+13125555119,1971-01-04,10013,HR,HR Director,81594,2014-04-27
+E000668,Samuel Gomez,samuel.gomez668@acme.example,+13125555228,1989-10-15,10014,Engineering,SWE II,71210,2013-07-14
+E000669,Rachel Wilson,rachel.wilson669@acme.example,+14155559168,1993-01-22,94107,Engineering,Senior SWE,66069,2025-10-19
+E000670,Samuel Clark,samuel.clark670@acme.example,+12125552806,1973-03-13,94117,Customer Support,CS Lead,52088,2022-02-15
+E000671,Chris Lee,chris.lee671@acme.example,+12125550475,1991-02-12,10014,Engineering,Staff SWE,109870,2014-01-06
+E000672,Una Walker,una.walker672@acme.example,+13125557304,1997-08-24,94121,Sales,Senior AE,81994,2025-12-28
+E000673,Xena Hill,xena.hill673@acme.example,+14155557629,1995-06-21,94110,Engineering,EM,57977,2025-05-09
+E000674,Priya Carter,priya.carter674@acme.example,+16175553796,1980-01-15,94110,Legal,GC,125459,2015-10-15
+E000675,Xavier Hansen,xavier.hansen675@acme.example,+12125555412,1984-07-26,10002,Marketing,Marketing Specialist,63450,2020-05-06
+E000676,Karen Patel,karen.patel676@acme.example,+13105559903,1995-10-12,94110,Customer Support,CS Lead,56724,2012-05-26
+E000677,Uma Baker,uma.baker677@acme.example,+12065551162,1983-07-21,10003,Marketing,Growth Lead,58547,2022-04-16
+E000678,Karen Moore,karen.moore678@acme.example,+16175551082,1985-04-14,94114,Finance,Finance Director,110855,2019-10-07
+E000679,Kyle Rossi,kyle.rossi679@acme.example,+13125553869,1977-10-06,10014,Operations,Ops Director,87780,2020-11-30
+E000680,Henry Young,henry.young680@acme.example,+13125557584,1984-08-05,10003,Engineering,Staff SWE,71251,2013-12-14
+E000681,Tina Hansen,tina.hansen681@acme.example,+14155559801,1974-11-17,10014,Finance,Finance Director,80201,2011-05-19
+E000682,Frank Kim,frank.kim682@acme.example,+12125559515,1998-07-15,94103,HR,HR Director,89812,2013-05-07
+E000683,Chris Hill,chris.hill683@acme.example,+13105556389,1997-08-12,10013,Marketing,Marketing Specialist,73448,2022-10-16
+E000684,Sophia Yoshida,sophia.yoshida684@acme.example,+16175555640,1974-01-02,10013,Engineering,Principal SWE,65175,2019-01-25
+E000685,Irene Patel,irene.patel685@acme.example,+14155556049,1994-08-15,94103,Engineering,Principal SWE,95144,2016-04-30
+E000686,Bob Anderson,bob.anderson686@acme.example,+16175559669,1987-09-08,10014,Sales,SDR,57964,2019-02-09
+E000687,Yara Kowalski,yara.kowalski687@acme.example,+13125553460,1999-09-20,94110,Marketing,Marketing Specialist,47423,2018-01-30
+E000688,Aaron Brown,aaron.brown688@acme.example,+13105552056,1976-01-10,94103,Engineering,SWE I,68575,2013-03-25
+E000689,Vlad Wright,vlad.wright689@acme.example,+12065557155,1976-02-03,94107,Engineering,Staff SWE,118771,2025-08-06
+E000690,Marcus Kowalski,marcus.kowalski690@acme.example,+13125552945,1990-05-20,10003,Marketing,Sr Marketing Mgr,50665,2018-08-18
+E000691,Wendy Tran,wendy.tran691@acme.example,+12125556959,1997-02-13,94103,Customer Support,CS Manager,56178,2019-03-20
+E000692,Ian Clark,ian.clark692@acme.example,+13105550548,1971-09-13,10013,Marketing,Sr Marketing Mgr,101173,2012-07-16
+E000693,Lisa Moore,lisa.moore693@acme.example,+12065551311,1976-05-16,10016,HR,Recruiter,66486,2023-09-07
+E000694,Frank Anderson,frank.anderson694@acme.example,+16175551279,2000-09-07,10014,Customer Support,CS Manager,56059,2017-01-03
+E000695,Nora Lee,nora.lee695@acme.example,+13105558765,1970-06-26,10002,Marketing,Sr Marketing Mgr,65559,2017-12-01
+E000696,Samuel Patel,samuel.patel696@acme.example,+12125550578,2001-03-06,10013,HR,HR Director,66369,2022-08-23
+E000697,Quinn Lee,quinn.lee697@acme.example,+12065557752,1995-12-08,94110,Customer Support,CS Manager,76792,2024-01-02
+E000698,Bob Patel,bob.patel698@acme.example,+16175551351,1975-09-09,10003,Engineering,Senior SWE,82248,2015-08-27
+E000699,Irene Hall,irene.hall699@acme.example,+13105554509,1981-07-11,94103,HR,HR Director,80548,2013-05-23
+E000700,Ravi O'Brien,ravi.obrien700@acme.example,+13105552873,1981-09-20,10016,Engineering,SWE II,114781,2021-10-30
+E000701,Carol Rossi,carol.rossi701@acme.example,+14155552376,1996-09-18,94110,Finance,Finance Director,97070,2019-11-15
+E000702,Vlad Nguyen,vlad.nguyen702@acme.example,+12125559465,2002-12-10,94121,Engineering,Senior SWE,66720,2012-08-08
+E000703,David Nguyen,david.nguyen703@acme.example,+16175556533,1991-05-13,94117,Marketing,Growth Lead,82798,2018-10-01
+E000704,Evan Roberts,evan.roberts704@acme.example,+12125558690,1989-07-02,94103,Sales,SDR,105178,2018-07-27
+E000705,Sophia Khan,sophia.khan705@acme.example,+13125550672,1974-05-15,10003,Operations,Ops Manager,53248,2016-02-12
+E000706,Victor Gomez,victor.gomez706@acme.example,+13105551610,1981-06-15,10014,Customer Support,CS Lead,43844,2025-02-22
+E000707,Will Anderson,will.anderson707@acme.example,+12065559645,1978-09-29,10003,Sales,Senior AE,73871,2010-03-11
+E000708,Eve Johnson,eve.johnson708@acme.example,+16175551600,1993-07-24,94107,Operations,Ops Manager,72017,2014-12-03
+E000709,Vlad Patel,vlad.patel709@acme.example,+13105553163,1971-07-12,94103,Customer Support,CS Rep,71252,2014-11-12
+E000710,Marcus Wilson,marcus.wilson710@acme.example,+12065551965,1973-11-16,10013,Engineering,EM,71226,2024-07-13
+E000711,Kyle Murphy,kyle.murphy711@acme.example,+14155553018,1981-05-13,94117,Marketing,Marketing Specialist,53798,2016-03-14
+E000712,Yusuf Kowalski,yusuf.kowalski712@acme.example,+12065555298,1981-07-18,94110,Finance,Controller,56888,2011-05-27
+E000713,Yara Novak,yara.novak713@acme.example,+13105550984,1981-08-01,94117,Engineering,SWE I,40000,2023-09-09
+E000714,Zane Murphy,zane.murphy714@acme.example,+12065558061,1974-11-12,94110,Customer Support,CS Lead,56433,2014-11-25
+E000715,Nora Park,nora.park715@acme.example,+16175554243,1974-08-20,94103,Engineering,Principal SWE,78908,2010-06-03
+E000716,Fiona Brown,fiona.brown716@acme.example,+12065550014,1971-09-12,10014,Sales,Senior AE,40684,2025-09-13
+E000717,Victor Hansen,victor.hansen717@acme.example,+13125550060,1993-02-13,10016,Data Science,ML Engineer,81786,2011-07-29
+E000718,Ian Tran,ian.tran718@acme.example,+14155556298,2000-12-01,10002,Engineering,Principal SWE,88482,2018-01-19
+E000719,Victor Yoshida,victor.yoshida719@acme.example,+16175550904,1998-05-13,10014,Engineering,Principal SWE,98782,2020-04-23
+E000720,Xena Patel,xena.patel720@acme.example,+12065553327,1977-12-03,10003,Engineering,Staff SWE,66846,2024-10-26
+E000721,Maria Yoshida,maria.yoshida721@acme.example,+12065556391,1974-10-16,10014,Operations,Ops Manager,88285,2014-04-02
+E000722,Irene Davis,irene.davis722@acme.example,+12125550415,2002-04-15,10013,Engineering,Staff SWE,102987,2011-06-01
+E000723,Ian Yoshida,ian.yoshida723@acme.example,+16175558748,1990-02-26,94103,Engineering,SWE I,64081,2019-02-04
+E000724,Henry Kim,henry.kim724@acme.example,+12065558570,1990-07-24,10014,Legal,GC,154031,2013-05-05
+E000725,Will Young,will.young725@acme.example,+12125551180,1971-08-28,10016,Engineering,EM,139120,2023-11-14
+E000726,Carol Anderson,carol.anderson726@acme.example,+12065552138,1970-08-24,94110,Operations,Ops Manager,73908,2012-03-08
+E000727,Dana Hall,dana.hall727@acme.example,+12125559683,1972-11-13,94107,Engineering,Principal SWE,90367,2014-07-19
+E000728,Beth Rossi,beth.rossi728@acme.example,+12065556586,1984-07-18,94107,Product,Director of Product,90204,2022-03-30
+E000729,Irene Khan,irene.khan729@acme.example,+12125550746,1996-08-09,94110,Sales,AE,69964,2013-10-08
+E000730,Tomas Dubois,tomas.dubois730@acme.example,+13125552703,1989-09-05,94114,Data Science,DS I,156606,2012-12-28
+E000731,Grace Hall,grace.hall731@acme.example,+16175552584,1970-09-14,10002,Engineering,SWE I,89636,2024-08-14
+E000732,Lisa Patel,lisa.patel732@acme.example,+16175557798,2001-01-21,94110,Engineering,EM,94758,2016-01-29
+E000733,Hannah O'Brien,hannah.obrien733@acme.example,+16175553919,1977-10-30,10013,Operations,Ops Director,77518,2011-12-23
+E000734,Oscar Yoshida,oscar.yoshida734@acme.example,+13105556861,1970-03-16,10003,Engineering,SWE I,111630,2021-11-22
+E000735,Grace Hall,grace.hall735@acme.example,+13105558842,1992-10-07,94114,Marketing,Growth Lead,72190,2014-05-06
+E000736,Henry Brown,henry.brown736@acme.example,+12065557772,1992-04-26,94110,Engineering,SWE I,68066,2011-03-19
+E000737,Priya Dubois,priya.dubois737@acme.example,+13105553433,1989-07-01,94117,Sales,SDR,106638,2022-01-20
+E000738,Liam Nguyen,liam.nguyen738@acme.example,+14155557947,1993-02-05,94107,Engineering,SWE II,96038,2019-12-23
+E000739,Lisa Young,lisa.young739@acme.example,+13105556865,1978-12-01,10016,Operations,Ops Manager,70905,2015-02-09
+E000740,Grace Anderson,grace.anderson740@acme.example,+12065556759,1978-12-21,10001,Legal,Legal Counsel,131982,2020-07-25
+E000741,Lisa Wright,lisa.wright741@acme.example,+14155557141,1976-07-02,94114,Data Science,ML Engineer,121827,2020-04-07
+E000742,Vlad Silva,vlad.silva742@acme.example,+12065555875,1982-02-05,94114,Sales,AE,92398,2025-07-11
+E000743,Kyle Lee,kyle.lee743@acme.example,+13105552236,1974-12-26,10002,Marketing,Marketing Specialist,80823,2016-08-14
+E000744,Marcus Nguyen,marcus.nguyen744@acme.example,+12065552784,1995-12-07,10003,Finance,Analyst,79530,2019-03-27
+E000745,Hannah Wright,hannah.wright745@acme.example,+12125559692,1991-03-29,10002,Sales,SDR,73694,2017-05-05
+E000746,Beth Young,beth.young746@acme.example,+12125559695,1976-09-06,10013,Legal,Sr Counsel,101255,2010-12-29
+E000747,Carol Moore,carol.moore747@acme.example,+12065558261,1971-07-05,10001,Customer Support,CS Lead,61793,2012-03-13
+E000748,Chris Wright,chris.wright748@acme.example,+12125551361,1995-01-20,94103,Operations,Ops Manager,48443,2014-11-21
+E000749,Irene Fischer,irene.fischer749@acme.example,+13105553916,1999-01-19,94107,Engineering,EM,71836,2022-10-17
+E000750,Will Young,will.young750@acme.example,+14155557452,1990-10-21,94110,Legal,Sr Counsel,156681,2014-02-24
+E000751,Xavier Carter,xavier.carter751@acme.example,+12065550022,1998-02-20,94107,Sales,Sales Manager,58539,2016-01-20
+E000752,Tomas Hall,tomas.hall752@acme.example,+13125559424,1979-04-17,10014,Engineering,Senior SWE,80951,2011-03-26
+E000753,Greg Dubois,greg.dubois753@acme.example,+14155551818,1987-03-07,94121,Marketing,Marketing Specialist,72580,2022-07-14
+E000754,Una Martinez,una.martinez754@acme.example,+13125553354,1976-03-17,94121,Engineering,SWE I,96605,2024-07-22
+E000755,Evan Young,evan.young755@acme.example,+12065553437,1980-02-11,94121,Sales,Sales Manager,54033,2011-03-23
+E000756,Eve Dubois,eve.dubois756@acme.example,+13105557412,1991-10-24,10003,Customer Support,CS Rep,54718,2020-07-18
+E000757,Una Hill,una.hill757@acme.example,+12065558730,1983-02-10,10002,Operations,Ops Director,95693,2011-06-22
+E000758,Maria Carter,maria.carter758@acme.example,+14155551313,1987-07-11,94110,Sales,AE,62755,2012-06-14
+E000759,Karen Gomez,karen.gomez759@acme.example,+14155552424,1992-04-06,94110,Legal,GC,125116,2019-05-06
+E000760,Sophia Hill,sophia.hill760@acme.example,+12125557764,1985-07-21,10001,Marketing,Growth Lead,78857,2010-06-25
+E000761,Samuel Silva,samuel.silva761@acme.example,+14155550361,1980-06-03,10003,Operations,Ops Manager,50718,2017-04-27
+E000762,Fiona Young,fiona.young762@acme.example,+12065558686,1994-08-09,10002,Marketing,Growth Lead,67524,2012-12-16
+E000763,Tina Nguyen,tina.nguyen763@acme.example,+13105553715,1991-09-21,94121,Product,PM,115730,2013-09-24
+E000764,Nora Nguyen,nora.nguyen764@acme.example,+12065558770,1982-10-18,94110,Product,Director of Product,119449,2025-07-16
+E000765,Ravi Brown,ravi.brown765@acme.example,+12125553897,1975-03-31,94103,Product,Director of Product,116971,2014-02-20
+E000766,Noah Baker,noah.baker766@acme.example,+12065550568,1999-11-09,94121,Product,PM,117194,2018-05-13
+E000767,Chris Hill,chris.hill767@acme.example,+12125558743,1983-07-12,94107,Data Science,ML Engineer,153477,2020-04-10
+E000768,Uma Brown,uma.brown768@acme.example,+14155558948,1992-10-05,94121,Operations,Ops Manager,59230,2020-08-18
+E000769,Samuel Clark,samuel.clark769@acme.example,+12065552409,1995-05-10,10016,Data Science,ML Engineer,102772,2020-09-28
+E000770,Carol Chen,carol.chen770@acme.example,+12065559026,1975-03-30,94117,Engineering,Principal SWE,95357,2014-12-11
+E000771,Chris Fischer,chris.fischer771@acme.example,+14155555347,1972-06-20,10013,Operations,Ops Director,44207,2016-03-26
+E000772,Maria Smith,maria.smith772@acme.example,+14155558821,1989-12-25,10014,Operations,Ops Analyst,65676,2021-06-24
+E000773,Zane Silva,zane.silva773@acme.example,+16175555206,1997-01-21,10013,Customer Support,CS Rep,64530,2013-04-26
+E000774,Una Kowalski,una.kowalski774@acme.example,+13105556326,1986-09-22,94103,Sales,Sales Manager,64701,2016-11-28
+E000775,Chris Baker,chris.baker775@acme.example,+14155553533,2002-08-26,10002,HR,Recruiter,75824,2019-07-05
+E000776,Vlad Suzuki,vlad.suzuki776@acme.example,+12125559620,1996-10-27,94107,Engineering,Senior SWE,65530,2020-08-24
+E000777,Hannah Rossi,hannah.rossi777@acme.example,+14155559677,1986-11-09,94107,Engineering,EM,107217,2022-06-20
+E000778,Dana Clark,dana.clark778@acme.example,+12125553264,1978-05-06,10001,Sales,SDR,64400,2010-12-12
+E000779,Tina Young,tina.young779@acme.example,+13105558095,1995-02-02,10016,Marketing,Marketing Specialist,82666,2016-09-24
+E000780,Oscar Moore,oscar.moore780@acme.example,+14155554713,1988-09-17,94110,Marketing,Growth Lead,69936,2024-06-18
+E000781,Paul Smith,paul.smith781@acme.example,+14155554541,1992-02-13,94107,Customer Support,CS Lead,41471,2015-10-14
+E000782,Oscar Moore,oscar.moore782@acme.example,+12065551959,1986-09-28,10003,HR,HR Partner,63185,2015-10-28
+E000783,Karen Young,karen.young783@acme.example,+14155552394,1984-05-04,10002,Legal,Legal Counsel,114852,2018-02-06
+E000784,Aaron Fischer,aaron.fischer784@acme.example,+14155554749,1983-01-31,10003,Operations,Ops Analyst,73861,2021-07-11
+E000785,Maria Murphy,maria.murphy785@acme.example,+14155559810,1977-07-01,10003,Sales,Sales Manager,89110,2016-10-02
+E000786,Rachel Dubois,rachel.dubois786@acme.example,+14155558755,1996-01-08,94121,Finance,Analyst,65382,2013-01-26
+E000787,Hannah Patel,hannah.patel787@acme.example,+13105557944,1988-06-25,94121,Data Science,DS II,122980,2014-12-17
+E000788,Maria Baker,maria.baker788@acme.example,+13125558612,1993-11-13,10016,Customer Support,CS Rep,59172,2019-05-12
+E000789,Dana Martinez,dana.martinez789@acme.example,+14155552150,1970-10-12,10002,Sales,Sales Manager,88872,2023-05-28
+E000790,Hannah Rossi,hannah.rossi790@acme.example,+12125554991,1971-04-17,10016,Finance,Sr Analyst,113215,2012-11-20
+E000791,Tomas Brown,tomas.brown791@acme.example,+12065553712,1983-10-16,94110,Engineering,SWE I,47224,2012-07-04
+E000792,Eve Smith,eve.smith792@acme.example,+16175557065,1971-11-28,94114,Engineering,EM,104306,2021-07-08
+E000793,Lisa Lee,lisa.lee793@acme.example,+16175551948,1981-05-08,94103,Engineering,EM,96239,2012-10-11
+E000794,Marcus Kim,marcus.kim794@acme.example,+13125553277,1978-04-16,10014,Sales,AE,75581,2013-04-07
+E000795,Will Gomez,will.gomez795@acme.example,+13125555698,1985-10-19,94110,Finance,Sr Analyst,86726,2022-12-20
+E000796,Xena Johnson,xena.johnson796@acme.example,+13125553555,2002-02-09,94114,Product,PM,104745,2022-01-18
+E000797,Alice Park,alice.park797@acme.example,+12125558260,2001-09-30,10002,Sales,Account Director,86863,2012-05-29
+E000798,Liam Fischer,liam.fischer798@acme.example,+16175556948,1979-08-12,10003,Engineering,SWE I,119342,2017-01-18
+E000799,Henry Carter,henry.carter799@acme.example,+14155558515,1976-02-05,10002,HR,HR Director,66664,2011-11-05
+E000800,Uma Wright,uma.wright800@acme.example,+14155556304,1982-09-21,10002,Customer Support,CS Lead,73652,2025-05-30
+E000801,Chris Tran,chris.tran801@acme.example,+13125556672,1983-01-14,10001,Engineering,SWE I,120533,2025-03-26
+E000802,Xavier Murphy,xavier.murphy802@acme.example,+14155558055,2000-02-24,94107,Sales,Account Director,52880,2024-10-08
+E000803,Sophia Turner,sophia.turner803@acme.example,+14155552348,1987-09-17,10001,Operations,Ops Analyst,68296,2013-10-14
+E000804,Eve Dubois,eve.dubois804@acme.example,+12125555548,1978-12-26,10013,Finance,Finance Director,48610,2012-10-02
+E000805,Olivia Kowalski,olivia.kowalski805@acme.example,+12065558177,1982-06-30,10016,HR,HR Director,68445,2024-06-10
+E000806,Zane Fischer,zane.fischer806@acme.example,+16175559882,1988-02-22,10002,Customer Support,CS Rep,75964,2020-03-13
+E000807,Grace Wilson,grace.wilson807@acme.example,+13105558017,1992-04-22,94114,Operations,Ops Analyst,94117,2011-07-13
+E000808,Fiona Smith,fiona.smith808@acme.example,+12125556269,1997-02-13,10014,Sales,Sales Manager,81076,2023-12-14
+E000809,Nora Park,nora.park809@acme.example,+14155558518,1992-01-30,10002,Engineering,EM,55363,2022-03-02
+E000810,Victor Hill,victor.hill810@acme.example,+13125550289,1971-06-02,10001,Legal,Legal Counsel,120391,2018-08-09
+E000811,Chris Khan,chris.khan811@acme.example,+16175557250,1990-08-15,94103,Engineering,Principal SWE,61575,2025-11-02
+E000812,Karen Wright,karen.wright812@acme.example,+16175552203,1984-01-07,10016,Sales,AE,45711,2022-10-05
+E000813,Sophia Wright,sophia.wright813@acme.example,+12065559073,2000-09-29,10003,Customer Support,CS Lead,48532,2011-04-02
+E000814,Zane Roberts,zane.roberts814@acme.example,+16175559683,1986-12-12,10013,Operations,Ops Manager,66666,2017-03-10
+E000815,David Smith,david.smith815@acme.example,+13125550739,1975-10-02,94121,Sales,Account Director,116538,2017-08-27
+E000816,Yara Park,yara.park816@acme.example,+16175555654,1986-01-12,10001,Sales,Senior AE,82088,2015-07-22
+E000817,Paul Yoshida,paul.yoshida817@acme.example,+13125551391,2000-11-11,94107,Legal,Legal Counsel,117391,2017-04-25
+E000818,Carol Carter,carol.carter818@acme.example,+12065556921,1995-06-25,10003,Data Science,Senior DS,114762,2010-06-17
+E000819,Tomas Moore,tomas.moore819@acme.example,+13125550364,1984-03-13,10001,Customer Support,CS Lead,40000,2012-03-30
+E000820,Tomas Kim,tomas.kim820@acme.example,+13105558138,1992-07-21,10014,Sales,Account Director,58999,2016-09-19
+E000821,Xavier Kowalski,xavier.kowalski821@acme.example,+12125558142,1998-07-04,94107,Finance,Sr Analyst,93403,2022-11-12
+E000822,Zane Tran,zane.tran822@acme.example,+13125551506,2002-03-12,10013,Engineering,Senior SWE,92588,2016-02-18
+E000823,Eve Clark,eve.clark823@acme.example,+13125557786,1989-02-27,94114,Sales,AE,65167,2016-09-22
+E000824,Beth Hill,beth.hill824@acme.example,+13105553278,1988-08-02,10001,Sales,Account Director,61188,2020-03-01
+E000825,Ravi Baker,ravi.baker825@acme.example,+12125550304,1998-03-01,10016,Customer Support,CS Rep,47645,2020-06-25
+E000826,Rachel Hill,rachel.hill826@acme.example,+13125557106,1995-05-25,10016,Operations,Ops Director,65180,2014-07-02
+E000827,Xavier Carter,xavier.carter827@acme.example,+12125553938,1976-10-01,10016,Operations,Ops Manager,78594,2011-06-12
+E000828,Oscar Kim,oscar.kim828@acme.example,+16175554373,1982-11-16,10014,Engineering,EM,63671,2023-06-27
+E000829,Paul Hansen,paul.hansen829@acme.example,+12125551860,1976-09-22,94114,Engineering,Senior SWE,53782,2019-10-13
+E000830,Beth Davis,beth.davis830@acme.example,+12125552610,1982-03-27,94110,Engineering,Senior SWE,92151,2024-10-09
+E000831,Julia Murphy,julia.murphy831@acme.example,+12065550691,2002-05-30,10002,Finance,Analyst,100853,2023-06-30
+E000832,Tina Martinez,tina.martinez832@acme.example,+16175555954,2000-02-17,10014,Legal,Sr Counsel,111917,2013-02-25
+E000833,Paul Wilson,paul.wilson833@acme.example,+13125558196,1975-05-31,10003,Operations,Ops Director,103016,2015-08-25
+E000834,Fiona Turner,fiona.turner834@acme.example,+12125559827,1975-06-27,94121,Sales,Account Director,60597,2018-09-30
+E000835,Will Anderson,will.anderson835@acme.example,+16175553571,1976-06-21,94107,Engineering,Senior SWE,67216,2023-03-23
+E000836,David Wright,david.wright836@acme.example,+13125556139,2001-05-20,94107,Sales,SDR,80687,2020-08-26
+E000837,Sophia Anderson,sophia.anderson837@acme.example,+13105552374,1986-04-14,10002,Operations,Ops Manager,108803,2023-08-03
+E000838,Carol Lee,carol.lee838@acme.example,+12065553926,1981-05-07,10003,Sales,Sales Manager,81891,2025-05-15
+E000839,Henry Hill,henry.hill839@acme.example,+12125557248,1987-06-05,94103,Data Science,ML Engineer,166228,2016-09-30
+E000840,Frank Anderson,frank.anderson840@acme.example,+13105553446,1977-03-10,10002,Operations,Ops Director,55245,2019-02-11
+E000841,Carol Gomez,carol.gomez841@acme.example,+14155558055,1991-02-18,10016,Marketing,Sr Marketing Mgr,72505,2012-04-02
+E000842,Karen Roberts,karen.roberts842@acme.example,+13125551087,1985-10-13,10001,Customer Support,CS Manager,40000,2017-04-30
+E000843,Dana Smith,dana.smith843@acme.example,+14155553010,1998-04-08,10002,Finance,Sr Analyst,109697,2016-11-08
+E000844,Uma Clark,uma.clark844@acme.example,+14155551815,1977-01-29,94114,Customer Support,CS Manager,55155,2012-12-01
+E000845,Marcus Suzuki,marcus.suzuki845@acme.example,+13105557397,1991-06-17,10016,Engineering,SWE II,67077,2016-04-27
+E000846,Maria Turner,maria.turner846@acme.example,+16175556022,1978-02-28,10001,Legal,GC,76755,2015-01-13
+E000847,Bob Smith,bob.smith847@acme.example,+13125553747,1973-12-28,10002,Engineering,EM,89770,2023-11-11
+E000848,Beth Walker,beth.walker848@acme.example,+13105552445,1973-12-30,94121,Engineering,Principal SWE,78591,2012-08-19
+E000849,Alice Adams,alice.adams849@acme.example,+16175557433,2000-03-20,10002,Engineering,EM,102529,2015-12-21
+E000850,Samuel Wright,samuel.wright850@acme.example,+16175552133,1989-05-07,94114,Customer Support,CS Lead,82750,2025-03-10
+E000851,Maria Suzuki,maria.suzuki851@acme.example,+12125556693,1976-07-19,94103,Sales,Sales Manager,76995,2015-07-28
+E000852,Xavier Young,xavier.young852@acme.example,+12065557506,1973-11-05,94103,Marketing,Sr Marketing Mgr,99630,2025-07-18
+E000853,Zane Kim,zane.kim853@acme.example,+12065556283,2001-10-12,10001,HR,Recruiter,88016,2011-03-03
+E000854,Victor Anderson,victor.anderson854@acme.example,+16175555804,1997-03-14,10014,Product,Director of Product,117439,2025-11-30
+E000855,Will Davis,will.davis855@acme.example,+14155554155,1992-08-19,10013,Sales,SDR,69942,2022-07-20
+E000856,Carol Young,carol.young856@acme.example,+12125554264,1977-08-15,10003,Marketing,Sr Marketing Mgr,71562,2020-07-01
+E000857,Irene Turner,irene.turner857@acme.example,+13105558690,1989-06-03,94110,Sales,Sales Manager,85062,2016-04-20
+E000858,Will Dubois,will.dubois858@acme.example,+16175554635,1981-10-22,10013,Finance,Controller,98152,2021-08-06
+E000859,Uma Kowalski,uma.kowalski859@acme.example,+12125555169,1992-01-15,94110,Customer Support,CS Manager,46556,2014-03-28
+E000860,Jack Lee,jack.lee860@acme.example,+12125553000,1971-08-11,10002,Sales,SDR,58698,2019-10-16
+E000861,Henry Wright,henry.wright861@acme.example,+14155557233,1985-12-29,10016,Customer Support,CS Lead,40000,2013-04-27
+E000862,Henry Fischer,henry.fischer862@acme.example,+14155553337,1982-09-29,94110,Finance,Controller,96874,2022-08-20
+E000863,Ravi Young,ravi.young863@acme.example,+12125559560,1970-03-09,10003,HR,HR Partner,67156,2021-03-04
+E000864,Sophia Park,sophia.park864@acme.example,+13105550425,1982-10-02,10014,Product,PM,109410,2018-11-04
+E000865,Xavier Young,xavier.young865@acme.example,+14155555300,1976-11-24,94103,Engineering,EM,70195,2016-01-16
+E000866,Marcus Johnson,marcus.johnson866@acme.example,+13105550718,1999-06-08,10013,Data Science,Senior DS,84037,2022-10-07
+E000867,Irene Kim,irene.kim867@acme.example,+14155554635,1984-06-30,94103,HR,HR Director,85099,2018-12-12
+E000868,Quinn Murphy,quinn.murphy868@acme.example,+12125556535,1974-01-01,94103,Finance,Sr Analyst,88582,2018-09-18
+E000869,Yusuf Hansen,yusuf.hansen869@acme.example,+13105552525,1975-05-30,94117,Marketing,Sr Marketing Mgr,76403,2025-05-13
+E000870,Marcus Chen,marcus.chen870@acme.example,+13105551574,1986-06-26,10003,Engineering,Staff SWE,40000,2018-09-15
+E000871,Evan Gomez,evan.gomez871@acme.example,+13125559835,1988-12-23,94107,HR,Recruiter,60724,2019-07-22
+E000872,Frank Davis,frank.davis872@acme.example,+13125555599,1990-10-17,10014,Engineering,EM,67501,2013-06-24
+E000873,Fiona Adams,fiona.adams873@acme.example,+12065558596,1973-10-07,94117,Marketing,Marketing Specialist,97124,2013-05-02
+E000874,Irene Yoshida,irene.yoshida874@acme.example,+12125558570,1989-03-09,94117,Customer Support,CS Manager,47471,2011-09-19
+E000875,Carol Green,carol.green875@acme.example,+14155558366,1989-01-22,10001,Engineering,EM,76512,2017-12-21
+E000876,Quinn Young,quinn.young876@acme.example,+14155558248,1970-09-24,94107,HR,Recruiter,46815,2014-01-10
+E000877,Liam Hansen,liam.hansen877@acme.example,+14155551364,1988-09-02,10016,Sales,Account Director,69546,2020-02-03
+E000878,Nora Roberts,nora.roberts878@acme.example,+13105553066,1979-06-21,94110,Engineering,Principal SWE,43482,2015-10-26
+E000879,Sophia Park,sophia.park879@acme.example,+16175558755,1970-10-21,94103,Sales,AE,85754,2025-07-08
+E000880,Zane Walker,zane.walker880@acme.example,+12065557974,1983-08-02,10013,Finance,Controller,117084,2025-06-28
+E000881,Sophia Hansen,sophia.hansen881@acme.example,+13105551435,1975-08-12,94110,Engineering,SWE I,100538,2014-03-22
+E000882,Bob Kim,bob.kim882@acme.example,+16175552378,1999-02-23,94114,Marketing,Growth Lead,54573,2022-01-30
+E000883,Maria Turner,maria.turner883@acme.example,+13105557592,1976-08-24,10002,Marketing,Marketing Specialist,85208,2025-10-04
+E000884,Chris Wright,chris.wright884@acme.example,+16175550321,1990-03-01,10013,Engineering,Senior SWE,97426,2022-10-09
+E000885,Zane Lee,zane.lee885@acme.example,+13105550129,1974-08-10,10014,Finance,Finance Director,137395,2022-12-24
+E000886,Marcus Baker,marcus.baker886@acme.example,+13105550606,1991-11-14,10001,Marketing,Growth Lead,75504,2023-09-19
+E000887,Sophia Wright,sophia.wright887@acme.example,+12125550994,1993-09-12,94103,Marketing,Sr Marketing Mgr,66575,2024-07-16
+E000888,Aaron Moore,aaron.moore888@acme.example,+14155558106,1997-12-07,10014,Sales,SDR,69814,2010-06-20
+E000889,Karen Patel,karen.patel889@acme.example,+12065553149,1991-01-19,94121,Marketing,Growth Lead,87458,2017-08-10
+E000890,Marcus Carter,marcus.carter890@acme.example,+12125554806,2002-06-07,10016,Sales,SDR,118005,2025-02-05
+E000891,Priya Dubois,priya.dubois891@acme.example,+16175552654,1997-11-23,94114,Sales,AE,69764,2014-06-23
+E000892,Karen Walker,karen.walker892@acme.example,+16175551653,1988-08-29,10002,Sales,Senior AE,65880,2022-06-28
+E000893,David Smith,david.smith893@acme.example,+13105554273,1986-01-06,10014,Engineering,Principal SWE,93886,2019-08-29
+E000894,Henry Hall,henry.hall894@acme.example,+12125551977,1995-03-18,94114,Marketing,Sr Marketing Mgr,81303,2017-12-20
+E000895,Yusuf Davis,yusuf.davis895@acme.example,+13125554382,1976-10-12,10016,Legal,GC,101033,2019-10-27
+E000896,Dana Wilson,dana.wilson896@acme.example,+14155559988,1974-07-28,10003,Engineering,SWE I,50762,2013-09-30
+E000897,Oscar Wilson,oscar.wilson897@acme.example,+12125555925,1977-01-16,10016,Sales,SDR,76764,2012-03-24
+E000898,Jack Dubois,jack.dubois898@acme.example,+13105552257,1975-07-08,94114,Marketing,Sr Marketing Mgr,58916,2010-02-23
+E000899,Paul Moore,paul.moore899@acme.example,+13105554698,1992-08-27,94110,Engineering,Senior SWE,79384,2024-02-13
+E000900,Ravi Anderson,ravi.anderson900@acme.example,+12125558677,1988-12-01,94114,Engineering,Staff SWE,59728,2019-04-10
+E000901,Aaron Carter,aaron.carter901@acme.example,+13125555927,1971-05-03,10002,Engineering,SWE I,78904,2011-07-25
+E000902,Frank Rossi,frank.rossi902@acme.example,+13105556580,1977-05-16,10001,Engineering,SWE I,55446,2024-10-22
+E000903,Priya Brown,priya.brown903@acme.example,+13125550947,1998-05-02,10016,Finance,Controller,54937,2025-09-19
+E000904,Julia Yoshida,julia.yoshida904@acme.example,+12065555139,1985-06-09,94103,Finance,Sr Analyst,117253,2025-09-15
+E000905,Zane O'Brien,zane.obrien905@acme.example,+12065553360,1994-06-03,10013,Finance,Finance Director,80090,2024-07-20
+E000906,Zane Silva,zane.silva906@acme.example,+13105551380,1971-08-29,10003,Sales,Senior AE,40000,2021-09-03
+E000907,Ian Patel,ian.patel907@acme.example,+12125551520,1992-12-14,10003,Sales,Sales Manager,75523,2010-08-17
+E000908,Ian Young,ian.young908@acme.example,+13105553954,1983-08-20,10016,Marketing,Growth Lead,69380,2012-06-23
+E000909,Vlad Lee,vlad.lee909@acme.example,+13105554255,1998-02-15,10003,Sales,AE,76963,2020-01-25
+E000910,Tina Clark,tina.clark910@acme.example,+12065550085,1990-04-30,94121,Product,Director of Product,52649,2023-01-17
+E000911,Kyle Hill,kyle.hill911@acme.example,+13125553831,1985-09-18,94117,Sales,Account Director,60173,2021-08-28
+E000912,Will Anderson,will.anderson912@acme.example,+14155555371,1993-03-02,10013,Engineering,Senior SWE,50032,2020-03-10
+E000913,Grace Brown,grace.brown913@acme.example,+12065556974,1988-06-26,94107,Engineering,Staff SWE,106737,2020-01-03
+E000914,Eve Dubois,eve.dubois914@acme.example,+12065558622,1988-01-25,10013,Customer Support,CS Lead,46202,2015-12-01
+E000915,Lisa Wright,lisa.wright915@acme.example,+12065556937,1989-09-28,10016,Data Science,ML Engineer,106666,2013-08-27
+E000916,Jack Green,jack.green916@acme.example,+12125557942,2001-11-25,10002,Engineering,EM,59204,2021-07-06
+E000917,Hannah Wilson,hannah.wilson917@acme.example,+12065553483,1990-06-06,10002,Engineering,SWE II,107538,2012-08-30
+E000918,Marcus Suzuki,marcus.suzuki918@acme.example,+14155551980,1986-07-31,10013,Sales,Account Director,68389,2013-06-09
+E000919,Henry Dubois,henry.dubois919@acme.example,+13105556135,1983-08-09,94117,Marketing,Marketing Specialist,95063,2011-02-03
+E000920,Tina Patel,tina.patel920@acme.example,+12125552999,1991-12-05,94103,Engineering,Senior SWE,110993,2011-07-08
+E000921,Carol Suzuki,carol.suzuki921@acme.example,+16175559389,1983-11-23,10013,Marketing,Sr Marketing Mgr,84000,2023-08-02
+E000922,Irene Chen,irene.chen922@acme.example,+13125557551,1990-03-08,10014,Marketing,Growth Lead,59955,2017-04-18
+E000923,Frank Hall,frank.hall923@acme.example,+12065556711,1987-05-16,94114,Data Science,Senior DS,41802,2019-12-09
+E000924,Will Gomez,will.gomez924@acme.example,+12065551450,1977-06-06,10016,Engineering,EM,68960,2025-11-13
+E000925,Tina Baker,tina.baker925@acme.example,+12065552028,1998-11-19,10003,Engineering,Principal SWE,44356,2022-10-16
+E000926,Hannah Silva,hannah.silva926@acme.example,+16175558235,1970-11-02,94107,Operations,Ops Director,63438,2014-01-12
+E000927,Bob Gomez,bob.gomez927@acme.example,+12125554018,2001-08-26,10013,Marketing,Growth Lead,65713,2011-01-04
+E000928,Fiona Smith,fiona.smith928@acme.example,+13105557160,1978-02-05,10001,Engineering,Principal SWE,69235,2017-02-12
+E000929,Yara Roberts,yara.roberts929@acme.example,+14155551878,1974-06-16,10003,Engineering,SWE II,102553,2013-06-17
+E000930,Tina Suzuki,tina.suzuki930@acme.example,+12065552772,1972-08-23,10013,Product,PM,139307,2010-08-11
+E000931,Una Lee,una.lee931@acme.example,+13105556388,1974-06-06,94121,Engineering,Senior SWE,82031,2012-09-17
+E000932,David Silva,david.silva932@acme.example,+12125559781,1996-04-15,94114,Marketing,Growth Lead,122846,2018-08-21
+E000933,Henry Gomez,henry.gomez933@acme.example,+14155555215,1990-11-07,10003,Marketing,Sr Marketing Mgr,105086,2010-06-02
+E000934,Rachel Baker,rachel.baker934@acme.example,+13125551663,1981-01-18,10003,Operations,Ops Analyst,73839,2016-10-31
+E000935,Kyle Suzuki,kyle.suzuki935@acme.example,+16175551374,1998-07-09,10003,Engineering,SWE II,40000,2015-07-02
+E000936,Ian Kowalski,ian.kowalski936@acme.example,+13125557401,1971-11-16,94103,Finance,Controller,140675,2024-08-24
+E000937,Karen Johnson,karen.johnson937@acme.example,+14155557900,1982-04-05,10013,Sales,SDR,113449,2014-10-09
+E000938,Lisa Green,lisa.green938@acme.example,+13105550745,1977-03-29,10016,Customer Support,CS Rep,54890,2016-09-28
+E000939,Frank Hansen,frank.hansen939@acme.example,+12065552014,1976-04-07,10016,Customer Support,CS Lead,60959,2021-04-28
+E000940,Uma Rossi,uma.rossi940@acme.example,+12065554282,2001-09-30,10002,Sales,Sales Manager,65470,2017-08-30
+E000941,Noah Carter,noah.carter941@acme.example,+13125555381,1970-09-18,10016,Engineering,SWE I,83205,2010-03-20
+E000942,Sophia Murphy,sophia.murphy942@acme.example,+16175559106,2001-03-30,10016,Marketing,Sr Marketing Mgr,78947,2022-01-26
+E000943,Frank Martinez,frank.martinez943@acme.example,+13125550507,2000-02-16,10002,Operations,Ops Manager,84353,2023-06-27
+E000944,Wendy Novak,wendy.novak944@acme.example,+12125550138,1975-08-07,10002,Sales,Senior AE,71603,2019-12-21
+E000945,Alice Tran,alice.tran945@acme.example,+12065550324,1982-08-12,10014,Data Science,Senior DS,128518,2024-01-09
+E000946,Tina Tran,tina.tran946@acme.example,+12125558090,1986-04-14,94103,Sales,Account Director,109359,2014-09-09
+E000947,Alice Silva,alice.silva947@acme.example,+12065556489,1974-12-23,94117,Customer Support,CS Lead,58774,2022-09-09
+E000948,Sophia Walker,sophia.walker948@acme.example,+13125552875,1972-12-06,10013,Engineering,SWE I,99402,2012-11-09
+E000949,Quinn Clark,quinn.clark949@acme.example,+12125558570,2002-09-12,94117,Engineering,EM,150450,2025-03-15
+E000950,Ian Hall,ian.hall950@acme.example,+13105559176,1990-05-13,94103,Data Science,DS I,120723,2017-03-31
+E000951,Beth Suzuki,beth.suzuki951@acme.example,+13105551994,2000-07-05,10003,Marketing,Sr Marketing Mgr,74665,2015-01-14
+E000952,David Gomez,david.gomez952@acme.example,+16175558723,1990-02-19,94121,Engineering,SWE II,84193,2017-07-04
+E000953,Frank Clark,frank.clark953@acme.example,+14155553696,2000-12-06,10001,Data Science,DS II,118198,2011-05-30
+E000954,Oscar Park,oscar.park954@acme.example,+14155557863,1989-05-18,94103,Customer Support,CS Manager,65132,2017-07-01
+E000955,Quinn Anderson,quinn.anderson955@acme.example,+14155557759,1980-09-10,94121,Finance,Controller,78952,2011-08-21
+E000956,Yusuf Walker,yusuf.walker956@acme.example,+13125557184,1974-04-17,10014,Marketing,Marketing Specialist,78368,2011-12-02
+E000957,David Davis,david.davis957@acme.example,+16175555132,2001-02-07,94107,Finance,Analyst,115758,2016-10-05
+E000958,Nora Kowalski,nora.kowalski958@acme.example,+14155551668,2000-05-24,94103,Customer Support,CS Lead,48693,2018-07-22
+E000959,Zane Park,zane.park959@acme.example,+13125556735,1980-06-16,10013,Finance,Analyst,71468,2019-08-09
+E000960,Nora Hall,nora.hall960@acme.example,+14155555564,1999-03-14,10014,Finance,Finance Director,102092,2021-08-08
+E000961,Victor Young,victor.young961@acme.example,+12125551769,1974-08-10,94103,Customer Support,CS Rep,40000,2022-11-09
+E000962,Irene Green,irene.green962@acme.example,+13105555822,1988-11-19,10002,HR,Recruiter,57211,2014-03-04
+E000963,Paul Chen,paul.chen963@acme.example,+14155550991,1975-09-23,94117,Customer Support,CS Manager,74468,2016-12-24
+E000964,Lisa Hill,lisa.hill964@acme.example,+12125552415,1991-01-23,94117,Customer Support,CS Lead,49968,2018-04-10
+E000965,Alice Adams,alice.adams965@acme.example,+13125552369,1972-07-28,94114,Customer Support,CS Manager,62931,2014-05-20
+E000966,Maria Silva,maria.silva966@acme.example,+14155555595,1978-06-30,10014,Marketing,Growth Lead,65379,2020-06-25
+E000967,Marcus Rossi,marcus.rossi967@acme.example,+13125559274,1985-01-21,10013,Sales,Sales Manager,86527,2010-12-12
+E000968,Fiona Tran,fiona.tran968@acme.example,+14155553654,2001-02-04,94114,Marketing,Marketing Specialist,96878,2015-05-13
+E000969,Evan Rossi,evan.rossi969@acme.example,+12065556158,1979-03-18,10001,Engineering,SWE I,78631,2010-09-03
+E000970,Julia Wilson,julia.wilson970@acme.example,+12125554760,1989-10-03,94114,Operations,Ops Manager,74457,2010-12-26
+E000971,Bob Silva,bob.silva971@acme.example,+12125554654,1977-10-24,94114,Legal,GC,142207,2015-07-08
+E000972,Liam Silva,liam.silva972@acme.example,+14155552884,1981-09-29,94107,Engineering,EM,128103,2013-01-29
+E000973,Yara Wilson,yara.wilson973@acme.example,+13105553444,1983-09-08,10002,Engineering,Senior SWE,53401,2023-12-24
+E000974,Beth Martinez,beth.martinez974@acme.example,+14155552366,1975-11-13,94114,Engineering,Staff SWE,40000,2025-07-29
+E000975,Xavier Khan,xavier.khan975@acme.example,+13125557037,1998-07-15,94114,Data Science,DS II,124260,2013-05-02
+E000976,Uma Anderson,uma.anderson976@acme.example,+14155554588,1975-09-03,10003,Product,Sr PM,90449,2014-09-11
+E000977,Vlad Turner,vlad.turner977@acme.example,+16175551062,1977-07-06,10003,Sales,Account Director,57972,2014-01-06
+E000978,Uma Dubois,uma.dubois978@acme.example,+13125557918,2002-02-07,10002,Marketing,Growth Lead,95468,2018-12-29
+E000979,Oscar Young,oscar.young979@acme.example,+12065550599,1979-04-18,94114,Legal,Sr Counsel,136381,2016-11-11
+E000980,Beth Novak,beth.novak980@acme.example,+13125552575,1986-10-13,94117,Customer Support,CS Rep,45871,2011-11-20
+E000981,Samuel O'Brien,samuel.obrien981@acme.example,+13125555760,1980-04-29,10013,Engineering,Principal SWE,65922,2020-06-27
+E000982,Beth Suzuki,beth.suzuki982@acme.example,+13105558151,1984-03-22,94117,Sales,Senior AE,60463,2019-11-28
+E000983,Olivia Roberts,olivia.roberts983@acme.example,+12065551243,1986-02-09,94107,Sales,Account Director,46362,2016-03-14
+E000984,Olivia Park,olivia.park984@acme.example,+14155551168,1986-02-28,94103,Customer Support,CS Lead,53616,2014-05-30
+E000985,Sophia Rossi,sophia.rossi985@acme.example,+13105554959,2000-08-30,94117,Engineering,Principal SWE,174721,2022-03-08
+E000986,Quinn Johnson,quinn.johnson986@acme.example,+13105554617,1985-07-20,10001,Data Science,DS I,108734,2020-08-02
+E000987,Priya Green,priya.green987@acme.example,+12125556512,1980-03-17,94114,HR,HR Partner,55355,2022-05-25
+E000988,Xena Carter,xena.carter988@acme.example,+12065557559,1985-04-13,94107,Sales,Senior AE,78852,2019-08-14
+E000989,Yusuf Suzuki,yusuf.suzuki989@acme.example,+12125557187,1990-03-09,10003,Engineering,SWE II,73420,2010-03-21
+E000990,Fiona Fischer,fiona.fischer990@acme.example,+13105553694,1988-10-20,10001,Operations,Ops Manager,66321,2025-06-27
+E000991,Ian Yoshida,ian.yoshida991@acme.example,+13105559616,1971-01-16,10013,Finance,Sr Analyst,125909,2017-05-29
+E000992,Kyle Walker,kyle.walker992@acme.example,+13125559402,1987-07-15,10001,Engineering,Staff SWE,135781,2011-06-06
+E000993,Ian Novak,ian.novak993@acme.example,+12125557778,1974-11-15,94121,Customer Support,CS Lead,48430,2013-11-05
+E000994,Grace Baker,grace.baker994@acme.example,+12125550525,2000-11-27,10013,Marketing,Marketing Specialist,68239,2014-06-19
+E000995,Eve Novak,eve.novak995@acme.example,+13105553373,1980-06-15,94117,Operations,Ops Analyst,56194,2010-04-01
+E000996,Karen Khan,karen.khan996@acme.example,+16175556407,1977-01-16,94107,Engineering,Staff SWE,91738,2020-09-22
+E000997,Will Martinez,will.martinez997@acme.example,+16175553382,1975-10-30,94114,Sales,SDR,89190,2016-12-17
+E000998,Lisa Silva,lisa.silva998@acme.example,+13125557519,1982-05-10,94114,Engineering,SWE II,112482,2019-12-31
+E000999,Eve Hansen,eve.hansen999@acme.example,+13125554044,1993-08-03,94121,Data Science,ML Engineer,74455,2012-01-17
+E001000,Samuel Carter,samuel.carter1000@acme.example,+13105554873,1987-07-18,10013,Finance,Sr Analyst,102133,2019-04-24
