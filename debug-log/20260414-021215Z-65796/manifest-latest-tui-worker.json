@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "kind": "ax-code-debug-log",
+  "createdAt": "2026-04-14T02:12:15.797Z",
+  "component": "tui-worker",
+  "version": "3.1.1",
+  "pid": 65796,
+  "cwd": {
+    "redacted": true,
+    "basename": "sdsa"
+  },
+  "args": [],
+  "includeContent": false,
+  "files": {
+    "events": "events.jsonl",
+    "process": "process.jsonl"
+  }
+}

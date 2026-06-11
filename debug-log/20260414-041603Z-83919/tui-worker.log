@@ -1,0 +1,223 @@
+INFO  2026-04-14T04:16:03 +53ms service=server method=GET path=/event request
+INFO  2026-04-14T04:16:03 +1ms service=server status=started method=GET path=/event request
+INFO  2026-04-14T04:16:03 +0ms service=default directory=/Users/akiralam/code/sdsa creating instance
+INFO  2026-04-14T04:16:03 +3ms service=project directory=/Users/akiralam/code/sdsa fromDirectory
+INFO  2026-04-14T04:16:03 +43ms service=db path=/Users/akiralam/.local/share/ax-code/ax-code.db opening database
+INFO  2026-04-14T04:16:03 +4ms service=db count=18 mode=bundled applying migrations
+INFO  2026-04-14T04:16:03 +5ms service=default directory=/Users/akiralam/code/sdsa bootstrapping
+INFO  2026-04-14T04:16:03 +0ms service=bus type=session.updated subscribing
+INFO  2026-04-14T04:16:03 +0ms service=bus type=message.updated subscribing
+INFO  2026-04-14T04:16:03 +0ms service=bus type=message.part.updated subscribing
+INFO  2026-04-14T04:16:03 +0ms service=bus type=session.diff subscribing
+INFO  2026-04-14T04:16:04 +377ms service=config path=/Users/akiralam/.config/ax-code/config.json loading
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/session request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/session request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/config/providers request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/config/providers request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/provider request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/provider request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/agent request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/agent request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/config request
+INFO  2026-04-14T04:16:04 +1ms service=server status=started method=GET path=/config request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/command request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/command request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/isolation request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/isolation request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/autonomous request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/autonomous request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/smart-llm request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/smart-llm request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/lsp request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/lsp request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/mcp request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/mcp request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/experimental/resource request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/experimental/resource request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/formatter request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/formatter request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/session/status request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/session/status request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/provider/auth request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/provider/auth request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/vcs request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/vcs request
+INFO  2026-04-14T04:16:04 +1ms service=server method=GET path=/path request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/path request
+INFO  2026-04-14T04:16:04 +0ms service=server method=GET path=/experimental/worktree request
+INFO  2026-04-14T04:16:04 +0ms service=server status=started method=GET path=/experimental/worktree request
+INFO  2026-04-14T04:16:04 +0ms service=config path=/Users/akiralam/.config/ax-code/ax-code.json loading
+INFO  2026-04-14T04:16:04 +1ms service=config path=/Users/akiralam/.config/ax-code/ax-code.jsonc loading
+INFO  2026-04-14T04:16:04 +2ms service=config path=/Users/akiralam/code/sdsa/ax-code.json loading
+INFO  2026-04-14T04:16:04 +7ms service=bus type=file.edited subscribing
+INFO  2026-04-14T04:16:04 +0ms service=format init
+INFO  2026-04-14T04:16:04 +0ms service=lsp serverIds=deno, typescript, vue, eslint, oxlint, biome, gopls, ruby-lsp, pyright, elixir-ls, zls, csharp, fsharp, sourcekit-lsp, rust, clangd, svelte, astro, jdtls, kotlin-ls, yaml-ls, lua-ls, php intelephense, prisma, dart, ocaml-lsp, bash, terraform, texlab, dockerfile, gleam, clojure-lsp, nixd, tinymist, haskell-language-server, julials enabled LSP servers
+INFO  2026-04-14T04:16:04 +0ms service=bus type=* subscribing
+INFO  2026-04-14T04:16:04 +0ms service=file init
+INFO  2026-04-14T04:16:04 +2ms service=file.watcher directory=/Users/akiralam/code/sdsa init
+INFO  2026-04-14T04:16:04 +4ms service=bus type=command.executed subscribing
+INFO  2026-04-14T04:16:04 +1ms service=server event connected
+INFO  2026-04-14T04:16:04 +1ms service=bus type=* subscribing
+INFO  2026-04-14T04:16:04 +1ms service=server status=started providers
+INFO  2026-04-14T04:16:04 +1ms service=provider status=started state
+INFO  2026-04-14T04:16:04 +8ms service=models loading bundled model snapshot
+INFO  2026-04-14T04:16:04 +10ms service=provider command=provider.init status=started provider init started
+INFO  2026-04-14T04:16:04 +1ms service=server status=completed duration=473 method=GET path=/event request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=40 method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=39 method=GET path=/path request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=39 method=GET path=/experimental/worktree request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=40 method=GET path=/config request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=40 method=GET path=/isolation request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=40 method=GET path=/lsp request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=40 method=GET path=/session/status request
+INFO  2026-04-14T04:16:04 +2ms service=server status=completed duration=42 method=GET path=/provider/auth request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=42 method=GET path=/mcp request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=42 method=GET path=/experimental/resource request
+INFO  2026-04-14T04:16:04 +2ms service=server status=completed duration=45 method=GET path=/session request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=44 method=GET path=/formatter request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=44 method=GET path=/autonomous request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=44 method=GET path=/smart-llm request
+INFO  2026-04-14T04:16:04 +370ms service=vcs branch=main initialized
+INFO  2026-04-14T04:16:04 +0ms service=bus type=file.watcher.updated subscribing
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=414 method=GET path=/vcs request
+INFO  2026-04-14T04:16:04 +12ms service=skill count=0 init
+INFO  2026-04-14T04:16:04 +2ms service=server status=completed duration=428 method=GET path=/command request
+INFO  2026-04-14T04:16:04 +0ms service=server status=completed duration=429 method=GET path=/agent request
+INFO  2026-04-14T04:16:05 +657ms service=provider providerID=xai found
+INFO  2026-04-14T04:16:05 +0ms service=provider providerID=zai-coding-plan found
+INFO  2026-04-14T04:16:05 +0ms service=provider providerID=gemini-cli found
+INFO  2026-04-14T04:16:05 +0ms service=provider providerID=claude-code found
+INFO  2026-04-14T04:16:05 +1ms service=provider status=completed duration=1065 state
+INFO  2026-04-14T04:16:05 +1ms service=server status=completed duration=1067 providers
+INFO  2026-04-14T04:16:05 +0ms service=server status=completed duration=1088 method=GET path=/provider request
+INFO  2026-04-14T04:16:05 +0ms service=server status=completed duration=1088 method=GET path=/config/providers request
+INFO  2026-04-14T04:16:10 +5713ms service=server method=POST path=/session request
+INFO  2026-04-14T04:16:10 +0ms service=server status=started method=POST path=/session request
+INFO  2026-04-14T04:16:10 +1ms service=session id=ses_275cbc95bffewW4Ff3vV9vIYME slug=clever-pixel version=3.1.4 projectID=0b2ffc519d1468dd2c601544bb87bc306958ffed directory=/Users/akiralam/code/sdsa title=New session - 2026-04-14T04:16:10.916Z time={"created":1776140170916,"updated":1776140170916} created
+DEBUG 2026-04-14T04:16:10 +1ms service=bus type=session.created publishing
+INFO  2026-04-14T04:16:10 +0ms service=server status=completed duration=2 method=POST path=/session request
+INFO  2026-04-14T04:16:10 +1ms service=server method=POST path=/session/ses_275cbc95bffewW4Ff3vV9vIYME/prompt_async request
+INFO  2026-04-14T04:16:10 +0ms service=server status=started method=POST path=/session/ses_275cbc95bffewW4Ff3vV9vIYME/prompt_async request
+DEBUG 2026-04-14T04:16:10 +4ms service=bus type=message.updated publishing
+DEBUG 2026-04-14T04:16:10 +1ms service=bus type=message.part.updated publishing
+INFO  2026-04-14T04:16:10 +0ms service=server status=completed duration=5 method=POST path=/session/ses_275cbc95bffewW4Ff3vV9vIYME/prompt_async request
+DEBUG 2026-04-14T04:16:10 +0ms service=bus type=session.updated publishing
+DEBUG 2026-04-14T04:16:10 +2ms service=bus type=session.status publishing
+INFO  2026-04-14T04:16:10 +0ms service=session.prompt command=session.prompt.loop status=started step=0 sessionID=ses_275cbc95bffewW4Ff3vV9vIYME consecutiveErrors=0 loop
+INFO  2026-04-14T04:16:10 +2ms service=bus type=file.watcher.updated subscribing
+INFO  2026-04-14T04:16:10 +0ms service=code-intelligence.watcher projectID=0b2ffc519d1468dd2c601544bb87bc306958ffed started code graph watcher
+INFO  2026-04-14T04:16:10 +1ms service=code-intelligence.auto-index projectID=0b2ffc519d1468dd2c601544bb87bc306958ffed directory=/Users/akiralam/code/sdsa starting background auto-index
+DEBUG 2026-04-14T04:16:10 +0ms service=bus type=code.index.state publishing
+DEBUG 2026-04-14T04:16:10 +2ms service=bus type=message.updated publishing
+INFO  2026-04-14T04:16:10 +0ms service=session.prompt status=started resolveTools
+INFO  2026-04-14T04:16:10 +2ms service=llm providerID=xai modelID=grok-4-fast sessionID=ses_275cbc95bffewW4Ff3vV9vIYME small=true agent=title mode=primary stream
+INFO  2026-04-14T04:16:10 +1ms service=provider status=started providerID=xai getSDK
+INFO  2026-04-14T04:16:10 +0ms service=provider providerID=xai pkg=@ai-sdk/xai using bundled provider
+INFO  2026-04-14T04:16:10 +0ms service=provider status=completed duration=0 providerID=xai getSDK
+INFO  2026-04-14T04:16:10 +1ms service=tool.registry status=started invalid
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started question
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started bash
+INFO  2026-04-14T04:16:10 +0ms service=bash-tool shell=/bin/zsh bash tool using shell
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started read
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started glob
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started grep
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started edit
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started write
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started task
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started webfetch
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started todowrite
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started skill
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started code_intelligence
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started debug_analyze
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started refactor_plan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started dedup_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started impact_analyze
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started hardcode_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started refactor_apply
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started race_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started lifecycle_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=started security_scan
+INFO  2026-04-14T04:16:10 +1ms service=tool.registry status=completed duration=1 invalid
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 question
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 read
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 glob
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 grep
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 edit
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 write
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 webfetch
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 todowrite
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 code_intelligence
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 debug_analyze
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 refactor_plan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 dedup_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 impact_analyze
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 hardcode_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 refactor_apply
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 race_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 lifecycle_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 security_scan
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=1 bash
+DEBUG 2026-04-14T04:16:10 +0ms service=permission permission=task pattern=architect ruleCount=14 evaluate
+DEBUG 2026-04-14T04:16:10 +1ms service=permission permission=task pattern=debug ruleCount=14 evaluate
+DEBUG 2026-04-14T04:16:10 +0ms service=permission permission=task pattern=devops ruleCount=14 evaluate
+DEBUG 2026-04-14T04:16:10 +0ms service=permission permission=task pattern=perf ruleCount=14 evaluate
+DEBUG 2026-04-14T04:16:10 +0ms service=permission permission=task pattern=security ruleCount=14 evaluate
+DEBUG 2026-04-14T04:16:10 +0ms service=permission permission=task pattern=test ruleCount=14 evaluate
+DEBUG 2026-04-14T04:16:10 +0ms service=permission permission=task pattern=explore ruleCount=14 evaluate
+DEBUG 2026-04-14T04:16:10 +0ms service=permission permission=task pattern=general ruleCount=14 evaluate
+INFO  2026-04-14T04:16:10 +0ms service=tool.registry status=completed duration=2 skill
+INFO  2026-04-14T04:16:10 +3ms service=tool.registry status=completed duration=5 task
+INFO  2026-04-14T04:16:10 +2ms service=bus type=mcp.tools.changed subscribing
+INFO  2026-04-14T04:16:10 +2ms service=session.prompt status=completed duration=13 resolveTools
+DEBUG 2026-04-14T04:16:10 +1ms service=bus type=session.updated publishing
+DEBUG 2026-04-14T04:16:10 +0ms service=bus type=message.updated publishing
+INFO  2026-04-14T04:16:10 +3ms service=server method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:10 +0ms service=server status=started method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:10 +0ms service=server status=completed duration=0 method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:10 +2ms service=session.processor sessionId=ses_275cbc95bffewW4Ff3vV9vIYME command=session.process status=started process started
+INFO  2026-04-14T04:16:10 +0ms service=llm providerID=xai modelID=grok-4-1-fast sessionID=ses_275cbc95bffewW4Ff3vV9vIYME small=false agent=build mode=primary stream
+INFO  2026-04-14T04:16:10 +0ms service=provider status=started providerID=xai getSDK
+INFO  2026-04-14T04:16:10 +0ms service=provider status=completed duration=0 providerID=xai getSDK
+DEBUG 2026-04-14T04:16:10 +1ms service=bus type=session.status publishing
+INFO  2026-04-14T04:16:10 +5ms service=code-intelligence.auto-index projectID=0b2ffc519d1468dd2c601544bb87bc306958ffed fileCount=223 indexing files
+DEBUG 2026-04-14T04:16:10 +0ms service=bus type=code.index.progress publishing
+INFO  2026-04-14T04:16:10 +1ms service=code-intelligence.auto-index projectID=0b2ffc519d1468dd2c601544bb87bc306958ffed auto-index skipped: another process holds the lock
+DEBUG 2026-04-14T04:16:10 +0ms service=bus type=code.index.state publishing
+DEBUG 2026-04-14T04:16:10 +0ms service=bus type=session.diff publishing
+INFO  2026-04-14T04:16:10 +7ms service=server method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:10 +0ms service=server status=started method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:10 +1ms service=server status=completed duration=1 method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:10 +0ms service=server method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:10 +0ms service=server status=started method=GET path=/debug-engine/pending-plans request
+INFO  2026-04-14T04:16:10 +0ms service=server status=completed duration=0 method=GET path=/debug-engine/pending-plans request
+DEBUG 2026-04-14T04:16:11 +822ms service=bus type=session.updated publishing
+DEBUG 2026-04-14T04:16:15 +3884ms service=bus type=message.part.updated publishing
+DEBUG 2026-04-14T04:16:15 +2ms service=bus type=message.part.updated publishing
+DEBUG 2026-04-14T04:16:15 +17ms service=bus type=message.part.delta publishing
+DEBUG 2026-04-14T04:16:15 +15ms service=bus type=message.part.delta publishing
+DEBUG 2026-04-14T04:16:15 +1ms service=bus type=message.part.updated publishing
+DEBUG 2026-04-14T04:16:15 +1ms service=bus type=message.part.updated publishing
+DEBUG 2026-04-14T04:16:15 +0ms service=bus type=message.updated publishing
+DEBUG 2026-04-14T04:16:15 +1ms service=bus type=session.updated publishing
+DEBUG 2026-04-14T04:16:15 +0ms service=bus type=message.updated publishing
+DEBUG 2026-04-14T04:16:15 +1ms service=bus type=message.updated publishing
+DEBUG 2026-04-14T04:16:15 +0ms service=bus type=session.status publishing
+INFO  2026-04-14T04:16:15 +0ms service=session.prompt command=session.prompt.loop status=started step=1 sessionID=ses_275cbc95bffewW4Ff3vV9vIYME consecutiveErrors=0 loop
+INFO  2026-04-14T04:16:15 +1ms service=session.prompt command=session.prompt.loop status=ok sessionID=ses_275cbc95bffewW4Ff3vV9vIYME exiting loop
+INFO  2026-04-14T04:16:15 +1ms service=session.compaction pruning
+INFO  2026-04-14T04:16:15 +0ms service=session.prompt command=session.prompt.cancel status=started sessionID=ses_275cbc95bffewW4Ff3vV9vIYME cancel
+DEBUG 2026-04-14T04:16:15 +0ms service=bus type=session.status publishing
+INFO  2026-04-14T04:16:15 +1ms service=session.compaction pruned=0 total=0 found
+DEBUG 2026-04-14T04:16:15 +0ms service=bus type=session.idle publishing
+DEBUG 2026-04-14T04:16:15 +3ms service=bus type=session.diff publishing
+INFO  2026-04-14T04:17:04 +48881ms service=snapshot prune=7.days cleanup
+INFO  2026-04-14T05:17:04 +3600100ms service=snapshot prune=7.days cleanup
+INFO  2026-04-14T06:17:04 +3600055ms service=snapshot prune=7.days cleanup
+INFO  2026-04-14T07:17:04 +3600042ms service=snapshot prune=7.days cleanup
+INFO  2026-04-14T08:17:04 +3600035ms service=snapshot prune=7.days cleanup
+INFO  2026-04-14T09:17:04 +3600164ms service=snapshot prune=7.days cleanup
+INFO  2026-04-14T10:17:05 +3600086ms service=snapshot prune=7.days cleanup
+INFO  2026-04-14T11:17:05 +3600034ms service=snapshot prune=7.days cleanup
+INFO  2026-04-14T12:17:05 +3600060ms service=snapshot prune=7.days cleanup

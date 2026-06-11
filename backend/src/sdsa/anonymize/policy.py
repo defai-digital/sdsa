@@ -8,7 +8,7 @@ from __future__ import annotations
 from typing import Any, Literal
 
 import polars as pl
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from . import primitives as prim
 
@@ -25,12 +25,21 @@ class PolicyApplicationError(ValueError):
 
 
 class ColumnPolicy(BaseModel):
-    column: str
+    column: str = Field(min_length=1)
     action: Action
     params: dict[str, Any] = Field(default_factory=dict)
     is_quasi_identifier: bool = False
 
     # For dp_laplace: caller must supply `epsilon` and column bounds `lower`/`upper`.
+
+    @field_validator("column")
+    @classmethod
+    def validate_column(cls, value: str) -> str:
+        if "\n" in value or "\r" in value or "\x00" in value:
+            raise ValueError("column names must not contain newlines or null bytes")
+        if len(value) > 200:
+            raise ValueError("column names must not exceed 200 characters")
+        return value
 
 
 def apply_policy(df: pl.DataFrame, policy: ColumnPolicy, hmac_key: bytes) -> pl.DataFrame:

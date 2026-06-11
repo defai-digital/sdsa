@@ -54,6 +54,13 @@ def build_report(
     return report
 
 
+def _md_escape(s: str) -> str:
+    """Escape markdown special characters in user-controlled strings."""
+    for ch in ('\\', '`', '*', '_', '[', ']', '(', ')', '#', '|', '<', '>'):
+        s = s.replace(ch, '\\' + ch)
+    return s
+
+
 def render_markdown(report: dict[str, Any]) -> str:
     lines: list[str] = []
     lines.append(f"# SDSA Privacy Report — session `{report['session_id']}`")
@@ -73,7 +80,7 @@ def render_markdown(report: dict[str, Any]) -> str:
     priv = report["privacy"]
     if priv["mechanism_per_column"]:
         for col, eps in priv["mechanism_per_column"].items():
-            lines.append(f"- `{col}`: Laplace, ε = {eps}")
+            lines.append(f"- `{_md_escape(col)}`: Laplace, ε = {eps}")
     else:
         lines.append("- No DP noise applied.")
     lines.append(f"- max ε across columns: {priv['max_epsilon']}")
@@ -82,11 +89,11 @@ def render_markdown(report: dict[str, Any]) -> str:
     lines.append("## Policies applied")
     for p in report["policies_applied"]:
         qi = " (QI)" if p.get("is_quasi_identifier") else ""
-        lines.append(f"- `{p['column']}`: {p['action']}{qi}")
+        lines.append(f"- `{_md_escape(p['column'])}`: {p['action']}{qi}")
     if "deterministic_mode" in report:
         lines.append("")
         lines.append("## Deterministic Mode")
-        lines.append(f"- key name: `{report['deterministic_mode']['key_name']}`")
+        lines.append(f"- key name: `{_md_escape(report['deterministic_mode']['key_name'])}`")
         lines.append(f"- {report['deterministic_mode']['warning']}")
     lines.append("")
     lines.append("## Validation summary")

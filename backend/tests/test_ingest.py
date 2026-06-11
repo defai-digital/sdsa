@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import pytest
 
-from sdsa.ingest import ParseError, parse_sql, parse_txt, parse_upload, sniff_delimiter
+from sdsa.ingest import (
+    ParseError,
+    _detect_and_decode,
+    parse_sql,
+    parse_txt,
+    parse_upload,
+    sniff_delimiter,
+)
 
 
 # --- CSV dispatcher --------------------------------------------------------
@@ -29,6 +36,21 @@ def test_parse_upload_unknown_extension():
 def test_parse_upload_empty():
     with pytest.raises(ParseError):
         parse_upload("data.csv", b"")
+
+
+
+def test_parse_upload_limits_chardet_fallback_to_prefix(monkeypatch):
+    raw = ("名前,値\n".encode("shift_jis") * 20_000)
+    seen = []
+
+    def fake_detect(data: bytes):
+        seen.append(len(data))
+        return {"encoding": "shift_jis"}
+
+    monkeypatch.setattr("sdsa.ingest.chardet.detect", fake_detect)
+    encoding, _ = _detect_and_decode(raw)
+    assert encoding == "shift_jis"
+    assert seen == [100_000]
 
 
 # --- TXT delimited ---------------------------------------------------------
@@ -64,6 +86,21 @@ def test_parse_upload_txt():
     assert res.df.height == 2
 
 
+def test_parse_txt_skips_leading_blank_lines_when_sniffing_delimiter():
+    text = "\n" * 15 + "name\tage\tcity\nAlice\t30\tNYC\nBob\t25\tLA\n"
+    res = parse_txt(text)
+    assert res.df.columns == ["name", "age", "city"]
+    assert res.meta["delimiter"] == "\t"
+
+
+def test_parse_csv_sanitizes_error_message():
+    with pytest.raises(ParseError) as exc:
+        parse_upload("broken.csv", b"name,email\nAlice,alice@example.com,extra\n")
+    msg = str(exc.value)
+    assert "alice@example.com" not in msg
+    assert "parse failed" in msg.lower()
+
+
 # --- SQL dump --------------------------------------------------------------
 
 def test_parse_sql_simple_insert():
@@ -93,6 +130,12 @@ def test_parse_sql_handles_escaped_quotes():
     assert res.df["s"].to_list() == ["O'Brien", "a'b"]
 
 
+def test_parse_sql_handles_hex_string_escapes():
+    sql = r"INSERT INTO t (name) VALUES ('\x41lice'), ('Bob');"
+    res = parse_sql(sql)
+    assert res.df["name"].to_list() == ["Alice", "Bob"]
+
+
 def test_parse_sql_strips_comments():
     sql = """
     -- a line comment
@@ -114,6 +157,13 @@ def test_parse_sql_multi_statement_same_table():
     assert res.df["a"].to_list() == [1, 2, 3]
 
 
+def test_parse_sql_supports_quoted_identifiers_with_commas():
+    sql = 'INSERT INTO t ("id", "name, full", "age") VALUES (1, \'Alice Smith\', 30);'
+    res = parse_sql(sql)
+    assert res.df.columns == ["id", "name, full", "age"]
+    assert res.df["name, full"].to_list() == ["Alice Smith"]
+
+
 def test_parse_sql_rejects_multi_table():
     sql = """
     INSERT INTO a (x) VALUES (1);
@@ -126,6 +176,17 @@ def test_parse_sql_rejects_multi_table():
 def test_parse_sql_rejects_no_inserts():
     with pytest.raises(ParseError):
         parse_sql("CREATE TABLE t (a INT);")
+
+
+def test_parse_sql_parses_hex_literals_as_integers():
+    res = parse_sql("INSERT INTO t (a) VALUES (0xDEAD), (0xff);")
+    assert res.df["a"].to_list() == [57005, 255]
+
+
+def test_parse_sql_rejects_function_calls_in_values():
+    with pytest.raises(ParseError) as exc:
+        parse_sql("INSERT INTO t (ts) VALUES (NOW());")
+    assert "not supported" in str(exc.value).lower()
 
 
 def test_parse_upload_sql():

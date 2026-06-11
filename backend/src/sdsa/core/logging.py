@@ -38,7 +38,8 @@ class ScrubbingFormatter(logging.Formatter):
             else:
                 payload[key] = _safe(value)
         if record.exc_info:
-            payload["exc"] = self.formatException(record.exc_info).splitlines()[-1]
+            exc_type = record.exc_info[0]
+            payload["exc_type"] = exc_type.__name__ if exc_type is not None else "Unknown"
         return json.dumps(payload, default=str)
 
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from sdsa.policy_config import build_policy_suggestions
+from sdsa.policy_config import _project_root, build_policy_suggestions
 
 
 def test_field_override_wins_over_pii_defaults(monkeypatch, tmp_path):
@@ -42,3 +42,9 @@ def test_field_override_wins_over_pii_defaults(monkeypatch, tmp_path):
     assert out["dob"]["is_quasi_identifier"] is True
     assert out["email"]["action"] == "hash"
     assert out["email"]["source"] == "pii_kind"
+
+
+def test_project_root_finds_repo_marker():
+    root = _project_root()
+    assert (root / "sdsa-policy.default.json").exists()
+    assert (root / "frontend").is_dir()

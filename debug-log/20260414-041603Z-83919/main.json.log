@@ -1,0 +1,8 @@
+{"level":30,"time":1776140163418,"pid":83919,"hostname":"AKDF-M3-MAX.local","service":"default","version":"3.1.4","args":["--debug","--debug-dir","./debug-log"],"msg":"ax-code"}
+{"level":30,"time":1776140163419,"pid":83919,"hostname":"AKDF-M3-MAX.local","service":"default","directory":"/Users/akiralam/code/sdsa","msg":"creating instance"}
+{"level":30,"time":1776140163422,"pid":83919,"hostname":"AKDF-M3-MAX.local","service":"project","directory":"/Users/akiralam/code/sdsa","msg":"fromDirectory"}
+{"level":30,"time":1776140163450,"pid":83919,"hostname":"AKDF-M3-MAX.local","service":"db","path":"/Users/akiralam/.local/share/ax-code/ax-code.db","msg":"opening database"}
+{"level":30,"time":1776140163455,"pid":83919,"hostname":"AKDF-M3-MAX.local","service":"db","count":18,"mode":"bundled","msg":"applying migrations"}
+{"level":30,"time":1776140163467,"pid":83919,"hostname":"AKDF-M3-MAX.local","service":"config","path":"/Users/akiralam/.config/ax-code/config.json","msg":"loading"}
+{"level":30,"time":1776140163467,"pid":83919,"hostname":"AKDF-M3-MAX.local","service":"config","path":"/Users/akiralam/.config/ax-code/ax-code.json","msg":"loading"}
+{"level":30,"time":1776140163467,"pid":83919,"hostname":"AKDF-M3-MAX.local","service":"config","path":"/Users/akiralam/.config/ax-code/ax-code.jsonc","msg":"loading"}

@@ -91,6 +91,10 @@
           <span class="pill">.sql</span>
         </div>
         <div class="dropzone-file" id="dropzone-file"></div>
+        <div class="dropzone-progress hidden" id="dropzone-progress" aria-hidden="true">
+          <div class="dropzone-progress-bar"><span id="dropzone-progress-fill"></span></div>
+          <div class="dropzone-progress-meta" id="dropzone-progress-meta"></div>
+        </div>
       </div>
       <input type="file" id="file-input"
              accept=".csv,.txt,.sql,text/csv,text/plain,application/sql" hidden />
@@ -153,10 +157,52 @@
       </button>
     </header>
 
+    <section class="preview-panel" id="preview-panel" aria-label="Sample preview">
+      <header class="preview-head">
+        <div class="preview-tabs" role="tablist">
+          <button type="button" class="preview-tab active"
+                  data-mode="original" role="tab" aria-selected="true">
+            Original sample
+          </button>
+          <button type="button" class="preview-tab"
+                  data-mode="sanitized" role="tab" aria-selected="false">
+            Preview output
+            <span class="help" tabindex="0"
+                  data-tip="Runs your current per-column policy on the first 5 rows so you can see what will be released. Skips k-anonymity (sample is too small for it).">?</span>
+          </button>
+        </div>
+        <div class="preview-meta-wrap">
+          <span class="preview-meta muted" id="preview-meta">first 5 rows</span>
+          <button type="button" id="preview-collapse" class="btn btn-quiet"
+                  aria-expanded="true" title="Collapse preview">−</button>
+        </div>
+      </header>
+      <div class="preview-body" id="preview-body"></div>
+    </section>
+
+    <div class="table-toolbar">
+      <label class="col-search-wrap">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+        </svg>
+        <input type="search" id="col-search" placeholder="Search columns…"
+               aria-label="Search columns" autocomplete="off" />
+      </label>
+      <span class="include-hint muted">
+        Uncheck the left column to exclude a field from output.
+      </span>
+    </div>
+
     <div class="table-wrap">
       <table id="columns-table">
         <thead>
           <tr>
+            <th class="select-col" title="Include column in output">
+              <input type="checkbox" id="select-all" class="col-include"
+                     checked aria-label="Include all visible columns" />
+            </th>
             <th>Column</th>
             <th>Type</th>
             <th>

@@ -9,14 +9,17 @@ from pydantic import BaseModel, Field
 from .anonymize.policy import ColumnPolicy, PolicyApplicationError, apply_policy
 from .core.config import get_config
 from .dp.laplace import LaplaceParams, apply_laplace
-from .kanon.enforce import enforce_k
+from .kanon.enforce import KAnonResult, enforce_k
+from .pipeline import _derive_deterministic_key
+
+MAX_PREFLIGHT_QI_COLUMNS = 15
 
 
 class PreflightRequest(BaseModel):
     policies: list[ColumnPolicy]
     k: int = Field(default=5, ge=2, le=1000)
     dp_params: dict[str, dict] = Field(default_factory=dict)
-    deterministic_key_name: str | None = None
+    deterministic_key_name: str | None = Field(default=None, min_length=1, max_length=256)
 
 
 def _qi_cardinality(df: pl.DataFrame, qi_columns: list[str]) -> list[dict[str, Any]]:
@@ -34,11 +37,15 @@ def _qi_cardinality(df: pl.DataFrame, qi_columns: list[str]) -> list[dict[str, A
     return rows
 
 
-def _drop_one_impacts(df: pl.DataFrame, qi_columns: list[str], k: int) -> list[dict[str, Any]]:
+def _drop_one_impacts(
+    df: pl.DataFrame,
+    qi_columns: list[str],
+    k: int,
+    base_result: KAnonResult,
+) -> list[dict[str, Any]]:
     impacts = []
     if len(qi_columns) <= 1:
         return impacts
-    base = enforce_k(df, qi_columns, k)
     for col in qi_columns:
         reduced = [c for c in qi_columns if c != col]
         result = enforce_k(df, reduced, k)
@@ -47,7 +54,7 @@ def _drop_one_impacts(df: pl.DataFrame, qi_columns: list[str], k: int) -> list[d
             "n_unique": int(df[col].n_unique()),
             "suppression_ratio": result.suppression_ratio,
             "rows_suppressed": result.rows_suppressed,
-            "improvement": base.suppression_ratio - result.suppression_ratio,
+            "improvement": base_result.suppression_ratio - result.suppression_ratio,
         })
     impacts.sort(key=lambda item: item["improvement"], reverse=True)
     return impacts
@@ -58,19 +65,20 @@ def _greedy_drop_plan(
     qi_columns: list[str],
     k: int,
     target_cap: float,
+    base_result: KAnonResult,
 ) -> dict[str, Any] | None:
     if not qi_columns:
         return None
 
     current_qis = list(qi_columns)
-    current_result = enforce_k(df, current_qis, k)
+    current_result = base_result
     if current_result.suppression_ratio <= target_cap:
         return None
 
     steps: list[dict[str, Any]] = []
     start_ratio = current_result.suppression_ratio
 
-    while current_qis and current_result.suppression_ratio > target_cap:
+    while len(current_qis) > 1 and current_result.suppression_ratio > target_cap:
         impacts = []
         for col in current_qis:
             reduced = [c for c in current_qis if c != col]
@@ -127,6 +135,14 @@ def preflight_k_anonymity(
         raise PolicyApplicationError(
             "Deterministic mode cannot be combined with DP columns (ADR-0008)."
         )
+    if request.deterministic_key_name and cfg.deployment_salt_is_ephemeral:
+        raise PolicyApplicationError(
+            "Deterministic mode requires SDSA_DEPLOYMENT_SALT to be set."
+        )
+    if request.deterministic_key_name:
+        hmac_key = _derive_deterministic_key(
+            request.deterministic_key_name, cfg.deployment_salt
+        )
 
     # k-anonymity only inspects QI columns. Transforms and DP noise applied to
     # non-QI columns cannot change equivalence-class sizes, so we skip them.
@@ -134,6 +150,11 @@ def preflight_k_anonymity(
     # every email and tokenizing every identifier before running the only
     # operation that reads QI values.
     qi_names = {p.column for p in request.policies if p.is_quasi_identifier}
+    if len(qi_names) > MAX_PREFLIGHT_QI_COLUMNS:
+        raise PolicyApplicationError(
+            f"too many quasi-identifier columns ({len(qi_names)}); "
+            f"preflight supports at most {MAX_PREFLIGHT_QI_COLUMNS}"
+        )
 
     for policy in request.policies:
         if policy.column not in qi_names:
@@ -166,22 +187,30 @@ def preflight_k_anonymity(
             upper = float(params["upper"])
         except (TypeError, ValueError) as e:
             raise PolicyApplicationError(f"DP bounds for '{col}' must be numeric") from e
+        if not df[col].dtype.is_numeric():
+            raise PolicyApplicationError(
+                f"column '{col}' has dtype {df[col].dtype}; dp_laplace requires "
+                f"a numeric column"
+            )
         try:
             noised = apply_laplace(df[col], LaplaceParams(eps, lower, upper))
         except ValueError as e:
             raise PolicyApplicationError(f"invalid DP params for '{col}': {e}") from e
         df = df.with_columns(noised.alias(col))
 
-    qi_columns = [p.column for p in request.policies if p.is_quasi_identifier and p.column in df.columns]
+    qi_columns = list(dict.fromkeys(
+        p.column for p in request.policies
+        if p.is_quasi_identifier and p.column in df.columns
+    ))
     result = enforce_k(df, qi_columns, request.k)
     worst = _qi_cardinality(df, qi_columns)
-    drop_impacts = _drop_one_impacts(df, qi_columns, request.k)
+    drop_impacts = _drop_one_impacts(df, qi_columns, request.k, result)
     target_cap = (
         cfg.hard_max_suppression_ratio
         if result.suppression_ratio > cfg.hard_max_suppression_ratio
         else cfg.max_suppression_ratio
     )
-    greedy_drop_plan = _greedy_drop_plan(df, qi_columns, request.k, target_cap)
+    greedy_drop_plan = _greedy_drop_plan(df, qi_columns, request.k, target_cap, result)
 
     suggestions: list[str] = []
     if result.suppression_ratio > cfg.hard_max_suppression_ratio:

@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from .api.routes import router
+from .core.config import get_config
 from .core.logging import get_logger, setup_logging
 from .core.session import get_store
 
@@ -22,7 +23,7 @@ async def _sweep_loop() -> None:
     while True:
         try:
             await asyncio.sleep(60)
-            n = store.sweep()
+            n = await asyncio.to_thread(store.sweep)
             if n:
                 log.info("session_sweep", extra={"expired": n})
         except asyncio.CancelledError:
@@ -40,19 +41,21 @@ async def _lifespan(app: FastAPI):
         task.cancel()
         try:
             await task
-        except asyncio.CancelledError:
+        except (asyncio.CancelledError, Exception):
             pass
 
 
 def create_app() -> FastAPI:
     setup_logging()
+    cfg = get_config()
     app = FastAPI(title="SDSA", version="0.1.0", lifespan=_lifespan)
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],  # MVP; tighten for production
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+    if cfg.allowed_cors_origins:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=list(cfg.allowed_cors_origins),
+            allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+            allow_headers=["Content-Type", "Authorization", "X-API-Key"],
+        )
     app.include_router(router)
 
     @app.get("/health")

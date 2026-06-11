@@ -25,11 +25,11 @@ from .validate.metrics import build_validation
 
 
 class ProcessRequest(BaseModel):
-    policies: list[ColumnPolicy]
+    policies: list[ColumnPolicy] = Field(..., max_length=500)
     k: int = Field(default=5, ge=2, le=1000)
     dp_params: dict[str, dict] = Field(default_factory=dict)
     # dp_params: {column_name: {"epsilon": float, "lower": float, "upper": float}}
-    deterministic_key_name: str | None = None
+    deterministic_key_name: str | None = Field(default=None, min_length=1, max_length=256)
     accept_weaker_guarantee: bool = False
 
 
@@ -138,6 +138,10 @@ def run_pipeline(
         raise PipelineError(
             "Deterministic mode cannot be combined with DP columns (ADR-0008)."
         )
+    if request.deterministic_key_name and cfg.deployment_salt_is_ephemeral:
+        raise PipelineError(
+            "Deterministic mode requires SDSA_DEPLOYMENT_SALT to be set."
+        )
 
     # Deterministic mode: override the session-random hmac_key with a key
     # derived from (deployment_salt, user-supplied key name). Without this,
@@ -205,8 +209,12 @@ def run_pipeline(
         accountant.charge(col, eps)
 
     # 3. k-anonymity
-    qi_cols = [p.column for p in request.policies
-               if p.is_quasi_identifier and p.column in df.columns]
+    # dict.fromkeys preserves order while deduplicating — duplicate QI entries
+    # from the same column would cause a Polars DuplicateError in group_by.
+    qi_cols = list(dict.fromkeys(
+        p.column for p in request.policies
+        if p.is_quasi_identifier and p.column in df.columns
+    ))
     k_result = enforce_k(df, qi_cols, request.k)
 
     # Always refuse zero-row output — an empty dataset is never a useful result,

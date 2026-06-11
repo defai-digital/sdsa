@@ -5,8 +5,10 @@ Row count is preserved except for suppression (done by the k-anonymity step).
 """
 from __future__ import annotations
 
+from decimal import Decimal, ROUND_FLOOR
 import hashlib
 import hmac
+import math
 import secrets
 from datetime import date, datetime
 
@@ -25,6 +27,8 @@ def mask(series: pl.Series, keep_prefix: int = 0, keep_suffix: int = 0,
     """
     if keep_prefix < 0 or keep_suffix < 0:
         raise ValueError("keep_prefix and keep_suffix must be >= 0")
+    if not mask_char:
+        raise ValueError("mask_char must be a non-empty string")
 
     def _mask(v):
         if v is None:
@@ -85,24 +89,49 @@ def numeric_bin(series: pl.Series, bin_width: float) -> pl.Series:
     """Equal-width binning: value → [lo, lo+width)."""
     if bin_width <= 0:
         raise ValueError("bin_width must be > 0")
+    step = Decimal(str(bin_width))
+
+    def _fmt_decimal(value: Decimal) -> str:
+        normalized = format(value.normalize(), "f")
+        if "." in normalized:
+            normalized = normalized.rstrip("0").rstrip(".")
+        return normalized or "0"
 
     def _bin(v):
         if v is None:
             return None
-        lo = (int(v // bin_width)) * bin_width
-        hi = lo + bin_width
-        return f"[{lo:g}, {hi:g})"
+        if not math.isfinite(float(v)):
+            return None
+        dec_value = Decimal(str(v))
+        bucket = (dec_value / step).to_integral_value(rounding=ROUND_FLOOR)
+        lo = bucket * step
+        hi = lo + step
+        return f"[{_fmt_decimal(lo)}, {_fmt_decimal(hi)})"
     return series.map_elements(_bin, return_dtype=pl.Utf8)
 
 
 def date_truncate(series: pl.Series, granularity: str = "month") -> pl.Series:
-    """Truncate dates/datetimes to year / month / day."""
+    """Truncate dates/datetimes to year / month / day.
+
+    Requires a Date/Datetime/Time column. For strings (e.g. a column that
+    Polars couldn't auto-parse because of a non-ISO format), we attempt a
+    best-effort parse with dateutil; if that fails for any non-null value
+    we raise rather than silently passing the original value through
+    (which would leak full-resolution dates).
+    """
     if granularity not in ("year", "month", "day"):
         raise ValueError("granularity must be year/month/day")
 
-    if series.dtype in (pl.Date, pl.Datetime, pl.Time):
+    if series.dtype == pl.Time:
+        raise ValueError(
+            f"date_truncate does not support pl.Time columns ('{series.name}'); "
+            "use a Date or Datetime column"
+        )
+    if series.dtype in (pl.Date, pl.Datetime):
         fmt = {"year": "%Y", "month": "%Y-%m", "day": "%F"}[granularity]
         return series.dt.strftime(fmt).alias(series.name)
+
+    from dateutil import parser as _date_parser
 
     def _t(v):
         if v is None:
@@ -112,7 +141,15 @@ def date_truncate(series: pl.Series, granularity: str = "month") -> pl.Series:
         elif isinstance(v, date):
             d = v
         else:
-            return str(v)
+            # Best-effort string parse. We intentionally raise on failure —
+            # silently stringifying the value would leak it.
+            try:
+                d = _date_parser.parse(str(v)).date()
+            except (ValueError, TypeError, OverflowError) as e:
+                raise ValueError(
+                    f"date_truncate cannot parse a value in column '{series.name}' as a date "
+                    f"(row value withheld for privacy): {e}"
+                ) from e
         if granularity == "year":
             return f"{d.year:04d}"
         if granularity == "month":
@@ -122,14 +159,26 @@ def date_truncate(series: pl.Series, granularity: str = "month") -> pl.Series:
 
 
 def string_truncate(series: pl.Series, keep: int = 3, pad_char: str = "*") -> pl.Series:
-    """Keep first `keep` chars, pad the rest (e.g., ZIP 12345 → 123**)."""
+    """Keep first `keep` chars, pad the rest (e.g., ZIP 12345 → 123**).
+
+    Guarantees at least one character is masked for any non-empty value, even
+    when keep >= len(s) — without this, short values like two-letter state
+    codes pass through completely unmasked.
+    """
+    if keep < 0:
+        raise ValueError("keep must be >= 0")
+    if len(pad_char) != 1:
+        raise ValueError("pad_char must be a single character")
+
     def _t(v):
         if v is None:
             return None
         s = str(v)
-        if len(s) <= keep:
+        n = len(s)
+        if n == 0:
             return s
-        return s[:keep] + pad_char * (len(s) - keep)
+        effective_keep = min(keep, max(n - 1, 0))
+        return s[:effective_keep] + pad_char * (n - effective_keep)
     return series.map_elements(_t, return_dtype=pl.Utf8)
 
 

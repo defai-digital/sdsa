@@ -34,7 +34,13 @@ class PolicyConfig(BaseModel):
 
 
 def _project_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    current = Path(__file__).resolve()
+    for candidate in (current.parent, *current.parents):
+        if (candidate / "sdsa-policy.default.json").exists():
+            return candidate
+        if (candidate / "frontend").is_dir() and (candidate / "backend").is_dir():
+            return candidate
+    return current.parents[3]
 
 
 def _candidate_paths() -> tuple[Path | None, Path]:
@@ -49,7 +55,7 @@ def _load_json(path: Path) -> dict[str, Any]:
         with path.open("r", encoding="utf-8") as fh:
             data = json.load(fh)
     except json.JSONDecodeError as e:
-        raise PolicyConfigError(f"invalid policy config JSON at {path}: {e.msg}") from e
+        raise PolicyConfigError(f"policy config at {path} is not valid JSON") from e
     if not isinstance(data, dict):
         raise PolicyConfigError(f"policy config at {path} must be a JSON object")
     return data

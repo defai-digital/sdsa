@@ -30,13 +30,15 @@ def enforce_k(
     if k < 2:
         raise ValueError("k must be >= 2")
     rows_total = df.height
-    if not qi_columns or rows_total == 0:
-        # No QIs → no k-anon applied; k_achieved is rows_total (trivially satisfied)
+    if not qi_columns:
         return KAnonResult(df, rows_total or 0, rows_total, 0, 0.0, 0, 0)
 
     missing = [c for c in qi_columns if c not in df.columns]
     if missing:
         raise ValueError(f"QI columns not in dataframe: {missing}")
+
+    if rows_total == 0:
+        return KAnonResult(df, 0, 0, 0, 0.0, 0, 0)
 
     # group_by treats all NULL QI values as one group, so we must match NULLs
     # in the join too — otherwise NULL-keyed rows get silently suppressed even
@@ -52,7 +54,8 @@ def enforce_k(
         joined = df.join(class_sizes, on=qi_columns, how="left", nulls_equal=True)
     except TypeError:
         joined = df.join(class_sizes, on=qi_columns, how="left", join_nulls=True)
-    kept = joined.filter(pl.col(size_col) >= k).drop(size_col)
+    kept_with_sizes = joined.filter(pl.col(size_col) >= k)
+    kept = kept_with_sizes.drop(size_col)
 
     suppressed = rows_total - kept.height
     classes_total = class_sizes.height
@@ -61,9 +64,7 @@ def enforce_k(
     if kept.height == 0:
         k_achieved = 0
     else:
-        # achieved = min equivalence-class size among surviving rows
-        kept_class_sizes = kept.group_by(qi_columns).len()
-        k_achieved = int(kept_class_sizes["len"].min() or 0)
+        k_achieved = int(kept_with_sizes[size_col].min() or 0)
 
     return KAnonResult(
         df=kept,

@@ -71,7 +71,11 @@ def _sample_strings(series: pl.Series, n: int = 200) -> list[str]:
     if s.len() == 0:
         return []
     take = min(n, s.len())
-    return s.head(take).to_list()
+    if take == s.len():
+        return s.to_list()
+    # Random sample so PII in later rows isn't missed. Seed=0 keeps detection
+    # deterministic across re-runs on the same data.
+    return s.sample(take, seed=0).to_list()
 
 
 def _ratio(predicate, values: list[str]) -> float:
@@ -151,10 +155,11 @@ def detect_column(name: str, series: pl.Series) -> PIISuggestion:
         if phone_ratio >= 0.70:
             candidates.append(("phone", min(0.95, phone_ratio), f"{phone_ratio:.0%} parse as valid phone"))
 
-        cc_ratio = _ratio(_is_credit_card, samples)
-        if cc_ratio >= 0.70:
-            candidates.append(("credit_card", min(0.99, cc_ratio),
-                               f"{cc_ratio:.0%} pass Luhn"))
+        if series.dtype == pl.Utf8:
+            cc_ratio = _ratio(_is_credit_card, samples)
+            if cc_ratio >= 0.70:
+                candidates.append(("credit_card", min(0.99, cc_ratio),
+                                   f"{cc_ratio:.0%} pass Luhn"))
 
     # High-cardinality string with distinct values often = identifier.
     if series.dtype == pl.Utf8 and series.len() > 0:

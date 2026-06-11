@@ -51,6 +51,13 @@ def test_laplace_rejects_bad_params():
     else:
         raise AssertionError("expected ValueError for upper==lower")
 
+    try:
+        apply_laplace(s, LaplaceParams(epsilon=1, lower=float("nan"), upper=5))
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("expected ValueError for non-finite bounds")
+
 
 def test_accountant_tracks_per_column():
     a = Accountant()

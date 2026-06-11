@@ -24,7 +24,17 @@ class Session:
     detection: dict[str, Any] | None = None
     output_bytes: bytes | None = None
     output_report: dict[str, Any] | None = None
-    hmac_key: bytes = field(default_factory=lambda: secrets.token_bytes(32))
+    hmac_key: bytes | None = field(default_factory=lambda: secrets.token_bytes(32))
+
+
+@dataclass(frozen=True)
+class SessionSnapshot:
+    session_id: str
+    df: pl.DataFrame | None = None
+    detection: dict[str, Any] | None = None
+    output_bytes: bytes | None = None
+    output_report: dict[str, Any] | None = None
+    hmac_key: bytes | None = None
 
 
 class SessionStore:
@@ -44,30 +54,94 @@ class SessionStore:
         return session
 
     def get(self, session_id: str) -> Session | None:
+        expired: Session | None = None
         with self._lock:
             session = self._sessions.get(session_id)
-        if session is None:
-            return None
-        if self._is_expired(session):
-            self.delete(session_id)
+            if session is None:
+                return None
+            if self._is_expired(session):
+                expired = self._sessions.pop(session_id, None)
+                session = None
+        if expired is not None:
+            _zeroize(expired)
             return None
         return session
 
-    def delete(self, session_id: str) -> None:
+    def checkout(self, session_id: str) -> SessionSnapshot | None:
+        expired: Session | None = None
+        snapshot: SessionSnapshot | None = None
+        with self._lock:
+            session = self._sessions.get(session_id)
+            if session is None:
+                return None
+            if self._is_expired(session):
+                expired = self._sessions.pop(session_id, None)
+            else:
+                snapshot = SessionSnapshot(
+                    session_id=session.session_id,
+                    df=session.df.clone() if session.df is not None else None,
+                    detection=dict(session.detection) if session.detection is not None else None,
+                    output_bytes=session.output_bytes,
+                    output_report=dict(session.output_report) if session.output_report is not None else None,
+                    hmac_key=session.hmac_key,
+                )
+        if expired is not None:
+            _zeroize(expired)
+        return snapshot
+
+    def clear_output(self, session_id: str) -> bool:
+        expired: Session | None = None
+        result = False
+        with self._lock:
+            session = self._sessions.get(session_id)
+            if session is None:
+                return False
+            if self._is_expired(session):
+                expired = self._sessions.pop(session_id, None)
+            else:
+                session.output_bytes = None
+                session.output_report = None
+                result = True
+        if expired is not None:
+            _zeroize(expired)
+        return result
+
+    def store_output(self, session_id: str, output_bytes: bytes, output_report: dict[str, Any]) -> bool:
+        expired: Session | None = None
+        with self._lock:
+            session = self._sessions.get(session_id)
+            if session is None:
+                return False
+            if self._is_expired(session):
+                expired = self._sessions.pop(session_id, None)
+            else:
+                session.output_bytes = output_bytes
+                session.output_report = output_report
+                return True
+        if expired is not None:
+            _zeroize(expired)
+        return False
+
+    def delete(self, session_id: str) -> bool:
         with self._lock:
             session = self._sessions.pop(session_id, None)
         if session is not None:
             _zeroize(session)
+            return True
+        return False
 
     def sweep(self) -> int:
         now = time.time()
         ttl = get_config().session_ttl_seconds
+        expired_sessions: list[Session] = []
         with self._lock:
             expired = [sid for sid, s in self._sessions.items() if now - s.created_at > ttl]
             for sid in expired:
                 session = self._sessions.pop(sid, None)
                 if session is not None:
-                    _zeroize(session)
+                    expired_sessions.append(session)
+        for session in expired_sessions:
+            _zeroize(session)
         return len(expired)
 
     def _is_expired(self, session: Session) -> bool:
@@ -81,25 +155,28 @@ def _zeroize(session: Session) -> None:
     if session.output_bytes is not None:
         try:
             ba = bytearray(session.output_bytes)
-            for i in range(len(ba)):
-                ba[i] = 0
+            ba[:] = b"\x00" * len(ba)
         except Exception:
             pass
         session.output_bytes = None
     session.output_report = None
-    try:
-        ka = bytearray(session.hmac_key)
-        for i in range(len(ka)):
-            ka[i] = 0
-    except Exception:
-        pass
+    if session.hmac_key is not None:
+        try:
+            ka = bytearray(session.hmac_key)
+            ka[:] = b"\x00" * len(ka)
+        except Exception:
+            pass
+        session.hmac_key = None
 
 
 _store: SessionStore | None = None
+_store_lock = threading.Lock()
 
 
 def get_store() -> SessionStore:
     global _store
     if _store is None:
-        _store = SessionStore()
+        with _store_lock:
+            if _store is None:
+                _store = SessionStore()
     return _store

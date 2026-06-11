@@ -315,7 +315,7 @@ def gen_sql(n: int = 500) -> None:
         signup_end = dt.date(2026, 4, 12)
         lines = []
         for i in range(1, n + 1):
-            first = rng.choice(FIRST_NAMES_EN)
+            first = rng.choice(FIRST_NAMES_EN).replace("'", "''")
             last = rng.choice(LAST_NAMES_EN).replace("'", "''")
             full = f"{first} {last}"
             email = f"{ascii_slug(first)}.{ascii_slug(last)}{i}@acme.example"

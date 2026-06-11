@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import polars as pl
+import pytest
 
 from sdsa.anonymize.primitives import (
     date_truncate,
@@ -12,6 +13,7 @@ from sdsa.anonymize.primitives import (
     string_truncate,
     tokenize,
 )
+from sdsa.anonymize.policy import ColumnPolicy
 
 
 def test_mask_full():
@@ -61,6 +63,12 @@ def test_numeric_bin_buckets():
     assert out[2] != out[0]
 
 
+def test_numeric_bin_handles_decimal_boundaries():
+    s = pl.Series("x", [0.1, 1.0, 2.0])
+    out = numeric_bin(s, bin_width=0.1).to_list()
+    assert out == ["[0.1, 0.2)", "[1, 1.1)", "[2, 2.1)"]
+
+
 def test_date_truncate_to_month():
     import datetime as dt
     s = pl.Series("d", [dt.date(2026, 4, 12), dt.date(2026, 4, 1)])
@@ -101,3 +109,32 @@ def test_mask_rejects_negative_params():
     except ValueError:
         return
     raise AssertionError("expected ValueError for negative keep_prefix")
+
+
+def test_date_truncate_parses_non_iso_strings():
+    """Non-ISO date strings (columns Polars couldn't auto-parse) are now
+    actually truncated instead of silently passed through."""
+    s = pl.Series("dob", ["15/01/2026", "March 5, 2025"])
+    out = date_truncate(s, "year").to_list()
+    assert out == ["2026", "2025"]
+
+
+def test_date_truncate_raises_on_unparseable_string():
+    """Regression (privacy): previously date_truncate fell back to
+    str(v), silently leaking the original date for non-ISO or malformed
+    values. Now it raises so the pipeline returns a 400."""
+    s = pl.Series("dob", ["not a date at all"])
+    try:
+        date_truncate(s, "year").to_list()
+    except ValueError as e:
+        assert "date_truncate" in str(e).lower() or "cannot parse" in str(e).lower()
+        return
+    # map_elements may lazy-evaluate; force realization if no error yet
+    raise AssertionError("expected ValueError for unparseable value")
+
+
+def test_column_policy_rejects_empty_and_multiline_names():
+    with pytest.raises(Exception):
+        ColumnPolicy(column="", action="retain")
+    with pytest.raises(Exception):
+        ColumnPolicy(column="bad\nname", action="retain")

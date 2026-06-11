@@ -32,6 +32,40 @@ def test_health():
     assert r.json()["ok"] is True
 
 
+def test_cors_disabled_by_default(monkeypatch):
+    monkeypatch.delenv("SDSA_ALLOWED_CORS_ORIGINS", raising=False)
+    config_module._config = None
+    try:
+        local = TestClient(create_app())
+        r = local.options(
+            "/api/upload",
+            headers={
+                "Origin": "https://evil.example",
+                "Access-Control-Request-Method": "POST",
+            },
+        )
+        assert "access-control-allow-origin" not in r.headers
+    finally:
+        config_module._config = None
+
+
+def test_cors_allows_configured_origin(monkeypatch):
+    monkeypatch.setenv("SDSA_ALLOWED_CORS_ORIGINS", "https://portal.example")
+    config_module._config = None
+    try:
+        local = TestClient(create_app())
+        r = local.options(
+            "/api/upload",
+            headers={
+                "Origin": "https://portal.example",
+                "Access-Control-Request-Method": "POST",
+            },
+        )
+        assert r.headers["access-control-allow-origin"] == "https://portal.example"
+    finally:
+        config_module._config = None
+
+
 def test_full_flow():
     # 1. Upload
     r = client.post("/api/upload", files={"file": ("sample.csv", CSV_SAMPLE, "text/csv")})
@@ -65,6 +99,7 @@ def test_full_flow():
     r = client.get(f"/api/download/{sid}/data.csv")
     assert r.status_code == 200
     assert b"email" in r.content.splitlines()[0]
+    assert r.headers["content-disposition"] == 'attachment; filename="sdsa-export.csv"'
 
     r = client.get(f"/api/download/{sid}/report.json")
     assert r.status_code == 200
@@ -73,6 +108,7 @@ def test_full_flow():
     r = client.get(f"/api/download/{sid}/report.md")
     assert r.status_code == 200
     assert b"SDSA Privacy Report" in r.content
+    assert r.headers["content-disposition"] == 'attachment; filename="sdsa-report.md"'
 
     # 4. Delete
     r = client.delete(f"/api/session/{sid}")
@@ -120,7 +156,15 @@ def test_upload_rejects_invalid_policy_file(monkeypatch, tmp_path):
 
     r = client.post("/api/upload", files={"file": ("sample.csv", CSV_SAMPLE, "text/csv")})
     assert r.status_code == 400
-    assert "invalid policy config" in r.text
+    assert "not valid json" in r.text.lower()
+
+
+def test_upload_sanitizes_parse_errors():
+    sample = b"name,email\nAlice,alice@example.com,extra\n"
+    r = client.post("/api/upload", files={"file": ("broken.csv", sample, "text/csv")})
+    assert r.status_code == 400
+    assert "alice@example.com" not in r.text
+    assert "line" in r.text.lower() or "column count" in r.text.lower()
 
 
 def test_upload_uses_custom_policy_file(monkeypatch, tmp_path):
@@ -249,6 +293,25 @@ def test_preflight_rejects_invalid_policy_params():
     r = client.post(f"/api/preflight/{sid}", json=req)
     assert r.status_code == 400
     assert "bin_width" in r.text
+
+
+def test_preflight_rejects_too_many_qis():
+    columns = [f"c{i}" for i in range(16)]
+    sample = (",".join(columns) + "\n" + ",".join(["x"] * 16) + "\n").encode("utf-8")
+    r = client.post("/api/upload", files={"file": ("sample.csv", sample, "text/csv")})
+    assert r.status_code == 200, r.text
+    sid = r.json()["session_id"]
+
+    req = {
+        "policies": [
+            {"column": col, "action": "retain", "is_quasi_identifier": True}
+            for col in columns
+        ],
+        "k": 2,
+    }
+    r = client.post(f"/api/preflight/{sid}", json=req)
+    assert r.status_code == 400
+    assert "too many quasi-identifier columns" in r.text.lower()
 
 
 def test_preflight_honors_dp_constraints():
@@ -446,3 +509,14 @@ def test_session_sweep_reaps_expired_sessions(monkeypatch):
     assert "old" not in store._sessions
     assert new.session_id in store._sessions
     store.delete(new.session_id)
+
+
+def test_download_reports_session_expiry_after_delete():
+    r = client.post("/api/upload", files={"file": ("sample.csv", CSV_SAMPLE, "text/csv")})
+    assert r.status_code == 200, r.text
+    sid = r.json()["session_id"]
+    client.delete(f"/api/session/{sid}")
+
+    r = client.get(f"/api/download/{sid}/report.json")
+    assert r.status_code == 404
+    assert "expired" in r.text.lower()

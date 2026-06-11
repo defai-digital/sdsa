@@ -69,3 +69,9 @@ def test_user_email_still_hits_email_hint():
     s = pl.Series("user_email", ["not-an-email", "still-not", "nope"])
     sug = detect_column("user_email", s)
     assert sug.kind == "email"
+
+
+def test_numeric_luhn_ids_do_not_trigger_credit_card_detection():
+    s = pl.Series("transaction_id", [4111111111111111, 4012888888881881, 5555555555554444])
+    sug = detect_column("transaction_id", s)
+    assert sug.kind != "credit_card"

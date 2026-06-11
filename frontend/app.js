@@ -17,12 +17,12 @@ let state = {
   pii: {},
   policySuggestions: {},
   preflight: null,
-  sessionStartedAt: null,
   uploadData: null,
 };
 let preflightTimer = null;
 let preflightSeq = 0;
 let sessionInterval = null;
+let errorTimer = null;
 
 const $ = (id) => document.getElementById(id);
 
@@ -49,13 +49,11 @@ const show = (id) => {
 };
 
 function startSessionTimer() {
-  state.sessionStartedAt = Date.now();
   if (sessionInterval) clearInterval(sessionInterval);
   const tick = () => {
-    if (!state.sessionStartedAt) return;
-    const ttlSeconds = state.uploadData?.session_ttl_seconds || 1800;
-    const elapsed = (Date.now() - state.sessionStartedAt) / 1000;
-    const remaining = Math.max(0, ttlSeconds - elapsed);
+    const expiresAt = state.uploadData?.session_expires_at;
+    if (!expiresAt) return;
+    const remaining = Math.max(0, expiresAt - Date.now() / 1000);
     const m = Math.floor(remaining / 60);
     const s = Math.floor(remaining % 60);
     const el = $("session-timer");
@@ -63,6 +61,7 @@ function startSessionTimer() {
     if (remaining <= 0) {
       clearInterval(sessionInterval);
       sessionInterval = null;
+      showError("Session expired — please re-upload.");
     }
   };
   tick();
@@ -70,19 +69,21 @@ function startSessionTimer() {
 }
 function stopSessionTimer() {
   if (sessionInterval) { clearInterval(sessionInterval); sessionInterval = null; }
-  state.sessionStartedAt = null;
 }
 const showError = (msg) => {
   const el = $("error");
+  if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
   el.textContent = msg;
   el.classList.remove("hidden");
-  setTimeout(() => el.classList.add("hidden"), 8000);
+  errorTimer = setTimeout(() => { el.classList.add("hidden"); errorTimer = null; }, 8000);
 };
 
 function formatProcessError(message) {
   const text = String(message || "").trim();
 
-  const softCap = text.match(/requires suppressing ([\d.]+%) of rows \(cap: (\d+%)\)/i);
+  // Backend text is "(soft cap: N%)" since v1.0.2. Accept the bare "(cap:"
+  // form too for forward/back compat.
+  const softCap = text.match(/requires suppressing ([\d.]+%) of rows \((?:soft )?cap: (\d+%)\)/i);
   if (softCap) {
     return `Processing blocked: estimated suppression is ${softCap[1]}, above the ${softCap[2]} cap.\nReview the preflight suggestions below.`;
   }
@@ -96,9 +97,12 @@ function formatProcessError(message) {
     return "Processing blocked: no rows would remain after k-anonymity.\nReview the preflight suggestions below.";
   }
 
+  const capPct = state.preflight?.suppression_cap != null
+    ? `${(state.preflight.suppression_cap * 100).toFixed(0)}%`
+    : "10%";
   return text.replaceAll(
     "accept_weaker_guarantee=true",
-    "Allow >10% row suppression"
+    `Allow >${capPct} row suppression`
   );
 }
 
@@ -108,6 +112,8 @@ async function readErrorMessage(res) {
   try {
     const parsed = JSON.parse(raw);
     if (parsed && typeof parsed.detail === "string") return parsed.detail;
+    if (parsed && Array.isArray(parsed.detail))
+      return parsed.detail.map(e => e.msg || String(e)).join("; ");
   } catch {}
   return raw;
 }
@@ -126,6 +132,75 @@ function looksLikeSupported(file) {
   return SUPPORTED_EXTENSIONS.some((ext) => name.endsWith(ext));
 }
 
+function fmtBytes(n) {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  return `${(n / 1024 / 1024).toFixed(1)} MB`;
+}
+
+function setUploadProgress(loaded, total, indeterminate = false) {
+  const wrap = $("dropzone-progress");
+  const fill = $("dropzone-progress-fill");
+  const meta = $("dropzone-progress-meta");
+  if (!wrap) return;
+  wrap.classList.remove("hidden");
+  wrap.classList.toggle("indeterminate", !!indeterminate);
+  if (indeterminate) {
+    if (fill) fill.style.width = "";
+    if (meta) meta.textContent = "Parsing…";
+  } else {
+    const pct = total > 0 ? Math.min(100, (loaded / total) * 100) : 0;
+    if (fill) fill.style.width = `${pct}%`;
+    if (meta) meta.textContent = `${fmtBytes(loaded)} / ${fmtBytes(total)} · ${pct.toFixed(0)}%`;
+  }
+}
+function clearUploadProgress() {
+  const wrap = $("dropzone-progress");
+  const fill = $("dropzone-progress-fill");
+  if (!wrap) return;
+  wrap.classList.add("hidden");
+  wrap.classList.remove("indeterminate");
+  if (fill) fill.style.width = "0%";
+}
+
+function uploadXHR(file) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `${API}/upload`);
+    xhr.responseType = "text";
+    xhr.upload.addEventListener("progress", (e) => {
+      if (e.lengthComputable) setUploadProgress(e.loaded, e.total);
+    });
+    xhr.upload.addEventListener("load", () => {
+      // Bytes are uploaded; backend is now parsing/detecting. Show indeterminate
+      // bar so the user knows we haven't stalled.
+      setUploadProgress(file.size, file.size, true);
+    });
+    xhr.addEventListener("load", () => {
+      const status = xhr.status;
+      const text = xhr.responseText || "";
+      if (status >= 200 && status < 300) {
+        try { resolve(JSON.parse(text)); }
+        catch (e) { reject(new Error("Malformed response from server")); }
+      } else {
+        let msg = `${status} ${xhr.statusText}`.trim();
+        if (text) {
+          try {
+            const parsed = JSON.parse(text);
+            if (parsed && typeof parsed.detail === "string") msg = parsed.detail;
+          } catch { msg = text; }
+        }
+        reject(new Error(msg));
+      }
+    });
+    xhr.addEventListener("error", () => reject(new Error("Network error")));
+    xhr.addEventListener("abort", () => reject(new Error("Upload aborted")));
+    const fd = new FormData();
+    fd.append("file", file);
+    xhr.send(fd);
+  });
+}
+
 async function uploadFile(file) {
   if (!file) return;
   if (!looksLikeSupported(file)) {
@@ -137,16 +212,20 @@ async function uploadFile(file) {
     return;
   }
 
-  $("dropzone-file").textContent = `${file.name} — ${(file.size / 1024).toFixed(1)} KB · uploading…`;
+  // Clean up previous session before uploading to prevent server-side memory leak.
+  if (state.sessionId) {
+    const oldId = state.sessionId;
+    state.sessionId = null;  // prevent double-delete from resetToUpload
+    try { await fetch(`${API}/session/${oldId}`, { method: "DELETE" }); } catch (e) { /* ignore */ }
+  }
+
+  $("dropzone-file").textContent = `${file.name} — ${fmtBytes(file.size)}`;
   dropzone.classList.add("uploading");
   dropzone.classList.remove("error");
+  setUploadProgress(0, file.size);
 
-  const fd = new FormData();
-  fd.append("file", file);
   try {
-    const res = await fetch(`${API}/upload`, { method: "POST", body: fd });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-    const data = await res.json();
+    const data = await uploadXHR(file);
     state.sessionId = data.session_id;
     state.schema = data.schema;
     state.pii = data.pii_suggestions;
@@ -154,6 +233,8 @@ async function uploadFile(file) {
     state.uploadData = data;
     startSessionTimer();
     renderConfigure(data);
+    resetPreviewPanel();
+    renderPreviewOriginal();
     schedulePreflight();
     show("step-configure");
   } catch (e) {
@@ -161,6 +242,7 @@ async function uploadFile(file) {
     showError(`Upload failed: ${e.message}`);
   } finally {
     dropzone.classList.remove("uploading");
+    clearUploadProgress();
   }
 }
 
@@ -174,10 +256,13 @@ function renderPreflightError(message) {
     <ul class="preflight-list"><li>${esc(message)}</li></ul>`;
 }
 
+let dropzoneErrorTimer = null;
+
 function flashDropzoneError(msg) {
+  if (dropzoneErrorTimer) { clearTimeout(dropzoneErrorTimer); dropzoneErrorTimer = null; }
   dropzone.classList.add("error");
   $("dropzone-file").textContent = msg;
-  setTimeout(() => dropzone.classList.remove("error"), 2000);
+  dropzoneErrorTimer = setTimeout(() => { dropzone.classList.remove("error"); dropzoneErrorTimer = null; }, 2000);
 }
 
 // Click to browse
@@ -267,8 +352,13 @@ function renderConfigure(data) {
     tr.dataset.suggestedParams = JSON.stringify(suggestedParams);
     if (defaultAction === "dp_laplace") tr.classList.add("dp-on");
     tr.innerHTML = `
+      <td class="select-col">
+        <input type="checkbox" class="col-include" checked
+               aria-label="Include ${esc(col.name)} in output"
+               title="Include in output — uncheck to drop this column" />
+      </td>
       <td><code>${esc(col.name)}</code></td>
-      <td>${col.kind}<div class="sub">${col.n_unique.toLocaleString()} unique</div></td>
+      <td>${esc(col.kind)}<div class="sub">${col.n_unique.toLocaleString()} unique</div></td>
       <td>${piiBadge(pii)}</td>
       <td>
         <select class="action" aria-label="Action for ${esc(col.name)}">
@@ -284,11 +374,16 @@ function renderConfigure(data) {
         <input type="number" class="eps small" step="0.1" min="0.1" max="10" value="${defaultEpsilon}" />
       </td>
       <td class="dp-cell">
-        <input type="number" class="bound lower" placeholder="lo" value="${defaultLower}" />
-        <input type="number" class="bound upper" placeholder="hi" value="${defaultUpper}" />
+        <input type="number" class="bound lower" placeholder="lo" value="${esc(String(defaultLower))}" />
+        <input type="number" class="bound upper" placeholder="hi" value="${esc(String(defaultUpper))}" />
       </td>`;
     tbody.appendChild(tr);
   }
+  // After re-render, search is reset.
+  const search = $("col-search");
+  if (search) { search.value = ""; applyColumnSearch(""); }
+  const selectAll = $("select-all");
+  if (selectAll) { selectAll.checked = true; selectAll.indeterminate = false; }
 }
 
 // Keep row's dp-on class in sync with its action dropdown.
@@ -304,6 +399,13 @@ function collectProcessPayload() {
   const rows = $("columns-table").querySelectorAll("tbody tr");
   for (const tr of rows) {
     const col = tr.dataset.column;
+    const included = tr.querySelector(".col-include")?.checked !== false;
+    // Excluded columns are sent as action=drop. QI and DP params are
+    // meaningless for a dropped column, so we zero them out.
+    if (!included) {
+      policies.push({ column: col, action: "drop", params: {}, is_quasi_identifier: false });
+      continue;
+    }
     const action = tr.querySelector(".action").value;
     const qi = tr.querySelector(".qi").checked;
     policies.push({ column: col, action, params: buildParams(tr, action), is_quasi_identifier: qi });
@@ -316,9 +418,11 @@ function collectProcessPayload() {
       }
     }
   }
+  const kRaw = parseInt($("k-input").value, 10);
+  const k = Number.isNaN(kRaw) ? 5 : Math.max(2, Math.min(1000, kRaw));
   return {
     policies,
-    k: parseInt($("k-input").value, 10),
+    k,
     dp_params,
     deterministic_key_name: $("det-key").value.trim() || null,
     accept_weaker_guarantee: $("accept-weaker").checked,
@@ -390,8 +494,8 @@ function renderPreflight(preflight) {
   const supPct = Math.max(0, Math.min(100, preflight.suppression_ratio * 100));
   el.className = `preflight ${level}`;
   el.innerHTML = `
-    <div class="preflight-title">${summary}</div>
-    <div class="meta">k=${preflight.k} · below-k ${preflight.classes_below_k}/${preflight.classes_total} · soft cap ${(preflight.suppression_cap * 100).toFixed(0)}% · hard cap ${(preflight.hard_suppression_cap * 100).toFixed(0)}%</div>
+    <div class="preflight-title">${esc(summary)}</div>
+    <div class="meta">k=${esc(preflight.k)} · below-k ${esc(preflight.classes_below_k)}/${esc(preflight.classes_total)} · soft cap ${esc((preflight.suppression_cap * 100).toFixed(0))}% · hard cap ${esc((preflight.hard_suppression_cap * 100).toFixed(0))}%</div>
     <div class="sup-bar" aria-hidden="true"><span style="width:${supPct}%"></span></div>
     ${bullets.length ? `<ul class="preflight-list">${bullets.map((msg) => `<li>${esc(msg)}</li>`).join("")}</ul>` : ""}
     ${actions.length ? `<div class="preflight-actions">${actions.join("")}</div>` : ""}`;
@@ -405,13 +509,14 @@ document.addEventListener("click", (e) => {
     const row = document.querySelector(`#columns-table tbody tr[data-column="${CSS.escape(col)}"]`);
     if (row) {
       const qi = row.querySelector(".qi");
-      if (qi) { qi.checked = false; schedulePreflight(); }
+      if (qi) { qi.checked = false; schedulePreflight(); schedulePreview(); }
     }
     return;
   }
   if (e.target.closest("#uncheck-all-qi")) {
     document.querySelectorAll("#columns-table tbody .qi").forEach((cb) => { cb.checked = false; });
     schedulePreflight();
+    schedulePreview();
     return;
   }
   if (e.target.closest("#apply-greedy-plan")) {
@@ -422,6 +527,7 @@ document.addEventListener("click", (e) => {
       if (qi) qi.checked = false;
     }
     schedulePreflight();
+    schedulePreview();
   }
 });
 
@@ -466,7 +572,6 @@ function schedulePreflight() {
   }, 250);
 }
 
-const DEFAULT_K = 5;
 function isDefaultQI(col, pii) {
   // Only default to QI when average equivalence class size could plausibly
   // meet the default k. A high-cardinality column (e.g. raw salary) as a QI
@@ -476,12 +581,13 @@ function isDefaultQI(col, pii) {
   const n = col.row_count || 0;
   const u = col.n_unique || 0;
   if (u === 0 || n === 0) return false;
-  return u * DEFAULT_K <= n;
+  const defaultK = state.uploadData?.default_k ?? 5;
+  return u * defaultK <= n;
 }
 
 function esc(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  return String(s).replace(/[&<>"'`]/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;", "`": "&#96;",
   })[c]);
 }
 
@@ -515,7 +621,10 @@ function guardProcessFromPreflight() {
   }
 
   if (preflight.within_suppression_cap === false && !$("accept-weaker").checked) {
-    showError("Processing blocked: estimated suppression is above the 10% cap.\nUse the preflight suggestions or allow >10% row suppression.");
+    const capPct = preflight.suppression_cap != null
+      ? `${(preflight.suppression_cap * 100).toFixed(0)}%`
+      : "10%";
+    showError(`Processing blocked: estimated suppression is above the ${capPct} cap.\nUse the preflight suggestions or allow >${capPct} row suppression.`);
     flashPreflight();
     flashAcceptWeaker();
     return true;
@@ -580,19 +689,29 @@ $("process-btn").addEventListener("click", async () => {
 $("reset-config")?.addEventListener("click", () => {
   if (!state.uploadData) return;
   renderConfigure(state.uploadData);
+  resetPreviewPanel();
+  renderPreviewOriginal();
   schedulePreflight();
 });
 
 $("columns-table").addEventListener("input", (e) => {
-  if (e.target.closest("tbody")) schedulePreflight();
+  if (!e.target.closest("tbody")) return;
+  if (e.target.classList.contains("col-include")) return;
+  schedulePreflight();
+  schedulePreview();
 });
 $("columns-table").addEventListener("change", (e) => {
-  if (e.target.closest("tbody")) schedulePreflight();
+  if (!e.target.closest("tbody")) return;
+  if (e.target.classList.contains("col-include")) return;  // handled above
+  schedulePreflight();
+  schedulePreview();
 });
 $("k-input").addEventListener("input", schedulePreflight);
+$("det-key")?.addEventListener("input", () => { schedulePreflight(); schedulePreview(); });
 
 function buildParams(tr, action) {
-  const suggested = JSON.parse(tr.dataset.suggestedParams || "{}");
+  let suggested = {};
+  try { suggested = JSON.parse(tr.dataset.suggestedParams || "{}"); } catch {}
   if (action === "numeric_bin") {
     if (suggested.bin_width != null) return { bin_width: suggested.bin_width };
     // Default bin width: 10% of observed range if available; else 1.
@@ -615,12 +734,253 @@ function buildParams(tr, action) {
   return {};
 }
 
+// --- Preview panel (sample rows: original + sanitized) ---------------------
+
+let previewMode = "original";   // "original" | "sanitized"
+let previewSeq = 0;
+let previewTimer = null;
+let previewCache = null;        // last sanitized response
+
+function resetPreviewPanel() {
+  previewMode = "original";
+  previewCache = null;
+  previewSeq = 0;
+  if (previewTimer) { window.clearTimeout(previewTimer); previewTimer = null; }
+  document.querySelectorAll(".preview-tab").forEach((b) => {
+    b.classList.toggle("active", b.dataset.mode === "original");
+    b.setAttribute("aria-selected", b.dataset.mode === "original" ? "true" : "false");
+  });
+  const panel = $("preview-panel");
+  if (panel) panel.classList.remove("collapsed");
+  const meta = $("preview-meta");
+  if (meta) meta.textContent = "first 5 rows";
+}
+
+function piiClassFor(name) {
+  const pii = state.uploadData?.pii_suggestions?.[name];
+  if (!pii) return "";
+  const sev = PII_SEVERITY[pii.kind] || "low";
+  if (sev === "high") return "pii-high";
+  if (sev === "mid")  return "pii-mid";
+  return "";
+}
+
+function renderPreviewOriginal() {
+  const body = $("preview-body");
+  if (!body) return;
+  const data = state.uploadData;
+  if (!data || !data.sample_columns || !data.sample_rows?.length) {
+    body.className = "preview-body empty";
+    body.textContent = "No sample available.";
+    return;
+  }
+  const cols = data.sample_columns;
+  const rows = data.sample_rows;
+  $("preview-meta").textContent =
+    `first ${rows.length} of ${data.row_count.toLocaleString()} rows`;
+  body.className = "preview-body";
+  body.innerHTML = `
+    <table class="preview-table">
+      <thead>
+        <tr>
+          <th class="preview-row-num">#</th>
+          ${cols.map((c) => `<th class="${piiClassFor(c)}">${esc(c)}</th>`).join("")}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map((row, i) => `
+          <tr>
+            <td class="preview-row-num">${i + 1}</td>
+            ${row.map((v) => v === null
+              ? `<td class="null">∅</td>`
+              : `<td>${esc(v)}</td>`).join("")}
+          </tr>`).join("")}
+      </tbody>
+    </table>`;
+}
+
+function renderPreviewSanitized(payload) {
+  const body = $("preview-body");
+  if (!body) return;
+  const cols = payload.columns;
+  const orig = payload.original;
+  const san = payload.sanitized;
+  const dropped = new Set(payload.dropped_columns || []);
+  $("preview-meta").textContent =
+    `before → after · first ${orig.length} rows` +
+    (dropped.size ? ` · ${dropped.size} dropped` : "");
+  body.className = "preview-body";
+  body.innerHTML = `
+    <table class="preview-table">
+      <thead>
+        <tr>
+          <th class="preview-row-num">#</th>
+          ${cols.map((c) => `<th class="${piiClassFor(c)}" title="${dropped.has(c) ? "dropped" : esc(c)}">${esc(c)}${dropped.has(c) ? " ⊘" : ""}</th>`).join("")}
+        </tr>
+      </thead>
+      <tbody>
+        ${orig.map((row, i) => `
+          <tr>
+            <td class="preview-row-num">${i + 1}</td>
+            ${row.map((v) => v === null
+              ? `<td class="null">∅</td>`
+              : `<td>${esc(v)}</td>`).join("")}
+          </tr>
+          <tr>
+            <td class="preview-row-num">→</td>
+            ${cols.map((c, j) => {
+              if (dropped.has(c)) return `<td class="dropped">[dropped]</td>`;
+              const sv = (san[i] != null && j < san[i].length) ? san[i][j] : null;
+              const ov = orig[i][j];
+              const changed = String(sv) !== String(ov);
+              if (sv === null) return `<td class="null${changed ? " changed" : ""}">∅</td>`;
+              return `<td class="${changed ? "changed" : ""}">${esc(sv)}</td>`;
+            }).join("")}
+          </tr>`).join("")}
+      </tbody>
+    </table>`;
+}
+
+async function fetchPreview() {
+  if (!state.sessionId) return;
+  const seq = ++previewSeq;
+  const body = $("preview-body");
+  if (!body) return;
+  body.className = "preview-body loading";
+  body.innerHTML = "";
+  const payload = collectProcessPayload();
+  try {
+    const res = await fetch(`${API}/preview/${state.sessionId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (seq !== previewSeq) return;
+    if (res.status === 404) {
+      body.className = "preview-body error";
+      body.textContent = "Session expired — please re-upload.";
+      return;
+    }
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    const data = await res.json();
+    if (seq !== previewSeq) return;
+    previewCache = data;
+    renderPreviewSanitized(data);
+  } catch (e) {
+    if (seq !== previewSeq) return;
+    body.className = "preview-body error";
+    body.textContent = `Preview failed: ${e.message}`;
+  }
+}
+
+function schedulePreview() {
+  if (previewMode !== "sanitized") return;
+  // Stale; will refetch.
+  previewCache = null;
+  if (previewTimer) window.clearTimeout(previewTimer);
+  previewTimer = window.setTimeout(() => {
+    previewTimer = null;
+    fetchPreview();
+  }, 300);
+}
+
+document.querySelectorAll(".preview-tab").forEach((tab) => {
+  tab.addEventListener("click", (e) => {
+    // Don't toggle when the help "?" inside the tab is clicked.
+    if (e.target.closest(".help")) return;
+    const mode = tab.dataset.mode;
+    if (mode === previewMode) return;
+    previewMode = mode;
+    document.querySelectorAll(".preview-tab").forEach((b) => {
+      b.classList.toggle("active", b === tab);
+      b.setAttribute("aria-selected", b === tab ? "true" : "false");
+    });
+    if (mode === "original") {
+      renderPreviewOriginal();
+    } else if (previewCache) {
+      renderPreviewSanitized(previewCache);
+    } else {
+      fetchPreview();
+    }
+  });
+});
+
+$("preview-collapse")?.addEventListener("click", () => {
+  const panel = $("preview-panel");
+  if (!panel) return;
+  const collapsed = panel.classList.toggle("collapsed");
+  $("preview-collapse").textContent = collapsed ? "+" : "−";
+  $("preview-collapse").setAttribute("aria-expanded", collapsed ? "false" : "true");
+});
+
+// --- Column search ---------------------------------------------------------
+
+function applyColumnSearch(query) {
+  const q = (query || "").trim().toLowerCase();
+  const rows = document.querySelectorAll("#columns-table tbody tr");
+  for (const tr of rows) {
+    const name = (tr.dataset.column || "").toLowerCase();
+    tr.classList.toggle("row-hidden", q && !name.includes(q));
+  }
+  syncSelectAllState();
+}
+$("col-search")?.addEventListener("input", (e) => applyColumnSearch(e.target.value));
+
+// --- Include / exclude columns --------------------------------------------
+
+function visibleRows() {
+  return Array.from(document.querySelectorAll("#columns-table tbody tr"))
+    .filter((tr) => !tr.classList.contains("row-hidden"));
+}
+
+function syncSelectAllState() {
+  const all = visibleRows();
+  const included = all.filter((tr) => tr.querySelector(".col-include")?.checked);
+  const cb = $("select-all");
+  if (!cb) return;
+  cb.checked = all.length > 0 && included.length === all.length;
+  cb.indeterminate = included.length > 0 && included.length < all.length;
+}
+
+function applyIncludeStyling(tr) {
+  const included = tr.querySelector(".col-include")?.checked !== false;
+  tr.classList.toggle("row-excluded", !included);
+  // Disable per-row inputs so they can't be tweaked while the column is
+  // excluded — makes the "this column will be dropped" contract unambiguous.
+  tr.querySelectorAll(".action, .qi, .eps, .bound").forEach((el) => {
+    el.disabled = !included;
+  });
+}
+
+$("columns-table").addEventListener("change", (e) => {
+  if (!e.target.classList.contains("col-include")) return;
+  const tr = e.target.closest("tbody tr");
+  if (tr) applyIncludeStyling(tr);
+  syncSelectAllState();
+  schedulePreflight();
+  schedulePreview();
+});
+
+$("select-all")?.addEventListener("change", (e) => {
+  const checked = e.target.checked;
+  visibleRows().forEach((tr) => {
+    const cb = tr.querySelector(".col-include");
+    if (cb && cb.checked !== checked) {
+      cb.checked = checked;
+      applyIncludeStyling(tr);
+    }
+  });
+  e.target.indeterminate = false;
+  schedulePreflight();
+  schedulePreview();
+});
+
 // --- Review ----------------------------------------------------------------
 
 function renderReview(report) {
-  const k = report.k_anonymity;
-  const priv = report.privacy;
-  const kept = k.rows_total - k.rows_suppressed;
+  const k = report.k_anonymity || {};
+  const priv = report.privacy || {};
+  const kept = (k.rows_total || 0) - (k.rows_suppressed || 0);
   const prosecutor = 1 / Math.max(k.k_achieved, 1);
 
   const kClass    = k.k_achieved >= k.k_target ? "ok" : "warn";
@@ -654,8 +1014,9 @@ function renderReview(report) {
       <div class="stat-value">${esc(String(s.value))} ${s.sub ? `<small>${esc(s.sub)}</small>` : ""}</div>
     </div>`).join("");
 
-  const claim = $("claim-box").querySelector(".claim-text");
-  claim.innerHTML = `<strong>Privacy claim:</strong> ${esc(report.claim)}`;
+  const claimBox = $("claim-box");
+  const claim = claimBox ? claimBox.querySelector(".claim-text") : null;
+  if (claim) claim.innerHTML = `<strong>Privacy claim:</strong> ${esc(report.claim || "")}`;
   $("report-raw").textContent = JSON.stringify(report, null, 2);
   $("dl-csv").href = `${API}/download/${state.sessionId}/data.csv`;
   $("dl-json").href = `${API}/download/${state.sessionId}/report.json`;
@@ -668,31 +1029,51 @@ async function resetToUpload() {
     catch (e) { /* ignore */ }
   }
   stopSessionTimer();
+  // Clear pending preflight timer and invalidate sequence so stale
+  // responses are discarded.
+  if (preflightTimer) { window.clearTimeout(preflightTimer); preflightTimer = null; }
+  preflightSeq = 0;
+  // Clear error toast timer so a stale auto-hide doesn't clip a new error.
+  if (errorTimer) { window.clearTimeout(errorTimer); errorTimer = null; }
+  const errorEl = $("error");
+  if (errorEl) { errorEl.classList.add("hidden"); errorEl.textContent = ""; }
   state = {
     sessionId: null, schema: [], pii: {}, policySuggestions: {},
-    preflight: null, sessionStartedAt: null, uploadData: null,
+    preflight: null, uploadData: null,
   };
   renderPreflight(null);
+  resetPreviewPanel();
+  const body = $("preview-body");
+  if (body) { body.className = "preview-body empty"; body.innerHTML = ""; }
+  const search = $("col-search");
+  if (search) search.value = "";
   $("file-input").value = "";
   $("dropzone-file").textContent = "";
+  clearUploadProgress();
   dropzone.classList.remove("uploading", "error", "drag-over");
   show("step-upload");
 }
 $("new-session")?.addEventListener("click", resetToUpload);
 $("review-restart")?.addEventListener("click", resetToUpload);
 
-// Clicking the "Upload" step in the top bar restarts — behaves like "start over".
+// Clicking the "Upload" step in the top bar restarts - behaves like "start over".
+// Use event delegation to avoid per-element listeners that could accumulate if
+// the step bar is ever re-rendered (BUG-226).
 document.querySelectorAll('.step-item[data-step="upload"]').forEach((el) => {
   el.setAttribute("role", "button");
   el.setAttribute("tabindex", "0");
   el.classList.add("step-clickable");
-  el.addEventListener("click", resetToUpload);
-  el.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      resetToUpload();
-    }
-  });
+});
+document.addEventListener("click", (e) => {
+  if (e.target.closest('.step-item[data-step="upload"]')) {
+    resetToUpload();
+  }
+});
+document.addEventListener("keydown", (e) => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.closest('.step-item[data-step="upload"]')) {
+    e.preventDefault();
+    resetToUpload();
+  }
 });
 
 // ----- Tooltips (for ".help" anchors) --------------------------------------

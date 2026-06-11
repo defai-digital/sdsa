@@ -66,6 +66,12 @@ def apply_laplace(series: pl.Series, params: LaplaceParams) -> pl.Series:
     sensitivity assumption. Outputs are clamped again as post-processing so
     the released values stay within the caller-declared domain.
     """
+    try:
+        finite_check = all(math.isfinite(float(v)) for v in (params.epsilon, params.lower, params.upper))
+    except (TypeError, ValueError):
+        raise ValueError("epsilon and bounds must be finite numbers")
+    if not finite_check:
+        raise ValueError("epsilon and bounds must be finite numbers")
     if params.epsilon <= 0:
         raise ValueError("epsilon must be > 0")
     if params.upper <= params.lower:

@@ -7,23 +7,32 @@ from __future__ import annotations
 
 from typing import Any
 
+import math
 import polars as pl
 
 
+def _clean_numeric(s: pl.Series) -> pl.Series:
+    clean = s.drop_nulls()
+    if clean.dtype.is_float():
+        clean = clean.filter(~clean.is_nan())
+    return clean
+
+
 def _numeric_stats(s: pl.Series) -> dict[str, Any]:
-    if s.len() == 0 or s.drop_nulls().len() == 0:
+    clean = _clean_numeric(s)
+    if s.len() == 0 or clean.len() == 0:
         return {"mean": None, "std": None, "min": None, "max": None, "null_ratio": 1.0}
     return {
-        "mean": _f(s.mean()),
-        "std": _f(s.std()),
-        "min": _f(s.min()),
-        "max": _f(s.max()),
+        "mean": _f(clean.mean()),
+        "std": _f(clean.std()),
+        "min": _f(clean.min()),
+        "max": _f(clean.max()),
         "null_ratio": s.null_count() / s.len(),
     }
 
 
 def _histogram(s: pl.Series, bins: int = 10) -> dict[str, Any]:
-    clean = s.drop_nulls()
+    clean = _clean_numeric(s)
     if clean.len() == 0:
         return {"edges": [], "counts": []}
     lo = float(clean.min())
@@ -40,7 +49,7 @@ def _histogram(s: pl.Series, bins: int = 10) -> dict[str, Any]:
 def _categorical_stats(s: pl.Series) -> dict[str, Any]:
     n = s.len()
     return {
-        "cardinality": int(s.n_unique()),
+        "cardinality": int(s.drop_nulls().n_unique()),
         "null_ratio": s.null_count() / n if n else 1.0,
     }
 
@@ -49,9 +58,12 @@ def _f(v):
     if v is None:
         return None
     try:
-        return float(v)
+        out = float(v)
     except (TypeError, ValueError):
         return None
+    if not math.isfinite(out):
+        return None
+    return out
 
 
 def compare_column(name: str, before: pl.Series, after: pl.Series | None) -> dict[str, Any]:
@@ -81,7 +93,6 @@ def compare_column(name: str, before: pl.Series, after: pl.Series | None) -> dic
 
 
 def correlation_matrix(df: pl.DataFrame) -> dict[str, dict[str, float | None]]:
-    import math
     num_cols = [c for c in df.columns if df[c].dtype.is_numeric()]
     out: dict[str, dict[str, float | None]] = {}
     for a in num_cols:
@@ -103,15 +114,31 @@ def correlation_matrix(df: pl.DataFrame) -> dict[str, dict[str, float | None]]:
     return out
 
 
+_CORRELATION_SAMPLE = 10_000
+
+
 def build_validation(before: pl.DataFrame, after: pl.DataFrame) -> dict[str, Any]:
+    if after.height == 0:
+        per_col = [compare_column(name, before[name], None) for name in before.columns]
+        return {
+            "columns": per_col,
+            "correlation_before": correlation_matrix(before) if before.height > 0 else {},
+            "correlation_after": {},
+            "rows_before": before.height,
+            "rows_after": 0,
+        }
     per_col = []
     for name in before.columns:
         after_series = after[name] if name in after.columns else None
         per_col.append(compare_column(name, before[name], after_series))
+    before_sample = before.sample(min(_CORRELATION_SAMPLE, before.height), seed=0) \
+        if before.height > _CORRELATION_SAMPLE else before
+    after_sample = after.sample(min(_CORRELATION_SAMPLE, after.height), seed=0) \
+        if after.height > _CORRELATION_SAMPLE else after
     return {
         "columns": per_col,
-        "correlation_before": correlation_matrix(before),
-        "correlation_after": correlation_matrix(after),
+        "correlation_before": correlation_matrix(before_sample),
+        "correlation_after": correlation_matrix(after_sample),
         "rows_before": before.height,
         "rows_after": after.height,
     }

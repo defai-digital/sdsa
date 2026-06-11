@@ -1,0 +1,1 @@
+::error title=Ruff (F841),file=/Users/akiralam/code/sdsa/backend/src/sdsa/ingest.py,line=305,col=5,endLine=305,endColumn=11::src/sdsa/ingest.py:305:5: F841 Local variable `schema` is assigned to but never used
