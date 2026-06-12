@@ -100,7 +100,14 @@ def numeric_bin(series: pl.Series, bin_width: float) -> pl.Series:
     def _bin(v):
         if v is None:
             return None
-        if not math.isfinite(float(v)):
+        try:
+            fv = float(v)
+        except (TypeError, ValueError):
+            raise ValueError(
+                f"numeric_bin cannot convert a value in column '{series.name}' to float; "
+                "column must contain numeric data"
+            ) from None
+        if not math.isfinite(fv):
             return None
         dec_value = Decimal(str(v))
         bucket = (dec_value / step).to_integral_value(rounding=ROUND_FLOOR)
