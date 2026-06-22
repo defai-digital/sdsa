@@ -16,8 +16,9 @@ def test_dockerfile_runs_single_non_root_app_process():
     assert "FROM python:3.12-slim" in dockerfile
     assert "USER sdsa" in dockerfile
     assert "HEALTHCHECK" in dockerfile
-    assert "uvicorn sdsa.main:app" in dockerfile
-    assert "--proxy-headers" in dockerfile
+    assert 'CMD ["sdsa-server", "start"]' in dockerfile
+    assert "SDSA_HOST=0.0.0.0" in dockerfile
+    assert "SDSA_FORWARDED_ALLOW_IPS=127.0.0.1" in dockerfile
     assert "--workers" not in dockerfile
     assert "gunicorn" not in dockerfile
 

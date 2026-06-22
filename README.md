@@ -8,7 +8,7 @@ and Markdown privacy report.
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](backend/pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-124%20passing-brightgreen)](backend/tests/)
+[![Tests](https://img.shields.io/badge/tests-128%20passing-brightgreen)](backend/tests/)
 [![Docker CI](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml/badge.svg)](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml)
 
 SDSA is designed for compliance-oriented engineering, analytics, and vendor data
@@ -62,7 +62,7 @@ git clone https://github.com/defai-digital/sdsa.git
 cd sdsa/backend
 python3 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
-.venv/bin/uvicorn sdsa.main:app --port 8000
+.venv/bin/sdsa-server start
 ```
 
 Open <http://127.0.0.1:8000/> and upload one of the files in
@@ -217,6 +217,24 @@ python3 samples/generate.py --all
 SDSA is designed to deploy as a single FastAPI container. The same process serves
 the API and frontend, and sessions are stored in memory. Run one SDSA app process
 per deployment unless you replace the session store with shared infrastructure.
+
+### Python Package
+
+For a simple host-level install:
+
+```bash
+cd backend
+python3 -m pip install .
+sdsa-server start
+```
+
+The `sdsa-server start` command serves both the API and the packaged frontend.
+Useful options:
+
+```bash
+sdsa-server start --host 0.0.0.0 --port 8000
+sdsa-server start --reload
+```
 
 ### Docker
 

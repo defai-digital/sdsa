@@ -62,8 +62,11 @@ def create_app() -> FastAPI:
     async def health():
         return {"ok": True}
 
-    # Serve the static frontend if present (single-binary dev experience).
-    frontend = Path(__file__).resolve().parents[3] / "frontend"
+    # Serve packaged frontend assets first. Fall back to the repository layout
+    # for editable installs and source-tree development.
+    packaged_frontend = Path(__file__).resolve().parent / "frontend"
+    repo_frontend = Path(__file__).resolve().parents[3] / "frontend"
+    frontend = packaged_frontend if (packaged_frontend / "index.html").exists() else repo_frontend
     if frontend.is_dir() and (frontend / "index.html").exists():
         app.mount("/", StaticFiles(directory=str(frontend), html=True), name="frontend")
 

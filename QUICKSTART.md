@@ -32,10 +32,19 @@ python3 -m venv .venv
 From `backend/`:
 
 ```bash
-.venv/bin/uvicorn sdsa.main:app --port 8000
+.venv/bin/sdsa-server start
 ```
 
 Open <http://127.0.0.1:8000/>.
+
+You can also install it into your active Python environment and run the same
+entry point directly:
+
+```bash
+cd backend
+python3 -m pip install .
+sdsa-server start
+```
 
 ## 3. Sanitize a File in the Browser
 
@@ -179,7 +188,7 @@ From `backend/`:
 .venv/bin/ruff check src tests
 ```
 
-The current backend test suite reports `124 passed`.
+The current backend test suite reports `128 passed`.
 
 ## 7. Run with Docker
 

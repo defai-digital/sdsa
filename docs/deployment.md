@@ -31,6 +31,21 @@ docker compose up --build
 
 Open <http://127.0.0.1:8000/>.
 
+## Python Package Install
+
+For a simple VM or internal host where Docker is not desired:
+
+```bash
+cd backend
+python3 -m pip install .
+sdsa-server start --host 0.0.0.0 --port 8000
+```
+
+The package includes the static frontend, so the same command serves the UI and
+the API. For production, run this behind a process supervisor and TLS reverse
+proxy. Keep one `sdsa-server` process per deployment while sessions are
+in-memory.
+
 ## Production Compose
 
 1. Copy the environment template:
