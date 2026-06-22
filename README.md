@@ -1,78 +1,60 @@
-# SDSA — Secure Data Sanitization App
+# SDSA - Secure Data Sanitization App
 
-> Pseudonymization + bounded differential privacy for tabular data.
-> Built for compliance-driven teams that need to share test data without leaking PII.
+SDSA is a self-hostable web app for sanitizing tabular data before it leaves a
+trusted environment. It ingests CSV, delimited TXT, and single-table SQL
+`INSERT` dumps; detects likely sensitive fields; applies explicit per-column
+privacy policies; enforces k-anonymity; and exports a sanitized CSV with a JSON
+and Markdown privacy report.
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-73%20passing-brightgreen)](backend/tests/)
+[![Python](https://img.shields.io/badge/python-3.11%2B-blue)](backend/pyproject.toml)
+[![Tests](https://img.shields.io/badge/tests-118%20passing-brightgreen)](backend/tests/)
 
-SDSA is a self-hostable web app that takes a CSV / TXT / SQL dump, detects
-sensitive columns automatically, applies per-column anonymization (masking,
-hashing, tokenization, generalization), adds calibrated Laplace noise to
-numeric columns, enforces k-anonymity, and hands back a sanitized file plus
-a machine-readable privacy report.
+SDSA is designed for compliance-oriented engineering, analytics, and vendor data
+sharing workflows where transformations must be reviewable and reproducible. It
+is not a black-box anonymization service, and it does not claim dataset-level
+`(epsilon, delta)` differential privacy.
 
-SDSA should be positioned as an enterprise-oriented data sanitization layer:
-explicit field policies, bounded privacy mechanisms, operator review before
-release, and an auditable report for every run. It is not a black-box
-"make this anonymous" button, and it does not claim guarantees the system
-does not actually provide.
+For a first run, start with [QUICKSTART.md](QUICKSTART.md).
 
-**What SDSA does NOT claim:** dataset-level (ε,δ)-differential privacy.
-Every report says so explicitly. See [Privacy claim](#privacy-claim).
-For the longer explanation, see [docs/privacy-model.md](docs/privacy-model.md).
+## What SDSA Does
 
----
+- Upload CSV, TXT, or SQL data through a browser UI or REST API.
+- Infer schema and detect likely PII such as email, phone, card number,
+  government ID, date of birth, name, and address fields.
+- Suggest field policies from detection results and optional project policy
+  files.
+- Apply masking, HMAC hashing, tokenization, redaction, dropping, numeric
+  binning, date truncation, string truncation, and bounded Laplace noise.
+- Enforce k-anonymity over operator-selected quasi-identifiers.
+- Estimate suppression before processing through a preflight endpoint and UI.
+- Export a sanitized CSV plus machine-readable and human-readable privacy
+  reports.
+- Keep uploaded data in an in-memory session store with a 30-minute default TTL.
 
-## Features
+## Privacy Model
 
-| | |
-|---|---|
-| **Multi-format input** | CSV · delimited TXT (tab / pipe / semicolon auto-sniff) · single-table SQL `INSERT` dumps |
-| **Auto-detection** | Regex + libphonenumber + multilingual column-name heuristics (email, phone, credit card, government ID, DOB, name, address). Every suggestion is confirmable — never silent. |
-| **Per-column actions** | `mask` · `hash` (HMAC-SHA256) · `tokenize` · `redact` · `numeric_bin` · `date_truncate` · `string_truncate` · `drop` |
-| **Differential privacy** | Laplace mechanism on numeric columns with per-column ε accountant. Bounded sensitivity via declared min/max. ε ∈ [0.1, 10]. |
-| **k-anonymity** | Suppression-based enforcement. Default k=5. Zero-row output always refused. Hard 50% suppression cap. |
-| **Live preflight** | Estimates suppression impact as you toggle QIs. One-click remediation (`Uncheck X`, `Uncheck all QIs`). |
-| **Privacy report** | JSON + Markdown, auto-bundled with the download. Contains ε per column, k achieved, prosecutor risk bound, policy applied, and an explicit claim statement. |
-| **Zero-persistence** | In-memory session store. 30-minute TTL. Best-effort zeroization on delete. No raw row values in logs. |
-| **Policy file** | Optional `sdsa-policy.json` for project-wide field-level rules. |
+SDSA produces pseudonymized microdata with optional per-column local-DP style
+Laplace noise on numeric fields. Numeric DP requires declared `lower` and
+`upper` bounds so sensitivity is explicit rather than inferred silently from the
+uploaded data.
 
-## What We Mean By "Data Obfuscation"
+k-anonymity is enforced through suppression over declared quasi-identifiers. The
+default `k` is 5. SDSA refuses zero-row output, refuses outputs above the hard
+suppression cap, and requires an explicit override to exceed the soft
+suppression cap.
 
-In SDSA, "data obfuscation" means controlled transformation of sensitive
-fields so the output remains useful for engineering, analytics, and vendor
-workflows without exposing the original direct identifiers.
+Every generated report includes this claim:
 
-- Direct identifiers can be masked, hashed, tokenized, redacted, or dropped.
-- Quasi-identifiers can be generalized with binning, date truncation, and
-  string truncation before k-anonymity enforcement.
-- Numeric measures can receive bounded Laplace noise where differential
-  privacy is configured.
+> Pseudonymized microdata with per-column local-DP noise where configured.
+> This output is NOT dataset-level (epsilon, delta)-differentially private.
+> Linkage attacks using auxiliary data may still succeed. k-anonymity bounds
+> prosecutor re-identification risk to at most 1/k.
 
-This is an enterprise workflow because the treatment is explicit, reviewable,
-and reproducible. The operator can see which fields are transformed, which
-fields are treated as quasi-identifiers, how much suppression k-anonymity
-requires, and what privacy claim is attached to the exported file.
+See [docs/privacy-model.md](docs/privacy-model.md) for the longer explanation,
+limits, and tradeoffs.
 
-For the full model, tradeoffs, and limits, see
-[docs/privacy-model.md](docs/privacy-model.md).
-
-## Screenshots
-
-The UI has three steps, accessible from the top stepper:
-
-```
- ┌─ 1. Upload ─────┐   ┌─ 2. Configure ──────┐   ┌─ 3. Review ─────┐
- │  drag & drop    │ → │  per-column policy  │ → │  stats + files  │
- │  CSV/TXT/SQL    │   │  live preflight     │   │  privacy report │
- └─────────────────┘   └─────────────────────┘   └─────────────────┘
-```
-
----
-
-## Quick start
+## Quick Start
 
 ```bash
 git clone https://github.com/defai-digital/sdsa.git
@@ -82,173 +64,161 @@ python3 -m venv .venv
 .venv/bin/uvicorn sdsa.main:app --port 8000
 ```
 
-Open <http://127.0.0.1:8000/>.
+Open <http://127.0.0.1:8000/> and upload one of the files in
+[`samples/`](samples/), such as [`samples/employees.csv`](samples/employees.csv).
 
-For step-by-step examples (browser + CLI), see **[QUICKSTART.md](QUICKSTART.md)**.
+For browser and CLI walkthroughs, see [QUICKSTART.md](QUICKSTART.md).
 
----
+## Repository Layout
 
-## Repository layout
-
-```
-backend/              Python 3.11+ FastAPI app
+```text
+backend/                    FastAPI backend package
   src/sdsa/
-    api/              FastAPI routes (upload, process, preflight, download)
-    core/             config, structured logging, session store
-    detect/           schema + PII detection
-    anonymize/        mask/hash/tokenize/redact/generalize primitives
-    kanon/            k-anonymity enforcer (suppression)
-    dp/               Laplace mechanism + per-column ε accountant
-    validate/         before/after utility metrics (stats, histograms, correlation)
-    ingest.py         CSV / TXT / SQL dispatch + parsers
-    pipeline.py       end-to-end orchestration
-    report.py         privacy report builder (JSON + Markdown)
-    preflight.py      equivalence-class impact estimator
-  tests/              73 pytest cases
-frontend/             Vanilla HTML/CSS/JS (served by FastAPI at `/`)
-docs/                 Product and privacy-model documentation
-samples/              Synthetic demo data — small + large + huge (200 MB)
-sdsa-policy.default.json   Shipped default rule catalog
-sdsa-policy.json.example   Starting point for project overrides
+    api/                    upload, preview, preflight, process, download routes
+    anonymize/              policy application and primitive transforms
+    core/                   config, logging, in-memory session store
+    detect/                 schema inference and PII detection
+    dp/                     Laplace mechanism and epsilon accountant
+    kanon/                  k-anonymity enforcement
+    validate/               before/after utility metrics
+    ingest.py               CSV, TXT, and SQL parsing
+    pipeline.py             end-to-end processing orchestration
+    policy_config.py        default and project policy suggestion logic
+    preflight.py            k-anonymity impact estimation
+    report.py               JSON and Markdown privacy reports
+  tests/                    pytest suite
+frontend/                   vanilla HTML, CSS, and JS served by FastAPI
+docs/                       privacy model and product documentation
+samples/                    synthetic CSV, TXT, and SQL demo datasets
+sdsa-policy.default.json    built-in field policy catalog
+sdsa-policy.json.example    starter policy override file
 ```
-
----
 
 ## API
 
 | Method | Path | Purpose |
 |---|---|---|
-| `POST` | `/api/upload` | multipart upload (CSV / TXT / SQL) |
-| `POST` | `/api/preflight/{session_id}` | estimate k-anonymity suppression before Process |
-| `POST` | `/api/process/{session_id}` | apply policies, run pipeline |
-| `GET`  | `/api/download/{session_id}/data.csv` | sanitized output |
-| `GET`  | `/api/download/{session_id}/report.json` | privacy report (machine-readable) |
-| `GET`  | `/api/download/{session_id}/report.md` | privacy report (human-readable) |
-| `DELETE` | `/api/session/{session_id}` | zeroize + drop session |
-| `GET`  | `/health` | healthcheck |
+| `POST` | `/api/upload` | Upload a CSV, TXT, or SQL file as multipart form data. |
+| `POST` | `/api/preview/{session_id}` | Return a small before/after sample for selected policies. |
+| `POST` | `/api/preflight/{session_id}` | Estimate k-anonymity suppression before processing. |
+| `POST` | `/api/process/{session_id}` | Apply policies, DP, k-anonymity, validation, and reporting. |
+| `GET` | `/api/download/{session_id}/data.csv` | Download the sanitized CSV. |
+| `GET` | `/api/download/{session_id}/report.json` | Download the machine-readable privacy report. |
+| `GET` | `/api/download/{session_id}/report.md` | Download the Markdown privacy report. |
+| `DELETE` | `/api/session/{session_id}` | Zeroize and delete the in-memory session. |
+| `GET` | `/health` | Health check. |
 
----
+Processing requests use this shape:
 
-## Field policy file
+```json
+{
+  "policies": [
+    {"column": "email", "action": "hash"},
+    {
+      "column": "zip",
+      "action": "string_truncate",
+      "params": {"keep": 3},
+      "is_quasi_identifier": true
+    },
+    {"column": "salary", "action": "dp_laplace"}
+  ],
+  "k": 5,
+  "dp_params": {
+    "salary": {"epsilon": 1.0, "lower": 40000, "upper": 180000}
+  },
+  "accept_weaker_guarantee": false
+}
+```
 
-Declare project-wide privacy treatment in a repo-root JSON file instead of
-configuring per-upload. The backend merges suggestions from:
+Supported actions are `retain`, `mask`, `hash`, `tokenize`, `redact`,
+`numeric_bin`, `date_truncate`, `string_truncate`, `drop`, and `dp_laplace`.
 
-1. exact field overrides in `sdsa-policy.json`
-2. defaults by detected PII kind / column kind
-3. heuristic QI fallback only when the config does not say otherwise
+## Field Policy Files
 
-Example `sdsa-policy.json`:
+Place `sdsa-policy.json` at the repository root to override default policy
+suggestions for known fields. The backend merges suggestions in this order:
+
+1. Exact field overrides in `sdsa-policy.json`.
+2. Built-in defaults by detected PII kind or column kind.
+3. Heuristic quasi-identifier fallback when no explicit rule exists.
+
+Example:
 
 ```json
 {
   "fields": {
     "dob": {
       "action": "date_truncate",
-      "params": { "granularity": "year" },
+      "params": {"granularity": "year"},
       "is_quasi_identifier": true
     },
     "salary": {
       "action": "dp_laplace",
-      "dp_params": { "epsilon": 0.8, "lower": 40000, "upper": 180000 }
+      "dp_params": {"epsilon": 0.8, "lower": 40000, "upper": 180000}
     }
   }
 }
 ```
 
-`sdsa-policy.json.example` is a starting point; `sdsa-policy.default.json` is
-the shipped catalog that triggers if you don't provide your own.
+Use [`sdsa-policy.json.example`](sdsa-policy.json.example) as a starting point.
 
----
-
-## Configuration (environment variables)
+## Configuration
 
 | Variable | Default | Purpose |
 |---|---:|---|
-| `SDSA_MAX_UPLOAD_BYTES` | `314572800` (300 MB) | Hard cap on upload size |
-| `SDSA_SESSION_TTL` | `1800` (30 min) | Seconds a session stays in memory |
-| `SDSA_SAMPLE_ROWS` | `10000` | Rows sampled for schema + PII detection |
-| `SDSA_DEFAULT_K` | `5` | Default k-anonymity target |
-| `SDSA_DEFAULT_EPSILON` | `1.0` | Default per-column ε |
-| `SDSA_EPSILON_MIN` / `_MAX` | `0.1` / `10` | ε clamp |
-| `SDSA_MAX_SUPPRESSION` | `0.10` | Soft cap; needs `accept_weaker_guarantee=true` to exceed |
-| `SDSA_HARD_MAX_SUPPRESSION` | `0.50` | Hard cap; always refused |
-| `SDSA_DEPLOYMENT_SALT` | *(random per-process)* | Hex. Stabilizes deterministic-mode hashes across restarts. Keep secret. |
+| `SDSA_MAX_UPLOAD_BYTES` | `314572800` | Maximum upload size, 300 MB by default. |
+| `SDSA_SESSION_TTL` | `1800` | Session lifetime in seconds. |
+| `SDSA_SAMPLE_ROWS` | `10000` | Rows sampled for schema and PII detection. |
+| `SDSA_DEFAULT_K` | `5` | Default k-anonymity target. |
+| `SDSA_DEFAULT_EPSILON` | `1.0` | Default epsilon used in policy suggestions. |
+| `SDSA_EPSILON_MIN` | `0.1` | Minimum allowed epsilon. |
+| `SDSA_EPSILON_MAX` | `10.0` | Maximum allowed epsilon. |
+| `SDSA_MAX_SUPPRESSION` | `0.10` | Soft row-suppression cap. |
+| `SDSA_HARD_MAX_SUPPRESSION` | `0.50` | Hard row-suppression cap. |
+| `SDSA_ALLOWED_CORS_ORIGINS` | empty | Comma-separated allowed browser origins. `*` is rejected. |
+| `SDSA_DEPLOYMENT_SALT` | random per process | Hex salt for deterministic cross-session hashing/tokenization. Keep secret. |
 
----
+Deterministic mode requires `SDSA_DEPLOYMENT_SALT`. SDSA rejects deterministic
+mode when the same request also contains `dp_laplace` columns.
 
-## Privacy claim
-
-Verbatim from every generated report:
-
-> Pseudonymized microdata with per-column local-DP noise where configured.
-> This output is NOT dataset-level (ε,δ)-differentially private. Linkage
-> attacks using auxiliary data may still succeed. k-anonymity bounds
-> prosecutor re-identification risk to at most 1/k.
-
-SDSA is honest about what it does and does not guarantee. Dataset-level DP
-synthesis (PrivBayes / DP-GAN / MST) is out of scope for v1.
-
-For a more detailed explanation of the data-obfuscation model, local DP
-usage, k-anonymity role, and enterprise positioning, see
-[docs/privacy-model.md](docs/privacy-model.md).
-
----
-
-## Tests
+## Testing
 
 ```bash
 cd backend
-.venv/bin/pytest            # 73 passing
-.venv/bin/pytest -v         # with individual names
+.venv/bin/pytest
+.venv/bin/ruff check src tests
 ```
 
-Covers: ingest (CSV/TXT/SQL), PII detection, anonymization primitives,
-k-anonymity, DP Laplace, pipeline, API, and preflight.
+The test suite covers ingestion, PII detection, anonymization primitives,
+k-anonymity, DP Laplace validation, policy configuration, API routes, preflight,
+reporting, and utility metrics.
 
----
+## Samples
 
-## Performance
+The [`samples/`](samples/) directory contains fabricated data for manual and
+load testing:
 
-Measured on an Apple Silicon Mac (local uvicorn), default config:
+- `employees.csv`, `transactions.csv`, `customers_cjk.csv`, `access_logs.txt`,
+  and `users.sql` for small manual exercises.
+- Larger CSV, TXT, and SQL samples for suppression and performance testing.
+- `employees_huge.csv`, generated on demand, for a roughly 200 MB load test.
 
-| Input | Upload + detect | Full pipeline |
-|---|---:|---:|
-| 25 rows | <10 ms | <10 ms |
-| 5,000 rows (CSV) | ~80 ms | ~80 ms |
-| 1.68 M rows (200 MB CSV) | ~500 ms | ~10 s |
+Regenerate sample data with:
 
-Regenerate large samples with `python3 samples/generate.py --all`.
+```bash
+python3 samples/generate.py
+python3 samples/generate.py --all
+```
 
----
+## Deployment Notes
 
-## Deployment notes
-
-Not implemented in v1, but required for real production:
-
-- TLS termination at reverse proxy (nginx / envoy).
-- Run with swap disabled and no persistent volume mounts.
-- Rate-limiting / CAPTCHA at the proxy layer.
-- For multi-worker gunicorn, promote the in-process session store to Redis
-  (session affinity is a short-term workaround).
-
----
+SDSA currently uses an in-memory session store and is best treated as a
+single-process service unless you replace session storage with shared
+infrastructure. For production use, put it behind TLS, avoid persistent raw-data
+volumes, restrict CORS to trusted origins, add proxy-level rate limits, and set
+a stable secret `SDSA_DEPLOYMENT_SALT` only if deterministic exports are needed.
 
 ## License
 
-**AGPL-3.0**. Copyright © 2026 DEFAI Private Limited. See [LICENSE](LICENSE).
-
-The AGPL applies if you run SDSA as a service: users interacting with the
-service over a network must be able to obtain the corresponding source
-under the same terms.
-
-For commercial licensing (alternative terms without AGPL obligations),
-contact DEFAI Private Limited.
-
----
-
-## Contributing
-
-Issues and PRs welcome at
-<https://github.com/defai-digital/sdsa>. By contributing, you agree to
-license your contribution under AGPL-3.0.
+SDSA is licensed under [AGPL-3.0](LICENSE). Copyright (c) 2026 DEFAI Private
+Limited.
