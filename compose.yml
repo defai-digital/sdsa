@@ -1,0 +1,16 @@
+services:
+  sdsa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: defai-digital/sdsa:1.1.0
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      SDSA_FORWARDED_ALLOW_IPS: "*"
+    # Optional project-specific policy override:
+    # volumes:
+    #   - ./sdsa-policy.json:/app/sdsa-policy.json:ro
+    restart: unless-stopped

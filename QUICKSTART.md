@@ -7,6 +7,7 @@ API run.
 
 - Python 3.11 or newer.
 - `curl` for the API example.
+- Docker, if you want to run the container deployment path.
 - A shell from the repository root unless a command says otherwise.
 
 ## 1. Install
@@ -178,7 +179,58 @@ From `backend/`:
 .venv/bin/ruff check src tests
 ```
 
-The current backend test suite reports `118 passed`.
+The current backend test suite reports `124 passed`.
+
+## 7. Run with Docker
+
+From the repository root:
+
+```bash
+cp .env.example .env
+docker build -t defai-digital/sdsa:1.1.0 .
+docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.0
+```
+
+Or with Compose:
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+Open <http://127.0.0.1:8000/>.
+
+## 8. Production Compose
+
+For a small production host, use the nginx-fronted Compose file:
+
+```bash
+cp .env.example .env
+# edit .env for your environment
+# place TLS files at deploy/certs/fullchain.pem and deploy/certs/privkey.pem
+docker compose -f compose.prod.yml up -d --build
+```
+
+Health checks and logs:
+
+```bash
+curl -fsS https://YOUR_HOST/health
+docker compose -f compose.prod.yml ps
+docker compose -f compose.prod.yml logs -f sdsa
+```
+
+See [docs/deployment.md](docs/deployment.md) for the deployment design, nginx
+configuration, policy-file mounting, and rollback notes.
+
+Version tags publish images to GitHub Container Registry, for example
+`ghcr.io/defai-digital/sdsa:v1.1.0`.
+
+## 9. CI/CD
+
+The repository includes [`.github/workflows/docker.yml`](.github/workflows/docker.yml).
+On pull requests it runs pytest, Ruff, and a Docker image build without pushing.
+On pushes to `main` or version tags, it publishes images to GitHub Container
+Registry after tests pass.
 
 ## Troubleshooting
 

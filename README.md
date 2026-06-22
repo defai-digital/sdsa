@@ -8,7 +8,8 @@ and Markdown privacy report.
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](backend/pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-118%20passing-brightgreen)](backend/tests/)
+[![Tests](https://img.shields.io/badge/tests-124%20passing-brightgreen)](backend/tests/)
+[![Docker CI](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml/badge.svg)](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml)
 
 SDSA is designed for compliance-oriented engineering, analytics, and vendor data
 sharing workflows where transformations must be reviewable and reproducible. It
@@ -89,6 +90,7 @@ backend/                    FastAPI backend package
   tests/                    pytest suite
 frontend/                   vanilla HTML, CSS, and JS served by FastAPI
 docs/                       privacy model and product documentation
+deploy/                     nginx and deployment support files
 samples/                    synthetic CSV, TXT, and SQL demo datasets
 sdsa-policy.default.json    built-in field policy catalog
 sdsa-policy.json.example    starter policy override file
@@ -210,13 +212,46 @@ python3 samples/generate.py
 python3 samples/generate.py --all
 ```
 
-## Deployment Notes
+## Deployment
 
-SDSA currently uses an in-memory session store and is best treated as a
-single-process service unless you replace session storage with shared
-infrastructure. For production use, put it behind TLS, avoid persistent raw-data
-volumes, restrict CORS to trusted origins, add proxy-level rate limits, and set
-a stable secret `SDSA_DEPLOYMENT_SALT` only if deterministic exports are needed.
+SDSA is designed to deploy as a single FastAPI container. The same process serves
+the API and frontend, and sessions are stored in memory. Run one SDSA app process
+per deployment unless you replace the session store with shared infrastructure.
+
+### Docker
+
+Local container:
+
+```bash
+cp .env.example .env
+docker build -t defai-digital/sdsa:1.1.0 .
+docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.0
+```
+
+Local Compose:
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+Production Compose with nginx TLS termination:
+
+```bash
+cp .env.example .env
+# Place TLS certs at deploy/certs/fullchain.pem and deploy/certs/privkey.pem
+docker compose -f compose.prod.yml up -d --build
+```
+
+The production compose file runs the app read-only, uses tmpfs for `/tmp`, drops
+Linux capabilities, and puts nginx in front for TLS, upload limits, security
+headers, and basic rate limits. See [docs/deployment.md](docs/deployment.md) for
+the full deployment guide.
+
+Tagged pushes also build and publish container images to GitHub Container
+Registry through [`.github/workflows/docker.yml`](.github/workflows/docker.yml).
+For example, tag `v1.1.0` publishes `ghcr.io/defai-digital/sdsa:v1.1.0`.
+The workflow runs pytest and Ruff before building or publishing images.
 
 ## License
 
