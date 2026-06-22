@@ -370,6 +370,10 @@ function renderConfigure(data) {
                aria-label="Quasi-identifier for ${esc(col.name)}"
                ${defaultQI ? "checked" : ""} />
       </td>
+      <td class="center">
+        <input type="checkbox" class="sensitive"
+               aria-label="Sensitive attribute for ${esc(col.name)}" />
+      </td>
       <td class="dp-cell">
         <input type="number" class="eps small" step="0.1" min="0.1" max="10" value="${defaultEpsilon}" />
       </td>
@@ -396,6 +400,7 @@ document.addEventListener("change", (e) => {
 function collectProcessPayload() {
   const policies = [];
   const dp_params = {};
+  const sensitive_columns = [];
   const rows = $("columns-table").querySelectorAll("tbody tr");
   for (const tr of rows) {
     const col = tr.dataset.column;
@@ -408,6 +413,7 @@ function collectProcessPayload() {
     }
     const action = tr.querySelector(".action").value;
     const qi = tr.querySelector(".qi").checked;
+    if (tr.querySelector(".sensitive")?.checked) sensitive_columns.push(col);
     policies.push({ column: col, action, params: buildParams(tr, action), is_quasi_identifier: qi });
     if (action === "dp_laplace") {
       const eps = parseFloat(tr.querySelector(".eps").value);
@@ -420,9 +426,13 @@ function collectProcessPayload() {
   }
   const kRaw = parseInt($("k-input").value, 10);
   const k = Number.isNaN(kRaw) ? 5 : Math.max(2, Math.min(1000, kRaw));
+  const lRaw = parseInt($("l-input").value, 10);
+  const l = Number.isNaN(lRaw) ? 1 : Math.max(1, Math.min(1000, lRaw));
   return {
     policies,
     k,
+    l,
+    sensitive_columns,
     dp_params,
     deterministic_key_name: $("det-key").value.trim() || null,
     accept_weaker_guarantee: $("accept-weaker").checked,
@@ -468,6 +478,17 @@ function renderPreflight(preflight) {
     bullets.push(`Suggested QI plan: uncheck ${cols.join(" -> ")} to ${verb} ${(plan.final_suppression_ratio * 100).toFixed(1)}% suppression.`);
   }
   for (const msg of (preflight.suggestions || [])) bullets.push(msg);
+  const ld = preflight.l_diversity || {};
+  if (ld.sensitive_columns?.length) {
+    const mode = ld.enforced ? `enforcing l=${ld.l_target}` : "measuring only";
+    bullets.push(`l-diversity ${mode} on: ${ld.sensitive_columns.join(", ")}.`);
+    const homogeneous = Object.entries(ld.homogeneous_classes || {})
+      .filter(([, count]) => count > 0)
+      .map(([col, count]) => `${col} (${count})`);
+    if (homogeneous.length) {
+      bullets.push(`Homogeneous sensitive classes: ${homogeneous.join(", ")}.`);
+    }
+  }
   // One-click remediation. When the hard cap is blown, these become primary —
   // the user needs to fix something before Process will succeed.
   const bestFix = preflight.drop_one_qi_impacts?.find((item) => item.improvement > 0);
@@ -542,6 +563,8 @@ async function runPreflight() {
       body: JSON.stringify({
         policies: body.policies,
         k: body.k,
+        l: body.l,
+        sensitive_columns: body.sensitive_columns,
         dp_params: body.dp_params,
         deterministic_key_name: body.deterministic_key_name,
       }),
@@ -707,6 +730,7 @@ $("columns-table").addEventListener("change", (e) => {
   schedulePreview();
 });
 $("k-input").addEventListener("input", schedulePreflight);
+$("l-input").addEventListener("input", schedulePreflight);
 $("det-key")?.addEventListener("input", () => { schedulePreflight(); schedulePreview(); });
 
 function buildParams(tr, action) {
@@ -947,7 +971,7 @@ function applyIncludeStyling(tr) {
   tr.classList.toggle("row-excluded", !included);
   // Disable per-row inputs so they can't be tweaked while the column is
   // excluded — makes the "this column will be dropped" contract unambiguous.
-  tr.querySelectorAll(".action, .qi, .eps, .bound").forEach((el) => {
+  tr.querySelectorAll(".action, .qi, .sensitive, .eps, .bound").forEach((el) => {
     el.disabled = !included;
   });
 }

@@ -78,6 +78,20 @@ def test_env_template_documents_deployment_controls():
     assert "openssl rand -hex 32" in env
 
 
+def test_frontend_sends_l_diversity_controls_to_api():
+    for path in ["frontend/app.js", "backend/src/sdsa/frontend/app.js"]:
+        app = read_repo_file(path)
+        assert "sensitive_columns" in app
+        assert "l: body.l" in app
+        assert "sensitive_columns: body.sensitive_columns" in app
+        assert 'class="sensitive"' in app
+        assert '$("l-input").addEventListener("input", schedulePreflight)' in app
+
+    for path in ["frontend/index.html", "backend/src/sdsa/frontend/index.html"]:
+        html = read_repo_file(path)
+        assert 'id="l-input"' in html
+
+
 def test_cicd_workflow_tests_builds_and_publishes_container():
     workflow = read_repo_file(".github/workflows/docker.yml")
 
