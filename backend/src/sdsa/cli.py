@@ -5,6 +5,7 @@ import argparse
 import os
 import secrets
 import socket
+import sys
 from collections.abc import Sequence
 
 import uvicorn
@@ -45,8 +46,8 @@ def _find_available_port(host: str, *, attempts: int = 100) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="sdsa-server",
-        description="Run the Secure Data Sanitization App server.",
+        prog="sdsa",
+        description="Secure Data Sanitization App — run the server or sanitize files headlessly.",
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 
@@ -86,6 +87,46 @@ def build_parser() -> argparse.ArgumentParser:
         help="Allowed proxy IPs for forwarded headers.",
     )
     start.set_defaults(func=start_server)
+
+    proc = subcommands.add_parser(
+        "process",
+        help="Sanitize a single CSV/TXT/SQL file headlessly (no server).",
+        description=(
+            "Run the full SDSA pipeline on one file and write a sanitized CSV "
+            "plus JSON and Markdown privacy reports. Suitable for CI/CD and "
+            "data pipelines."
+        ),
+    )
+    proc.add_argument("input", help="Path to the input CSV, TXT, or SQL file.")
+    proc.add_argument(
+        "--policy", "-p",
+        help=(
+            "JSON file describing the process request (policies, k, l, dp_params, "
+            "sensitive_columns). Same shape as POST /api/process. If omitted, a "
+            "policy is auto-derived from PII detection and the project policy catalog."
+        ),
+    )
+    proc.add_argument(
+        "--out-dir", "-o", default=".",
+        help="Directory for outputs. Defaults to the current directory.",
+    )
+    proc.add_argument(
+        "-k", type=int, default=None,
+        help="Override the k-anonymity target. Defaults to the policy/SDSA_DEFAULT_K.",
+    )
+    proc.add_argument(
+        "--accept-weaker-guarantee", action="store_true",
+        help="Allow suppression above the soft cap (zero-row/hard-cap output is still refused).",
+    )
+    proc.add_argument(
+        "--deterministic-key",
+        help="Key name for deterministic hashing/tokenization (requires SDSA_DEPLOYMENT_SALT).",
+    )
+    proc.add_argument(
+        "--quiet", "-q", action="store_true",
+        help="Suppress the human-readable summary printed to stderr.",
+    )
+    proc.set_defaults(func=run_process)
     return parser
 
 
@@ -99,6 +140,41 @@ def start_server(args: argparse.Namespace) -> int:
         proxy_headers=args.proxy_headers,
         forwarded_allow_ips=args.forwarded_allow_ips,
     )
+    return 0
+
+
+def run_process(args: argparse.Namespace) -> int:
+    # Imported lazily so `start` (and its tests) need not load polars/pipeline.
+    from . import batch
+
+    try:
+        result = batch.process_file(
+            args.input,
+            policy_path=args.policy,
+            out_dir=args.out_dir,
+            k=args.k,
+            accept_weaker_guarantee=args.accept_weaker_guarantee,
+            deterministic_key=args.deterministic_key,
+        )
+    except batch.BatchError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+
+    if not args.quiet:
+        u = result.report.get("utility") or {}
+        kept = u.get("columns_kept")
+        total = u.get("columns_total")
+        suppressed = result.rows_before - result.rows_after
+        print(
+            f"sanitized {result.rows_before} rows -> {result.rows_after} "
+            f"({suppressed} suppressed); "
+            f"columns kept {kept}/{total}; "
+            f"utility score {u.get('overall_score')}/100",
+            file=sys.stderr,
+        )
+        print(f"  csv:  {result.csv_path}", file=sys.stderr)
+        print(f"  json: {result.report_json_path}", file=sys.stderr)
+        print(f"  md:   {result.report_md_path}", file=sys.stderr)
     return 0
 
 

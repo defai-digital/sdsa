@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 
 from sdsa import cli
 
@@ -86,3 +87,62 @@ def test_invalid_env_port_fails_parser_construction(monkeypatch):
         assert "SDSA_PORT" in str(e)
     else:
         raise AssertionError("expected invalid SDSA_PORT to fail")
+
+
+def test_process_command_writes_outputs_with_explicit_policy(tmp_path):
+    inp = tmp_path / "data.csv"
+    inp.write_text("email,city\na@x.com,NYC\nb@y.com,LA\n", encoding="utf-8")
+    policy = tmp_path / "policy.json"
+    policy.write_text(
+        json.dumps({"policies": [{"column": "email", "action": "hash"}], "k": 2}),
+        encoding="utf-8",
+    )
+    out = tmp_path / "out"
+
+    rc = cli.main([
+        "process", str(inp), "--policy", str(policy),
+        "--out-dir", str(out), "--quiet",
+    ])
+    assert rc == 0
+
+    csv_text = (out / "data.sanitized.csv").read_text()
+    assert "a@x.com" not in csv_text          # email was hashed
+    assert "NYC" in csv_text                   # city retained
+
+    report = json.loads((out / "data.report.json").read_text())
+    assert report["utility"]["columns_total"] == 2
+    assert (out / "data.report.md").exists()
+
+
+def test_process_command_auto_policy_runs(tmp_path):
+    inp = tmp_path / "people.csv"
+    inp.write_text(
+        "email,note\n" + "".join(f"u{i}@x.com,hello\n" for i in range(20)),
+        encoding="utf-8",
+    )
+    out = tmp_path / "out"
+
+    rc = cli.main(["process", str(inp), "--out-dir", str(out), "-k", "2", "--quiet"])
+    assert rc == 0
+    assert (out / "people.sanitized.csv").exists()
+
+
+def test_process_command_reports_missing_file(tmp_path, capsys):
+    rc = cli.main(["process", str(tmp_path / "nope.csv"), "--quiet"])
+    assert rc == 1
+    assert "not found" in capsys.readouterr().err
+
+
+def test_build_auto_request_maps_dp_params():
+    from sdsa.batch import build_auto_request
+
+    schema = [
+        {"name": "amount", "kind": "numeric", "n_unique": 50, "row_count": 50,
+         "min": 0.0, "max": 100.0},
+    ]
+    pii = {"amount": {"kind": "none", "confidence": 0.0, "reason": ""}}
+    req = build_auto_request(schema, pii, k=3)
+    assert req.k == 3
+    # dp_params only populated for columns whose suggested action is dp_laplace
+    for col, params in req.dp_params.items():
+        assert "epsilon" in params

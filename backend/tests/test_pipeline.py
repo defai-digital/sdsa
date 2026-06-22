@@ -330,6 +330,53 @@ def test_markdown_renders_warnings_and_l_diversity():
     assert "l-Diversity" in md
 
 
+def test_exported_report_strips_source_schema_and_utility_counts():
+    from sdsa.report import render_markdown
+
+    df = pl.DataFrame({
+        "zip": ["10001"] * 6,
+        "age": [21, 22, 23, 24, 25, 26],
+    })
+    schema = [
+        {
+            "name": "zip",
+            "dtype": "String",
+            "kind": "string",
+            "n_unique": 1,
+            "null_count": 0,
+            "row_count": 6,
+        },
+        {
+            "name": "age",
+            "dtype": "Int64",
+            "kind": "numeric",
+            "n_unique": 6,
+            "null_count": 0,
+            "row_count": 6,
+            "min": 21.0,
+            "max": 26.0,
+        },
+    ]
+    req = ProcessRequest(policies=[
+        ColumnPolicy(column="zip", action="retain", is_quasi_identifier=True),
+        ColumnPolicy(column="age", action="numeric_bin", params={"bin_width": 10}),
+    ], k=2)
+
+    res = run_pipeline(df, req, "s", b"\x00" * 32, schema=schema, pii_suggestions={})
+
+    assert res.report["schema"] == [
+        {"name": "zip", "dtype": "String", "kind": "string"},
+        {"name": "age", "dtype": "Int64", "kind": "numeric"},
+    ]
+    assert all("distinct_before" not in c for c in res.report["utility"]["columns"])
+    assert all("noise_scale" not in c for c in res.report["utility"]["columns"])
+
+    md = render_markdown(res.report)
+    assert "Distinct before" not in md
+    assert "21.0" not in md
+    assert "26.0" not in md
+
+
 def test_deterministic_mode_requires_configured_deployment_salt():
     df = pl.DataFrame({"email": ["alice@x.com"] * 10, "dept": ["A"] * 10})
     req = ProcessRequest(

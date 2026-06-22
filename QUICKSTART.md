@@ -234,7 +234,7 @@ From `backend/`:
 .venv/bin/ruff check src tests
 ```
 
-The current backend test suite reports `150 passed`.
+The current backend test suite reports `164 passed`.
 
 ## 7. Run with Docker
 
@@ -282,7 +282,22 @@ Version tags publish images to GitHub Container Registry, for example
 
 ## 9. CI/CD
 
-The repository includes [`.github/workflows/docker.yml`](.github/workflows/docker.yml).
+For pipelines, use the headless batch command instead of the server. It runs
+the same pipeline and writes a sanitized CSV plus JSON and Markdown reports:
+
+```bash
+# Auto-derive a policy from PII detection + the project policy catalog:
+sdsa process data.csv --out-dir ./sanitized -k 5
+
+# Or pass an explicit process request (same JSON shape as POST /api/process):
+sdsa process data.csv --policy request.json --out-dir ./sanitized
+```
+
+It exits non-zero and prints the reason to stderr when parsing, the policy, or a
+guardrail fails (for example suppression over the hard cap), so it can gate a
+job. `sdsa-server process …` is an equivalent alias.
+
+The repository also includes [`.github/workflows/docker.yml`](.github/workflows/docker.yml).
 On pull requests it runs pytest, Ruff, and a Docker image build without pushing.
 On pushes to `main` or version tags, it publishes images to GitHub Container
 Registry after tests pass.

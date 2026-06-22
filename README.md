@@ -8,7 +8,7 @@ and Markdown privacy report.
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](backend/pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-150%20passing-brightgreen)](backend/tests/)
+[![Tests](https://img.shields.io/badge/tests-164%20passing-brightgreen)](backend/tests/)
 [![Docker CI](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml/badge.svg)](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml)
 
 ![SDSA upload screen showing the three-step sanitization workflow](docs/assets/sdsa-upload-screen.png)
@@ -37,7 +37,10 @@ that every auxiliary-data linkage attack is impossible.
 
 - Upload CSV, TXT, or SQL data through a browser UI or REST API.
 - Infer schema and detect likely PII such as email, phone, card number,
-  government ID, date of birth, name, and address fields.
+  government ID, date of birth, name, address, and identifier columns
+  (near-unique `*_id` keys are suggested for tokenization rather than left in
+  cleartext, while low-cardinality `*_id` foreign-key codes are kept for
+  analysis).
 - Suggest field policies from detection results and optional project policy
   files.
 - Apply masking, HMAC hashing, tokenization, redaction, dropping, numeric
@@ -47,6 +50,10 @@ that every auxiliary-data linkage attack is impossible.
 - Estimate suppression before processing through a preflight endpoint and UI.
 - Export a sanitized CSV plus machine-readable and human-readable privacy
   reports.
+- Summarize before/after utility (information loss): row and column retention,
+  per-column distinct-value retention, and an overall heuristic utility score.
+- Run the whole pipeline headlessly from the command line for CI/CD and data
+  pipelines, without starting the server.
 - Keep uploaded data in an in-memory session store with a 30-minute default TTL.
 
 ## Privacy Model
@@ -77,6 +84,13 @@ Every generated report includes this claim:
 > Linkage attacks using auxiliary data may still succeed. k-anonymity bounds
 > prosecutor re-identification risk to at most 1/k.
 
+Every report also includes a before/after utility summary so you can see how
+much analytic value the sanitization removed: row and column retention,
+per-column distinct-value retention, and an overall heuristic utility score in
+`[0, 100]`. The score is an information-loss proxy, not a formal guarantee, and
+it is computed without leaking the original distribution of DP-noised columns
+(DP fidelity is derived only from the declared bounds and epsilon).
+
 See [docs/privacy-model.md](docs/privacy-model.md) for the longer explanation,
 limits, and tradeoffs.
 
@@ -106,6 +120,36 @@ Then upload one of the files in
 
 For browser and CLI walkthroughs, see [QUICKSTART.md](QUICKSTART.md).
 
+## Command-Line Batch Mode
+
+`sdsa process` runs the full pipeline on a single file without starting the
+server, then writes a sanitized CSV plus JSON and Markdown privacy reports next
+to each other. It is suitable for CI/CD jobs and data pipelines.
+
+```bash
+# Auto-derive a policy from PII detection + the project policy catalog:
+sdsa process data.csv --out-dir ./sanitized -k 5
+
+# Or supply an explicit process request (same JSON shape as POST /api/process):
+sdsa process data.csv --policy request.json --out-dir ./sanitized
+```
+
+Outputs are named after the input stem: `data.sanitized.csv`,
+`data.report.json`, and `data.report.md`. Useful options:
+
+| Option | Purpose |
+|---|---|
+| `--policy`, `-p` | JSON process request (policies, `k`, `l`, `dp_params`, `sensitive_columns`). If omitted, the policy is auto-derived. |
+| `--out-dir`, `-o` | Output directory. Defaults to the current directory. |
+| `-k` | Override the k-anonymity target. |
+| `--accept-weaker-guarantee` | Allow suppression above the soft cap (zero-row and hard-cap output are still refused). |
+| `--deterministic-key` | Key name for deterministic hashing/tokenization (requires `SDSA_DEPLOYMENT_SALT`). |
+| `--quiet`, `-q` | Suppress the summary printed to stderr. |
+
+The command exits non-zero and prints the reason to stderr if parsing, the
+policy, or a guardrail (e.g. suppression over the hard cap) fails — so it can
+gate a pipeline. `sdsa-server process …` is an equivalent alias.
+
 ## Repository Layout
 
 ```text
@@ -117,9 +161,11 @@ backend/                    FastAPI backend package
     detect/                 schema inference and PII detection
     dp/                     Laplace mechanism and epsilon accountant
     kanon/                  k-anonymity enforcement
-    validate/               before/after utility metrics
+    validate/               before/after utility metrics and information-loss score
     ingest.py               CSV, TXT, and SQL parsing
     pipeline.py             end-to-end processing orchestration
+    batch.py                headless command-line batch sanitization
+    cli.py                  `sdsa` / `sdsa-server` entry point (start, process)
     policy_config.py        default and project policy suggestion logic
     preflight.py            k-anonymity impact estimation
     report.py               JSON and Markdown privacy reports

@@ -75,3 +75,42 @@ def test_numeric_luhn_ids_do_not_trigger_credit_card_detection():
     s = pl.Series("transaction_id", [4111111111111111, 4012888888881881, 5555555555554444])
     sug = detect_column("transaction_id", s)
     assert sug.kind != "credit_card"
+
+
+def test_id_like_numeric_column_flagged_as_identifier():
+    # The case that previously fell through to retain: a near-unique numeric *_id.
+    s = pl.Series("employee_id", list(range(1000, 1050)))
+    sug = detect_column("employee_id", s)
+    assert sug.kind == "identifier"
+    assert sug.confidence >= 0.85  # near-unique strengthens the signal
+
+
+def test_bare_and_suffixed_id_columns_flagged_as_identifier():
+    assert detect_column("id", pl.Series("id", [1, 2, 3, 4, 5])).kind == "identifier"
+    assert detect_column("order_id", pl.Series("order_id", [9, 8, 7])).kind == "identifier"
+    assert detect_column("record_uuid", pl.Series("record_uuid", ["a", "b"])).kind == "identifier"
+
+
+def test_id_substring_does_not_false_positive():
+    # "paid"/"valid" contain "id" as a substring but not as a whole token.
+    assert detect_column("paid", pl.Series("paid", [1.0, 2.0, 3.0])).kind != "identifier"
+    assert detect_column("valid", pl.Series("valid", [True, False, True])).kind != "identifier"
+
+
+def test_low_cardinality_id_column_is_kept_for_analysis():
+    # Foreign-key style code: many rows, few distinct values. Should NOT be
+    # flagged as an identifier, so it stays analysable in cleartext.
+    s = pl.Series("department_id", [1, 2, 3, 1, 2, 3] * 20)  # 120 rows, 3 distinct
+    assert detect_column("department_id", s).kind != "identifier"
+
+
+def test_low_cardinality_specific_id_hint_also_kept():
+    # Even a specific hint name (customer_id) is kept when it is a low-card code.
+    s = pl.Series("customer_id", [10, 20, 30] * 40)  # 120 rows, 3 distinct
+    assert detect_column("customer_id", s).kind != "identifier"
+
+
+def test_specific_pii_name_keeps_priority_over_generic_id_rule():
+    # national_id must stay government_id (hashed), not the generic identifier.
+    s = pl.Series("national_id", ["S1234567A", "T7654321B"])
+    assert detect_column("national_id", s).kind == "government_id"

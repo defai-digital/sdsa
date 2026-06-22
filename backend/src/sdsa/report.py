@@ -12,6 +12,17 @@ CLAIM_PHASE1 = (
 )
 
 
+def _shareable_schema(schema: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Keep only source-schema metadata needed to audit policy choices.
+
+    Upload responses expose full schema statistics to the operator before
+    release. The exported privacy report travels with the sanitized data, so it
+    should not include source-side cardinality, null counts, or numeric bounds.
+    """
+    allowed = {"name", "dtype", "kind"}
+    return [{k: v for k, v in col.items() if k in allowed} for col in schema]
+
+
 def _shareable_validation(validation: dict[str, Any]) -> dict[str, Any]:
     """Strip original (pre-sanitization) statistics from the validation block.
 
@@ -36,6 +47,21 @@ def _shareable_validation(validation: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _shareable_utility(utility: dict[str, Any] | None) -> dict[str, Any]:
+    """Strip exact source-side utility inputs from exported reports."""
+    if not utility:
+        return {}
+    safe = dict(utility)
+    safe_columns: list[dict[str, Any]] = []
+    for col in utility.get("columns", []):
+        safe_columns.append({
+            k: v for k, v in col.items()
+            if k not in {"distinct_before", "noise_scale"}
+        })
+    safe["columns"] = safe_columns
+    return safe
+
+
 def build_report(
     *,
     session_id: str,
@@ -46,6 +72,7 @@ def build_report(
     kanon: dict[str, Any],
     validation: dict[str, Any],
     deterministic_key_name: str | None,
+    utility: dict[str, Any] | None = None,
     dp_cumulative: dict[str, float] | None = None,
     epsilon_budget: float | None = None,
     warnings: list[str] | None = None,
@@ -54,7 +81,7 @@ def build_report(
         "session_id": session_id,
         "claim": CLAIM_PHASE1,
         "warnings": list(warnings or []),
-        "schema": schema,
+        "schema": _shareable_schema(schema),
         "pii_suggestions": pii_suggestions,
         "policies_applied": policies_applied,
         "privacy": {
@@ -71,6 +98,7 @@ def build_report(
             ),
         },
         "k_anonymity": kanon,
+        "utility": _shareable_utility(utility),
         "validation": _shareable_validation(validation),
     }
     if deterministic_key_name:
@@ -145,6 +173,28 @@ def render_markdown(report: dict[str, Any]) -> str:
         lines.append("## Deterministic Mode")
         lines.append(f"- key name: `{_md_escape(report['deterministic_mode']['key_name'])}`")
         lines.append(f"- {report['deterministic_mode']['warning']}")
+    u = report.get("utility") or {}
+    if u.get("columns_total"):
+        lines.append("")
+        lines.append("## Utility (information loss)")
+        lines.append(f"- overall utility score: {u.get('overall_score')}/100")
+        lines.append(f"- rows retained: {u.get('rows_after')} / {u.get('rows_before')} "
+                     f"({u.get('row_retention', 0):.2%})")
+        lines.append(f"- columns retained: {u.get('columns_kept')} / {u.get('columns_total')} "
+                     f"({u.get('column_retention', 0):.2%})")
+        lines.append(f"- mean kept-column fidelity: {u.get('mean_column_fidelity')}")
+        lines.append("")
+        lines.append("| Column | Action | Disposition | Released distinct values | Fidelity |")
+        lines.append("|---|---|---|---|---|")
+        for c in u.get("columns", []):
+            after = c.get("distinct_after")
+            after_str = "—" if after is None else str(after)
+            lines.append(
+                f"| `{_md_escape(c['column'])}` | {c.get('action')} "
+                f"| {c.get('disposition')} | {after_str} | {c.get('fidelity')} |"
+            )
+        lines.append("")
+        lines.append(f"> {u.get('method_note', '')}")
     lines.append("")
     lines.append("## Validation summary")
     v = report["validation"]

@@ -14,7 +14,7 @@ attributes; and exports a sanitized CSV with JSON and Markdown privacy reports.
 
 ```bash
 pip install sdsa
-sdsa-server start
+sdsa start
 ```
 
 Open <http://127.0.0.1:8000/>.
@@ -23,7 +23,7 @@ Open <http://127.0.0.1:8000/>.
 
 - Serves a browser UI and REST API from one FastAPI application.
 - Detects likely PII such as email, phone, card number, government ID, date of
-  birth, name, and address fields.
+  birth, name, address, and identifier fields.
 - Supports `retain`, `mask`, `hash`, `tokenize`, `redact`, `drop`,
   `numeric_bin`, `date_truncate`, `string_truncate`, and `dp_laplace` actions.
 - Applies bounded Laplace noise to numeric columns when differential privacy is
@@ -33,18 +33,24 @@ Open <http://127.0.0.1:8000/>.
 - Enforces k-anonymity over selected quasi-identifiers and can enforce
   l-diversity on sensitive cleartext attributes.
 - Provides preflight suppression estimates before processing.
+- Runs headlessly with `sdsa process` for CI/CD and data pipelines.
 - Stores uploaded data in memory with a default 30-minute session TTL.
 
 ## CLI
 
 ```bash
-sdsa-server start
-sdsa-server start --host 0.0.0.0 --port 8000
-sdsa-server start --random-port
-sdsa-server start --reload
+sdsa start
+sdsa start --host 0.0.0.0 --port 8000
+sdsa start --random-port
+sdsa start --reload
+
+# Batch mode: no server, writes sanitized CSV + JSON/Markdown reports.
+sdsa process data.csv --out-dir ./sanitized -k 5
+sdsa process data.csv --policy request.json --out-dir ./sanitized
 ```
 
-The package includes the static frontend, so no separate web build is required.
+`sdsa-server` remains an equivalent compatibility alias. The package includes
+the static frontend, so no separate web build is required.
 
 ## Privacy Model
 
@@ -60,9 +66,13 @@ l-diversity is measured by default for cleartext non-QI attributes and can be
 enforced with `l >= 2`. Homogeneous sensitive groups appear as warnings in the
 report when l-diversity is measured but not enforced.
 
+Reports also include an information-loss utility score. Downloadable reports
+strip exact source-side cardinalities, null counts, and numeric bounds while
+retaining enough metadata to audit field treatment.
+
 ## Deployment
 
-For production, run `sdsa-server start` behind TLS termination and keep one SDSA
+For production, run `sdsa start` behind TLS termination and keep one SDSA
 process per deployment unless you replace the in-memory session store with
 shared infrastructure. The GitHub repository includes Docker, Compose, nginx,
 and CI/CD examples.

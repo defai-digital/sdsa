@@ -21,7 +21,7 @@ from .dp.accountant import Accountant
 from .dp.laplace import LaplaceParams, apply_laplace
 from .kanon.enforce import enforce_k
 from .report import build_report
-from .validate.metrics import build_validation
+from .validate.metrics import build_utility_summary, build_validation
 
 
 class ProcessRequest(BaseModel):
@@ -313,8 +313,16 @@ def run_pipeline(
         ))
     df = k_result.df
 
-    # 4. validation
+    # 4. validation + utility (information-loss) summary
     validation = build_validation(original, df)
+    utility = build_utility_summary(
+        schema=schema,
+        after_df=df,
+        policies_applied=policies_applied,
+        dp_params=request.dp_params,
+        rows_before=original.height,
+        rows_after=df.height,
+    )
 
     # 5. report
     kanon_report = {
@@ -363,6 +371,7 @@ def run_pipeline(
         epsilon_budget=epsilon_budget,
         kanon=kanon_report,
         validation=validation,
+        utility=utility,
         deterministic_key_name=request.deterministic_key_name,
         warnings=warnings,
     )

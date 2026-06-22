@@ -45,6 +45,7 @@ dependencies = [
 ]
 
 [project.scripts]
+sdsa = "sdsa.cli:main"
 sdsa-server = "sdsa.cli:main"
 
 [project.urls]

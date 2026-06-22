@@ -32,6 +32,13 @@ EMAIL_RE = re.compile(
 
 CREDIT_CARD_RE = re.compile(r"^\d{13,19}$")
 
+# A column is "near-unique" — and therefore identifier-like — when this fraction
+# of its values are distinct. Used both by the high-cardinality content heuristic
+# and to gate identifier-by-name: a low-cardinality `*_id` column is a
+# foreign-key/categorical code worth keeping in cleartext for analysis, not a
+# direct identifier.
+_HIGH_CARDINALITY_RATIO = 0.95
+
 # Multilingual column-name hints (lowercased comparison).
 COLUMN_NAME_HINTS: dict[PIIKind, tuple[str, ...]] = {
     "email": ("email", "e-mail", "mail", "電子郵件", "邮箱", "メール"),
@@ -47,6 +54,17 @@ COLUMN_NAME_HINTS: dict[PIIKind, tuple[str, ...]] = {
     "credit_card": ("credit_card", "card_number", "ccnum", "card"),
     "identifier": ("user_id", "customer_id", "account_id", "uuid", "guid"),
 }
+
+# Generic identifier name tokens. Any column whose name contains one of these as
+# a whole token (e.g. `employee_id`, `order id`, `record_uuid`, bare `id`) is
+# treated as an identifier when no more specific PII hint matched. Matching is
+# token-based, so substrings like "paid" or "valid" are not flagged.
+_ID_NAME_TOKENS = frozenset({"id", "uuid", "guid", "identifier"})
+
+
+def _looks_like_id_name(column_name: str) -> bool:
+    tokens = [t for t in re.sub(r"[^a-z0-9]+", "_", column_name).split("_") if t]
+    return any(t in _ID_NAME_TOKENS for t in tokens)
 
 
 def luhn_valid(s: str) -> bool:
@@ -142,6 +160,10 @@ def detect_column(name: str, series: pl.Series) -> PIISuggestion:
         if any(_name_matches_hint(name_lower, hint) for hint in hints):
             name_hint_kind = kind
             break
+    # Fall back to the generic identifier name rule (e.g. employee_id) only when
+    # no more specific hint matched, so government_id/email/etc. keep priority.
+    if name_hint_kind == "none" and _looks_like_id_name(name_lower):
+        name_hint_kind = "identifier"
 
     # Content-based tests.
     candidates: list[tuple[PIIKind, float, str]] = []
@@ -165,7 +187,7 @@ def detect_column(name: str, series: pl.Series) -> PIISuggestion:
     if series.dtype == pl.Utf8 and series.len() > 0:
         n = series.len()
         u = series.n_unique()
-        if u / max(n, 1) > 0.95 and n > 20 and not candidates:
+        if u / max(n, 1) > _HIGH_CARDINALITY_RATIO and n > 20 and not candidates:
             candidates.append(("identifier", 0.60, "high cardinality string"))
 
     # Merge with column-name hint.
@@ -176,6 +198,17 @@ def detect_column(name: str, series: pl.Series) -> PIISuggestion:
             kind, conf, reason = existing
             candidates = [c for c in candidates if c[0] != kind]
             candidates.append((kind, min(0.99, conf + 0.10), f"{reason} + column name"))
+        elif name_hint_kind == "identifier":
+            # Only treat an identifier-named column as an identifier when it is
+            # near-unique. A low-cardinality `*_id` (e.g. department_id) is a
+            # foreign-key/categorical code: tokenizing it destroys join/analytic
+            # value without a re-identification benefit, so leave it as-is and
+            # let the column-kind default (retain) apply.
+            if (series.len() > 0
+                    and series.n_unique() / series.len() >= _HIGH_CARDINALITY_RATIO):
+                candidates.append(
+                    ("identifier", 0.85, "identifier-like name + near-unique values")
+                )
         else:
             candidates.append((name_hint_kind, 0.55, "column name hint only"))
 

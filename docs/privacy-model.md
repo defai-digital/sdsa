@@ -146,6 +146,19 @@ The SDSA model is:
 This is intentional. The product is designed to be auditable and reviewable,
 not opaque.
 
+## Utility Reporting And Report Disclosure
+
+Each processed release includes a utility summary: row retention, column
+retention, per-column fidelity, and an overall heuristic score in `[0, 100]`.
+This is an information-loss proxy for operators and reviewers, not a privacy
+guarantee.
+
+The downloadable JSON and Markdown reports are designed to travel with the
+sanitized CSV. They therefore strip exact source-side schema statistics such as
+original cardinalities, null counts, and numeric min/max bounds. The upload API
+still exposes those details to the operator before release so policies can be
+chosen deliberately.
+
 ## Why This Is Useful For Enterprise Teams
 
 Enterprise users usually need more than a one-line claim like "anonymized."

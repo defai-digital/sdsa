@@ -92,6 +92,145 @@ def compare_column(name: str, before: pl.Series, after: pl.Series | None) -> dic
     return report
 
 
+# --- utility (information-loss) summary --------------------------------------
+#
+# A scalar summary of how much analytic value the sanitization removed. It is
+# built from source-side metadata, then build_report strips exact source-side
+# counts before export. DP fidelity is derived from operator-declared bounds and
+# epsilon, not from the data distribution.
+
+# Fidelity weights for transforms that fully obscure a value. hash/tokenize keep
+# rows joinable (equality is preserved) but the value itself is opaque; redact
+# destroys the value outright. These are deliberate, documented heuristics — the
+# utility score is an information-loss *proxy*, not a formal metric.
+_JOINABLE_FIDELITY = 0.3
+_REDACT_FIDELITY = 0.0
+_GENERALIZE_ACTIONS = frozenset({"mask", "numeric_bin", "date_truncate", "string_truncate"})
+
+
+def _clamp01(x: float) -> float:
+    return 0.0 if x < 0.0 else 1.0 if x > 1.0 else x
+
+
+def _dp_fidelity(entry: dict[str, Any], params: dict[str, Any]) -> float:
+    """Fidelity of a DP-noised numeric column from declared bounds + epsilon.
+
+    Laplace scale b = sensitivity/epsilon where sensitivity = upper - lower.
+    The noise-to-range ratio is b / range = 1/epsilon; fidelity decays as
+    1/(1+noise_to_range) so larger epsilon (less noise) scores higher. Uses
+    only operator-declared values, so it never leaks the true distribution.
+    """
+    try:
+        eps = float(params["epsilon"])
+        lo = float(params["lower"])
+        hi = float(params["upper"])
+    except (KeyError, TypeError, ValueError):
+        return 0.5
+    rng = hi - lo
+    if rng <= 0.0 or eps <= 0.0:
+        return 0.0
+    noise_scale = rng / eps
+    noise_to_range = noise_scale / rng
+    entry["noise_scale"] = round(noise_scale, 6)
+    entry["noise_to_range"] = round(noise_to_range, 6)
+    return 1.0 / (1.0 + noise_to_range)
+
+
+def build_utility_summary(
+    schema: list[dict],
+    after_df: pl.DataFrame,
+    policies_applied: list[dict],
+    dp_params: dict[str, dict],
+    rows_before: int,
+    rows_after: int,
+) -> dict[str, Any]:
+    """Summarize information loss between the original and released data.
+
+    `schema` describes the *original* columns (name + n_unique, as inferred at
+    upload). `after_df` is the released frame. Exact source-side helper fields
+    are removed by the report builder before export.
+    """
+    actions = {p["column"]: p.get("action", "retain") for p in policies_applied}
+    row_retention = (rows_after / rows_before) if rows_before else 0.0
+
+    columns: list[dict[str, Any]] = []
+    dropped: list[str] = []
+    kept_fidelities: list[float] = []
+
+    for col in schema:
+        name = col["name"]
+        action = actions.get(name, "retain")
+        distinct_before = col.get("n_unique")
+        entry: dict[str, Any] = {
+            "column": name,
+            "action": action,
+            "distinct_before": distinct_before,
+        }
+
+        if name not in after_df.columns:
+            dropped.append(name)
+            entry.update(
+                disposition="dropped", distinct_after=None,
+                distinct_retention=0.0, fidelity=0.0,
+            )
+            columns.append(entry)
+            continue
+
+        distinct_after = int(after_df[name].n_unique())
+        entry["distinct_after"] = distinct_after
+        dret = _clamp01(distinct_after / distinct_before) if distinct_before else None
+        entry["distinct_retention"] = round(dret, 4) if dret is not None else None
+
+        if action == "retain":
+            disposition, fidelity = "retained", 1.0
+        elif action in _GENERALIZE_ACTIONS:
+            disposition = "generalized"
+            fidelity = dret if dret is not None else 0.5
+        elif action in ("hash", "tokenize"):
+            disposition, fidelity = "pseudonymized", _JOINABLE_FIDELITY
+        elif action == "redact":
+            disposition, fidelity = "redacted", _REDACT_FIDELITY
+        elif action == "dp_laplace":
+            disposition = "noised"
+            fidelity = _dp_fidelity(entry, dp_params.get(name) or {})
+        else:
+            disposition = "transformed"
+            fidelity = dret if dret is not None else 0.5
+
+        entry["disposition"] = disposition
+        entry["fidelity"] = round(_clamp01(fidelity), 4)
+        kept_fidelities.append(entry["fidelity"])
+        columns.append(entry)
+
+    total_cols = len(schema)
+    kept_cols = total_cols - len(dropped)
+    column_retention = (kept_cols / total_cols) if total_cols else 0.0
+    mean_fidelity = (sum(kept_fidelities) / len(kept_fidelities)) if kept_fidelities else 0.0
+    overall = 100.0 * row_retention * column_retention * mean_fidelity
+
+    return {
+        "overall_score": round(overall, 1),
+        "row_retention": round(row_retention, 4),
+        "rows_before": rows_before,
+        "rows_after": rows_after,
+        "column_retention": round(column_retention, 4),
+        "columns_total": total_cols,
+        "columns_kept": kept_cols,
+        "columns_dropped": dropped,
+        "mean_column_fidelity": round(mean_fidelity, 4),
+        "columns": columns,
+        "method_note": (
+            "Heuristic utility proxy in [0,100]: "
+            "100 x row_retention x column_retention x mean(kept-column fidelity). "
+            "Per-column fidelity is 1.0 for retained columns, the surviving "
+            "distinct-value ratio for generalized columns, 1/(1+noise/range) for "
+            "DP-noised columns, 0.3 for hashed/tokenized (joinable but opaque), "
+            "and 0 for redacted or dropped columns. It estimates analytic "
+            "information loss and is not a formal guarantee."
+        ),
+    }
+
+
 def correlation_matrix(df: pl.DataFrame) -> dict[str, dict[str, float | None]]:
     num_cols = [c for c in df.columns if df[c].dtype.is_numeric()]
     out: dict[str, dict[str, float | None]] = {}
