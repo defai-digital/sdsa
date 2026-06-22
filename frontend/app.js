@@ -1014,6 +1014,20 @@ function renderReview(report) {
       <div class="stat-value">${esc(String(s.value))} ${s.sub ? `<small>${esc(s.sub)}</small>` : ""}</div>
     </div>`).join("");
 
+  const warnBox = $("warnings");
+  if (warnBox) {
+    const warnings = Array.isArray(report.warnings) ? report.warnings : [];
+    if (warnings.length) {
+      warnBox.innerHTML =
+        `<div class="warnings-title">⚠ Privacy warnings</div>` +
+        `<ul>${warnings.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>`;
+      warnBox.classList.remove("hidden");
+    } else {
+      warnBox.innerHTML = "";
+      warnBox.classList.add("hidden");
+    }
+  }
+
   const claimBox = $("claim-box");
   const claim = claimBox ? claimBox.querySelector(".claim-text") : null;
   if (claim) claim.innerHTML = `<strong>Privacy claim:</strong> ${esc(report.claim || "")}`;

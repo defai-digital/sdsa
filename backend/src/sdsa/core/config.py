@@ -62,6 +62,7 @@ class Config:
     default_epsilon: float
     epsilon_min: float
     epsilon_max: float
+    epsilon_session_budget: float
     max_suppression_ratio: float
     hard_max_suppression_ratio: float
     allowed_cors_origins: tuple[str, ...]
@@ -87,6 +88,17 @@ class Config:
         if epsilon_min >= epsilon_max:
             raise ConfigError("SDSA_EPSILON_MIN must be < SDSA_EPSILON_MAX")
 
+        # Lifetime per-column DP budget for a single uploaded session. Every
+        # release (each /process) charges the column's ε against this budget;
+        # once exhausted, further DP releases of that column are refused. This
+        # is what stops an averaging attack: N independent noisy releases of the
+        # same value let an attacker average away the noise (~1/sqrt(N)).
+        # Default = epsilon_max, so a single full-strength release uses it all
+        # while several weaker releases may compose up to the same ceiling.
+        epsilon_session_budget = _env_float("SDSA_EPSILON_SESSION_BUDGET", epsilon_max)
+        if epsilon_session_budget <= 0:
+            raise ConfigError("SDSA_EPSILON_SESSION_BUDGET must be > 0")
+
         max_suppression = _env_float("SDSA_MAX_SUPPRESSION", 0.10)
         hard_max_suppression = _env_float("SDSA_HARD_MAX_SUPPRESSION", 0.50)
         if max_suppression >= hard_max_suppression:
@@ -100,6 +112,7 @@ class Config:
             default_epsilon=_env_float("SDSA_DEFAULT_EPSILON", 1.0),
             epsilon_min=epsilon_min,
             epsilon_max=epsilon_max,
+            epsilon_session_budget=epsilon_session_budget,
             max_suppression_ratio=max_suppression,
             hard_max_suppression_ratio=hard_max_suppression,
             allowed_cors_origins=_parse_cors_origins(os.environ.get("SDSA_ALLOWED_CORS_ORIGINS")),

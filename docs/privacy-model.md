@@ -66,6 +66,17 @@ That means:
 - it does not make the whole released dataset globally DP
 - it does not eliminate linkage risk from auxiliary data
 
+### Per-session DP budget
+
+A single noisy release does not let an attacker recover the true value, but
+several independent noisy releases of the *same* value do: averaging `N`
+releases shrinks the noise by roughly `1/sqrt(N)`. To prevent this, SDSA tracks
+cumulative epsilon **per column for the lifetime of an uploaded session** and
+refuses any release that would push a column past
+`SDSA_EPSILON_SESSION_BUDGET` (default: `SDSA_EPSILON_MAX`). Re-uploading the
+data starts a fresh budget. The privacy report shows both the per-release
+epsilon and the cumulative epsilon per column.
+
 ## k-Anonymity In SDSA
 
 After per-column transformations, SDSA enforces k-anonymity on the fields the
@@ -88,6 +99,26 @@ Even if names and emails are removed, those combinations can still isolate a
 small group or a single person. k-anonymity is SDSA's guardrail against that
 class of mistake.
 
+### Attribute disclosure and l-diversity
+
+k-anonymity bounds *identity* disclosure (re-identification) but not *attribute*
+disclosure. If every record in an equivalence class shares the same value of a
+sensitive ("label") column that is released in cleartext, an attacker learns
+that value for everyone in the class without singling anyone out — the
+homogeneity attack.
+
+SDSA always **measures** this: for the columns left in cleartext (or those the
+operator explicitly marks sensitive), the report records how many released
+equivalence classes are homogeneous and the minimum number of distinct values
+per class. When any homogeneous class exists and l-diversity is not enforced,
+the report carries an explicit attribute-disclosure warning.
+
+SDSA can also **enforce** distinct l-diversity: when the operator sets `l >= 2`,
+equivalence classes with fewer than `l` distinct values in a sensitive column
+are suppressed alongside the usual k-anonymity suppression (subject to the same
+utility caps). Mask, generalize, or drop a column to remove it from the
+cleartext attribute-disclosure surface entirely.
+
 ## How The Pieces Work Together
 
 The SDSA model is:
@@ -95,9 +126,10 @@ The SDSA model is:
 1. detect sensitive columns
 2. let the operator confirm or override treatment
 3. apply non-DP obfuscation transforms
-4. apply DP noise where configured
-5. enforce k-anonymity on quasi-identifiers
-6. report what was done and what guarantee is being claimed
+4. apply DP noise where configured (subject to the per-session DP budget)
+5. enforce k-anonymity on quasi-identifiers (and l-diversity when configured)
+6. report what was done, what guarantee is being claimed, and any residual
+   attribute-disclosure warnings
 
 This is intentional. The product is designed to be auditable and reviewable,
 not opaque.

@@ -12,6 +12,30 @@ CLAIM_PHASE1 = (
 )
 
 
+def _shareable_validation(validation: dict[str, Any]) -> dict[str, Any]:
+    """Strip original (pre-sanitization) statistics from the validation block.
+
+    The privacy report is exported alongside the sanitized CSV, so it must be
+    safe to hand to the same downstream recipient. The `before` stats expose
+    exact extremes (min/max), histogram edges, and the original joint
+    distribution (`correlation_before`) of the *input* data — including the true
+    tails of DP-noised columns, which would undermine the noise. We keep only
+    `after` statistics, which describe the released data already present in the
+    CSV, plus row counts (least-disclosure principle).
+    """
+    safe_columns = []
+    for col in validation.get("columns", []):
+        safe = {k: v for k, v in col.items()
+                if k not in ("before", "before_histogram")}
+        safe_columns.append(safe)
+    return {
+        "columns": safe_columns,
+        "correlation_after": validation.get("correlation_after", {}),
+        "rows_before": validation.get("rows_before"),
+        "rows_after": validation.get("rows_after"),
+    }
+
+
 def build_report(
     *,
     session_id: str,
@@ -22,24 +46,32 @@ def build_report(
     kanon: dict[str, Any],
     validation: dict[str, Any],
     deterministic_key_name: str | None,
+    dp_cumulative: dict[str, float] | None = None,
+    epsilon_budget: float | None = None,
+    warnings: list[str] | None = None,
 ) -> dict[str, Any]:
     report = {
         "session_id": session_id,
         "claim": CLAIM_PHASE1,
+        "warnings": list(warnings or []),
         "schema": schema,
         "pii_suggestions": pii_suggestions,
         "policies_applied": policies_applied,
         "privacy": {
             "mechanism_per_column": dp_spent,
             "max_epsilon": max(dp_spent.values(), default=0.0),
+            "cumulative_epsilon_per_column": dict(dp_cumulative or {}),
+            "session_epsilon_budget": epsilon_budget,
             "delta": None,
             "composition_note": (
                 "Per-column local-DP budgets are reported individually. "
-                "They do not compose to a dataset-level ε guarantee."
+                "They do not compose to a dataset-level ε guarantee. The "
+                "cumulative budget is enforced per column across releases to "
+                "prevent averaging attacks."
             ),
         },
         "k_anonymity": kanon,
-        "validation": validation,
+        "validation": _shareable_validation(validation),
     }
     if deterministic_key_name:
         report["deterministic_mode"] = {
@@ -68,6 +100,12 @@ def render_markdown(report: dict[str, Any]) -> str:
     lines.append("## Claim")
     lines.append(report["claim"])
     lines.append("")
+    warnings = report.get("warnings") or []
+    if warnings:
+        lines.append("## ⚠ Warnings")
+        for w in warnings:
+            lines.append(f"- {_md_escape(w)}")
+        lines.append("")
     lines.append("## k-Anonymity")
     k = report["k_anonymity"]
     lines.append(f"- k target: {k.get('k_target')}")
@@ -75,6 +113,18 @@ def render_markdown(report: dict[str, Any]) -> str:
     lines.append(f"- rows suppressed: {k.get('rows_suppressed')} / {k.get('rows_total')} "
                  f"({k.get('suppression_ratio', 0):.2%})")
     lines.append(f"- prosecutor risk upper bound: {1 / max(k.get('k_achieved', 1), 1):.4f}")
+    ld = k.get("l_diversity") or {}
+    if ld.get("sensitive_columns"):
+        lines.append("")
+        lines.append("## l-Diversity (attribute disclosure)")
+        lines.append(f"- sensitive columns: "
+                     f"{', '.join('`' + _md_escape(c) + '`' for c in ld['sensitive_columns'])}")
+        lines.append(f"- l target: {ld.get('l_target')} "
+                     f"({'enforced' if ld.get('enforced') else 'measured only'})")
+        for col, l_val in (ld.get("l_achieved") or {}).items():
+            homo = (ld.get("homogeneous_classes") or {}).get(col, 0)
+            note = f" — {homo} homogeneous class(es)" if homo else ""
+            lines.append(f"- `{_md_escape(col)}`: min distinct values per class = {l_val}{note}")
     lines.append("")
     lines.append("## Differential Privacy (per-column)")
     priv = report["privacy"]

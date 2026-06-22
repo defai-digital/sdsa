@@ -25,6 +25,10 @@ class Session:
     output_bytes: bytes | None = None
     output_report: dict[str, Any] | None = None
     hmac_key: bytes | None = field(default_factory=lambda: secrets.token_bytes(32))
+    # Cumulative per-column DP budget spent across every release in this
+    # session. Persists across /process calls so repeated noisy releases of the
+    # same data can't average the noise away (ADR-0002 budget enforcement).
+    dp_spent: dict[str, float] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -35,6 +39,7 @@ class SessionSnapshot:
     output_bytes: bytes | None = None
     output_report: dict[str, Any] | None = None
     hmac_key: bytes | None = None
+    dp_spent: dict[str, float] = field(default_factory=dict)
 
 
 class SessionStore:
@@ -84,6 +89,7 @@ class SessionStore:
                     output_bytes=session.output_bytes,
                     output_report=dict(session.output_report) if session.output_report is not None else None,
                     hmac_key=session.hmac_key,
+                    dp_spent=dict(session.dp_spent),
                 )
         if expired is not None:
             _zeroize(expired)
@@ -122,6 +128,22 @@ class SessionStore:
             _zeroize(expired)
         return False
 
+    def set_dp_spent(self, session_id: str, dp_spent: dict[str, float]) -> bool:
+        """Persist the cumulative per-column DP budget after a successful release."""
+        expired: Session | None = None
+        with self._lock:
+            session = self._sessions.get(session_id)
+            if session is None:
+                return False
+            if self._is_expired(session):
+                expired = self._sessions.pop(session_id, None)
+            else:
+                session.dp_spent = dict(dp_spent)
+                return True
+        if expired is not None:
+            _zeroize(expired)
+        return False
+
     def delete(self, session_id: str) -> bool:
         with self._lock:
             session = self._sessions.pop(session_id, None)
@@ -152,6 +174,7 @@ def _zeroize(session: Session) -> None:
     # Best effort; Python does not guarantee memory clearing. Documented in ADR-0007.
     session.df = None
     session.detection = None
+    session.dp_spent = {}
     if session.output_bytes is not None:
         try:
             ba = bytearray(session.output_bytes)

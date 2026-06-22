@@ -134,3 +134,24 @@ def test_preflight_rejects_invalid_dp_bounds():
     )
     with pytest.raises(PolicyApplicationError):
         preflight_k_anonymity(df, req, b"\x00" * 32)
+
+
+def test_preflight_ignores_hidden_declared_sensitive_columns_for_l_diversity():
+    df = pl.DataFrame({
+        "zip": ["1"] * 6,
+        "disease": ["flu"] * 6,
+    })
+    req = PreflightRequest(
+        policies=[
+            ColumnPolicy(column="zip", action="retain", is_quasi_identifier=True),
+            ColumnPolicy(column="disease", action="drop"),
+        ],
+        k=5,
+        l=2,
+        sensitive_columns=["disease"],
+    )
+
+    out = preflight_k_anonymity(df, req, b"\x00" * 32)
+
+    assert out["rows_suppressed"] == 0
+    assert out["l_diversity"]["sensitive_columns"] == []

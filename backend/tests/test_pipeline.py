@@ -235,6 +235,101 @@ def test_deterministic_mode_different_keys_produce_different_hashes():
         config_module._config = None
 
 
+def test_report_omits_original_before_statistics():
+    """The shareable report must not leak pre-sanitization statistics (exact
+    min/max, histograms, original correlations) of the input data."""
+    df = _sample_df()
+    req = ProcessRequest(policies=_policies(), k=5)
+    res = run_pipeline(df, req, "s", b"\x00" * 32, schema=[], pii_suggestions={})
+    val = res.report["validation"]
+    assert "correlation_before" not in val
+    for col in val["columns"]:
+        assert "before" not in col
+        assert "before_histogram" not in col
+    # After-stats (describing the already-released CSV) are retained.
+    assert "correlation_after" in val
+
+
+def test_dp_budget_blocks_repeated_release():
+    """A second full-strength release of the same DP column is refused once the
+    per-column session budget is exhausted (averaging-attack defence)."""
+    df = _sample_df()
+    req = ProcessRequest(
+        policies=_policies(dp_on_salary=True),
+        k=5,
+        dp_params={"salary": {"epsilon": 1.0, "lower": 40_000, "upper": 100_000}},
+    )
+    r1 = run_pipeline(df, req, "s", b"\x00" * 32, schema=[], pii_suggestions={},
+                      prior_dp_spent={}, epsilon_budget=1.0)
+    assert r1.dp_spent_cumulative == {"salary": 1.0}
+    assert r1.report["privacy"]["cumulative_epsilon_per_column"] == {"salary": 1.0}
+    with pytest.raises(PipelineError) as exc:
+        run_pipeline(df, req, "s", b"\x00" * 32, schema=[], pii_suggestions={},
+                     prior_dp_spent=r1.dp_spent_cumulative, epsilon_budget=1.0)
+    assert "budget" in str(exc.value).lower()
+
+
+def test_homogeneous_sensitive_column_warns():
+    df = pl.DataFrame({"zip": ["100"] * 10, "disease": ["flu"] * 10})
+    req = ProcessRequest(policies=[
+        ColumnPolicy(column="zip", action="retain", is_quasi_identifier=True),
+        ColumnPolicy(column="disease", action="retain"),
+    ], k=5)
+    res = run_pipeline(df, req, "s", b"\x00" * 32, schema=[], pii_suggestions={})
+    assert res.report["warnings"]
+    assert "disease" in res.report["warnings"][0]
+    ld = res.report["k_anonymity"]["l_diversity"]
+    assert ld["sensitive_columns"] == ["disease"]
+    assert ld["homogeneous_classes"]["disease"] == 1
+    assert ld["enforced"] is False
+
+
+def test_pipeline_enforces_l_diversity():
+    df = pl.DataFrame({
+        "zip":     ["1"] * 6 + ["2"] * 6,
+        "disease": ["flu"] * 6 + ["flu", "cold"] * 3,
+    })
+    req = ProcessRequest(policies=[
+        ColumnPolicy(column="zip", action="retain", is_quasi_identifier=True),
+        ColumnPolicy(column="disease", action="retain"),
+    ], k=5, l=2, accept_weaker_guarantee=True)
+    res = run_pipeline(df, req, "s", b"\x00" * 32, schema=[], pii_suggestions={})
+    assert set(res.df["zip"].to_list()) == {"2"}  # homogeneous class removed
+    assert res.report["k_anonymity"]["l_diversity"]["enforced"] is True
+    # Enforced + diverse output → no residual attribute-disclosure warning.
+    assert res.report["warnings"] == []
+
+
+def test_hidden_declared_sensitive_column_not_used_for_l_diversity():
+    df = pl.DataFrame({
+        "zip": ["1"] * 6,
+        "disease": ["flu"] * 6,
+    })
+    req = ProcessRequest(policies=[
+        ColumnPolicy(column="zip", action="retain", is_quasi_identifier=True),
+        ColumnPolicy(column="disease", action="redact"),
+    ], k=5, l=2, sensitive_columns=["disease"])
+
+    res = run_pipeline(df, req, "s", b"\x00" * 32, schema=[], pii_suggestions={})
+
+    assert res.df.height == 6
+    assert res.df["disease"].to_list() == ["[REDACTED]"] * 6
+    assert res.report["k_anonymity"]["l_diversity"]["sensitive_columns"] == []
+
+
+def test_markdown_renders_warnings_and_l_diversity():
+    from sdsa.report import render_markdown
+    df = pl.DataFrame({"zip": ["100"] * 10, "disease": ["flu"] * 10})
+    req = ProcessRequest(policies=[
+        ColumnPolicy(column="zip", action="retain", is_quasi_identifier=True),
+        ColumnPolicy(column="disease", action="retain"),
+    ], k=5)
+    res = run_pipeline(df, req, "s", b"\x00" * 32, schema=[], pii_suggestions={})
+    md = render_markdown(res.report)
+    assert "Warnings" in md
+    assert "l-Diversity" in md
+
+
 def test_deterministic_mode_requires_configured_deployment_salt():
     df = pl.DataFrame({"email": ["alice@x.com"] * 10, "dept": ["A"] * 10})
     req = ProcessRequest(

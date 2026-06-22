@@ -520,3 +520,51 @@ def test_download_reports_session_expiry_after_delete():
     r = client.get(f"/api/download/{sid}/report.json")
     assert r.status_code == 404
     assert "expired" in r.text.lower()
+
+
+def test_dp_budget_enforced_across_processes(monkeypatch):
+    """Two full-strength DP releases of the same column on one session must be
+    refused once the per-column budget is spent (averaging-attack defence)."""
+    monkeypatch.setenv("SDSA_EPSILON_SESSION_BUDGET", "1.0")
+    config_module._config = None
+    try:
+        local = TestClient(create_app())
+        r = local.post("/api/upload", files={"file": ("s.csv", CSV_SAMPLE, "text/csv")})
+        sid = r.json()["session_id"]
+        req = {
+            "policies": [
+                {"column": "email", "action": "drop"},
+                {"column": "zip", "action": "string_truncate",
+                 "params": {"keep": 3}, "is_quasi_identifier": True},
+                {"column": "age", "action": "numeric_bin",
+                 "params": {"bin_width": 10}, "is_quasi_identifier": True},
+                {"column": "salary", "action": "dp_laplace"},
+            ],
+            "k": 5,
+            "dp_params": {"salary": {"epsilon": 1.0, "lower": 40000, "upper": 70000}},
+        }
+        r1 = local.post(f"/api/process/{sid}", json=req)
+        assert r1.status_code == 200, r1.text
+        r2 = local.post(f"/api/process/{sid}", json=req)
+        assert r2.status_code == 400
+        assert "budget" in r2.json()["detail"].lower()
+    finally:
+        config_module._config = None
+
+
+def test_pii_detection_samples_whole_frame(monkeypatch):
+    """PII present only beyond the detection-sample window must still be found:
+    detection samples randomly across the frame, not just the head."""
+    monkeypatch.setenv("SDSA_SAMPLE_ROWS", "10")
+    config_module._config = None
+    try:
+        rows = ["contact,score"]
+        rows += [f",{i}" for i in range(10)]                  # empty head → null
+        rows += [f"user{i}@example.com,{i}" for i in range(90)]  # PII in the tail
+        csv_bytes = ("\n".join(rows) + "\n").encode()
+        local = TestClient(create_app())
+        r = local.post("/api/upload", files={"file": ("c.csv", csv_bytes, "text/csv")})
+        assert r.status_code == 200, r.text
+        assert r.json()["pii_suggestions"]["contact"]["kind"] == "email"
+    finally:
+        config_module._config = None

@@ -10,7 +10,7 @@ from .anonymize.policy import ColumnPolicy, PolicyApplicationError, apply_policy
 from .core.config import get_config
 from .dp.laplace import LaplaceParams, apply_laplace
 from .kanon.enforce import KAnonResult, enforce_k
-from .pipeline import _derive_deterministic_key
+from .pipeline import _derive_deterministic_key, resolve_sensitive_columns
 
 MAX_PREFLIGHT_QI_COLUMNS = 15
 
@@ -20,6 +20,8 @@ class PreflightRequest(BaseModel):
     k: int = Field(default=5, ge=2, le=1000)
     dp_params: dict[str, dict] = Field(default_factory=dict)
     deterministic_key_name: str | None = Field(default=None, min_length=1, max_length=256)
+    sensitive_columns: list[str] = Field(default_factory=list, max_length=500)
+    l: int = Field(default=1, ge=1, le=1000)
 
 
 def _qi_cardinality(df: pl.DataFrame, qi_columns: list[str]) -> list[dict[str, Any]]:
@@ -42,13 +44,15 @@ def _drop_one_impacts(
     qi_columns: list[str],
     k: int,
     base_result: KAnonResult,
+    sensitive_columns: list[str],
+    l: int,
 ) -> list[dict[str, Any]]:
     impacts = []
     if len(qi_columns) <= 1:
         return impacts
     for col in qi_columns:
         reduced = [c for c in qi_columns if c != col]
-        result = enforce_k(df, reduced, k)
+        result = enforce_k(df, reduced, k, sensitive_columns=sensitive_columns, l=l)
         impacts.append({
             "column": col,
             "n_unique": int(df[col].n_unique()),
@@ -66,6 +70,8 @@ def _greedy_drop_plan(
     k: int,
     target_cap: float,
     base_result: KAnonResult,
+    sensitive_columns: list[str],
+    l: int,
 ) -> dict[str, Any] | None:
     if not qi_columns:
         return None
@@ -82,7 +88,7 @@ def _greedy_drop_plan(
         impacts = []
         for col in current_qis:
             reduced = [c for c in current_qis if c != col]
-            result = enforce_k(df, reduced, k)
+            result = enforce_k(df, reduced, k, sensitive_columns=sensitive_columns, l=l)
             impacts.append({
                 "column": col,
                 "n_unique": int(df[col].n_unique()),
@@ -109,7 +115,7 @@ def _greedy_drop_plan(
             "remaining_qi_columns": best["remaining_qi_columns"],
         })
         current_qis = best["remaining_qi_columns"]
-        current_result = enforce_k(df, current_qis, k)
+        current_result = enforce_k(df, current_qis, k, sensitive_columns=sensitive_columns, l=l)
 
     return {
         "target_cap": target_cap,
@@ -202,15 +208,25 @@ def preflight_k_anonymity(
         p.column for p in request.policies
         if p.is_quasi_identifier and p.column in df.columns
     ))
-    result = enforce_k(df, qi_columns, request.k)
+    sensitive_cols = resolve_sensitive_columns(
+        df.columns, request.policies, qi_columns, request.sensitive_columns
+    )
+    result = enforce_k(
+        df, qi_columns, request.k,
+        sensitive_columns=sensitive_cols, l=request.l,
+    )
     worst = _qi_cardinality(df, qi_columns)
-    drop_impacts = _drop_one_impacts(df, qi_columns, request.k, result)
+    drop_impacts = _drop_one_impacts(
+        df, qi_columns, request.k, result, sensitive_cols, request.l
+    )
     target_cap = (
         cfg.hard_max_suppression_ratio
         if result.suppression_ratio > cfg.hard_max_suppression_ratio
         else cfg.max_suppression_ratio
     )
-    greedy_drop_plan = _greedy_drop_plan(df, qi_columns, request.k, target_cap, result)
+    greedy_drop_plan = _greedy_drop_plan(
+        df, qi_columns, request.k, target_cap, result, sensitive_cols, request.l
+    )
 
     suggestions: list[str] = []
     if result.suppression_ratio > cfg.hard_max_suppression_ratio:
@@ -268,6 +284,14 @@ def preflight_k_anonymity(
         "classes_total": result.classes_total,
         "classes_below_k": result.classes_below_k,
         "k_achieved_if_processed": result.k_achieved,
+        "l_diversity": {
+            "sensitive_columns": result.sensitive_columns,
+            "l_target": result.l_target,
+            "l_achieved": result.l_achieved,
+            "homogeneous_classes": result.homogeneous_classes,
+            "classes_below_l": result.classes_below_l,
+            "enforced": request.l >= 2,
+        },
         "within_suppression_cap": result.suppression_ratio <= cfg.max_suppression_ratio,
         "within_hard_suppression_cap": result.suppression_ratio <= cfg.hard_max_suppression_ratio,
         "suppression_cap": cfg.max_suppression_ratio,

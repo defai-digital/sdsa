@@ -116,6 +116,42 @@ def test_checkout_returns_stable_snapshot_after_live_session_mutates():
     assert snap.hmac_key == b"k"
 
 
+def test_set_dp_spent_persists_and_snapshots():
+    store = SessionStore()
+    session = Session(session_id="s1", created_at=time.time())
+    store._sessions[session.session_id] = session
+
+    assert store.set_dp_spent("s1", {"salary": 1.5})
+    snap = store.checkout("s1")
+    assert snap is not None
+    assert snap.dp_spent == {"salary": 1.5}
+    # Snapshot is a copy — mutating it must not affect the live session.
+    snap.dp_spent["salary"] = 99.0
+    assert store.checkout("s1").dp_spent == {"salary": 1.5}
+
+
+def test_set_dp_spent_missing_session_returns_false():
+    store = SessionStore()
+    assert store.set_dp_spent("nope", {"a": 1.0}) is False
+
+
+def test_zeroize_clears_dp_spent():
+    session = Session(session_id="s1", created_at=time.time())
+    session.dp_spent = {"salary": 2.0}
+    _zeroize(session)
+    assert session.dp_spent == {}
+
+
+def test_config_session_budget_defaults_to_epsilon_max(monkeypatch):
+    monkeypatch.delenv("SDSA_EPSILON_SESSION_BUDGET", raising=False)
+    monkeypatch.setenv("SDSA_EPSILON_MAX", "7.0")
+    config_module._config = None
+    try:
+        assert config_module.get_config().epsilon_session_budget == 7.0
+    finally:
+        config_module._config = None
+
+
 def test_config_rejects_invalid_numeric_env(monkeypatch):
     monkeypatch.setenv("SDSA_SESSION_TTL", "18O0")
     config_module._config = None

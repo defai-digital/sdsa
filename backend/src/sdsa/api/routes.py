@@ -66,7 +66,14 @@ async def upload(file: UploadFile) -> UploadResponse:
         raise HTTPException(400, str(e))
 
     df = result.df
-    sample = df.head(cfg.sample_rows_for_detection)
+    # Detect PII on a random sample across the whole frame, not just the head —
+    # PII concentrated in later rows (e.g. a file sorted with clean test rows
+    # first) would otherwise be missed and silently retained. seed=0 keeps
+    # detection deterministic across re-uploads of the same data.
+    if df.height > cfg.sample_rows_for_detection:
+        sample = df.sample(cfg.sample_rows_for_detection, seed=0)
+    else:
+        sample = df
     schema = infer_schema(df)
     pii = {k: asdict_pii(v) for k, v in detect_dataframe(sample).items()}
     preview_sample = _serialize_sample(df.head(PREVIEW_ROW_LIMIT))
@@ -163,6 +170,7 @@ async def process(session_id: str, request: ProcessRequest) -> ProcessResponse:
         # with the data we already have rather than failing spuriously.
         store.clear_output(session_id)
 
+        cfg = get_config()
         try:
             result = run_pipeline(
                 original=snapshot.df,
@@ -171,6 +179,8 @@ async def process(session_id: str, request: ProcessRequest) -> ProcessResponse:
                 hmac_key=snapshot.hmac_key,
                 schema=detection.get("schema", []),
                 pii_suggestions=detection.get("pii", {}),
+                prior_dp_spent=snapshot.dp_spent,
+                epsilon_budget=cfg.epsilon_session_budget,
             )
         except (PipelineError, PolicyApplicationError) as e:
             raise HTTPException(400, str(e))
@@ -180,6 +190,9 @@ async def process(session_id: str, request: ProcessRequest) -> ProcessResponse:
         result.df.write_csv(buf)
         if not store.store_output(session_id, buf.getvalue(), result.report):
             raise HTTPException(404, "session expired — please re-upload and reprocess")
+        # Persist the cumulative DP budget only after a successful release, so a
+        # refused/failed run never advances the budget.
+        store.set_dp_spent(session_id, result.dp_spent_cumulative)
 
         log.info("process_complete", extra={
             "session_id": session_id,

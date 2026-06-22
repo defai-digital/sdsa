@@ -1005,6 +1005,21 @@ input[type="checkbox"].qi:checked::after {
 .stat.warn .stat-value { color: var(--warn); }
 .stat.bad  .stat-value { color: var(--danger); }
 
+.warnings {
+  padding: var(--s-3) var(--s-4);
+  background: var(--warn-weak);
+  border: 1px solid rgba(223, 162, 80, 0.35);
+  border-left: 3px solid var(--warn);
+  border-radius: var(--r-2);
+  margin-bottom: var(--s-5);
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.warnings-title { color: var(--warn); font-weight: 620; margin-bottom: var(--s-2); }
+.warnings ul { margin: 0; padding-left: 1.1rem; }
+.warnings li { margin-bottom: var(--s-1); }
+
 .claim {
   display: flex; gap: var(--s-3);
   padding: var(--s-4);

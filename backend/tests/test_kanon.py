@@ -72,3 +72,45 @@ def test_user_column_named_sdsa_cls_size_also_works():
     res = enforce_k(df, qi_columns=["dept"], k=5)
     assert res.df.height == 12
     assert "_sdsa_cls_size" in res.df.columns
+
+
+def _diversity_df():
+    # zip=1: disease all 'flu' -> homogeneous (attribute disclosure)
+    # zip=2: disease {flu, cold} -> diverse
+    return pl.DataFrame({
+        "zip":     ["1"] * 4 + ["2"] * 4,
+        "disease": ["flu"] * 4 + ["flu", "cold", "cold", "flu"],
+    })
+
+
+def test_l_diversity_measured_without_enforcement():
+    """l=1 enforces nothing but still reports homogeneity, so the user is warned
+    that a cleartext column leaks via the homogeneity attack."""
+    res = enforce_k(_diversity_df(), ["zip"], k=2, sensitive_columns=["disease"], l=1)
+    assert res.df.height == 8  # nothing suppressed
+    assert res.l_achieved["disease"] == 1  # worst class has a single value
+    assert res.homogeneous_classes["disease"] == 1
+    assert res.classes_below_l == 0  # not enforcing, so nothing is "below"
+
+
+def test_l_diversity_suppresses_homogeneous_class():
+    res = enforce_k(_diversity_df(), ["zip"], k=2, sensitive_columns=["disease"], l=2)
+    assert set(res.df["zip"].to_list()) == {"2"}  # homogeneous zip=1 dropped
+    assert res.df.height == 4
+    assert res.classes_below_l == 1
+    assert res.homogeneous_classes["disease"] == 1
+
+
+def test_sensitive_column_that_is_a_qi_is_ignored():
+    """Diversity on a grouping key is meaningless (always 1 distinct per class);
+    it must not be treated as sensitive or everything would be suppressed."""
+    df = pl.DataFrame({"zip": ["1"] * 4 + ["2"] * 4})
+    res = enforce_k(df, ["zip"], k=2, sensitive_columns=["zip"], l=2)
+    assert res.df.height == 8
+    assert res.sensitive_columns == []
+
+
+def test_l_must_be_at_least_one():
+    import pytest
+    with pytest.raises(ValueError):
+        enforce_k(pl.DataFrame({"a": [1, 2]}), ["a"], k=2, l=0)

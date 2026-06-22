@@ -9,7 +9,7 @@ Order:
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import polars as pl
@@ -31,12 +31,21 @@ class ProcessRequest(BaseModel):
     # dp_params: {column_name: {"epsilon": float, "lower": float, "upper": float}}
     deterministic_key_name: str | None = Field(default=None, min_length=1, max_length=256)
     accept_weaker_guarantee: bool = False
+    # Distinct l-diversity over sensitive ("label") columns. l=1 disables
+    # enforcement but homogeneity is still measured and reported. When
+    # sensitive_columns is empty, the cleartext non-QI columns are used as the
+    # attribute-disclosure surface for both measurement and (l>=2) enforcement.
+    sensitive_columns: list[str] = Field(default_factory=list, max_length=500)
+    l: int = Field(default=1, ge=1, le=1000)
 
 
 @dataclass
 class ProcessResult:
     df: pl.DataFrame
     report: dict[str, Any]
+    # Cumulative per-column DP budget (prior + this run) for the caller to
+    # persist on the session so it survives across releases.
+    dp_spent_cumulative: dict[str, float] = field(default_factory=dict)
 
 
 class PipelineError(ValueError):
@@ -120,6 +129,44 @@ def _derive_deterministic_key(key_name: str, deployment_salt: bytes) -> bytes:
     ).digest()
 
 
+# Actions that remove or obscure a column's true value. Anything NOT in this
+# set leaves the original value readable in the output, making it part of the
+# attribute-disclosure ("label leakage") surface.
+_HIDING_ACTIONS = frozenset({
+    "mask", "hash", "tokenize", "redact",
+    "numeric_bin", "date_truncate", "string_truncate",
+    "dp_laplace", "drop",
+})
+
+
+def resolve_sensitive_columns(
+    df_columns: list[str],
+    policies: list[ColumnPolicy],
+    qi_columns: list[str],
+    declared: list[str],
+) -> list[str]:
+    """Determine which columns to treat as sensitive for l-diversity.
+
+    If the caller declared sensitive columns explicitly, use those after
+    removing QIs, missing columns, and columns whose policy hides the true
+    value. Otherwise default to the columns that remain in cleartext in the
+    output — i.e. retained or untouched, non-QI columns — since those are
+    exactly where attribute disclosure can happen.
+    """
+    qi_set = set(qi_columns)
+    actions = {p.column: p.action for p in policies}
+    def is_cleartext_column(c: str) -> bool:
+        return (
+            c in df_columns
+            and c not in qi_set
+            and actions.get(c, "retain") not in _HIDING_ACTIONS
+        )
+
+    if declared:
+        return [c for c in dict.fromkeys(declared) if is_cleartext_column(c)]
+    return [c for c in df_columns if is_cleartext_column(c)]
+
+
 def run_pipeline(
     original: pl.DataFrame,
     request: ProcessRequest,
@@ -127,6 +174,9 @@ def run_pipeline(
     hmac_key: bytes,
     schema: list[dict],
     pii_suggestions: dict[str, dict],
+    *,
+    prior_dp_spent: dict[str, float] | None = None,
+    epsilon_budget: float | None = None,
 ) -> ProcessResult:
     cfg = get_config()
     df = original.clone()
@@ -208,14 +258,41 @@ def run_pipeline(
         df = df.with_columns(noised.alias(col))
         accountant.charge(col, eps)
 
-    # 3. k-anonymity
+    # 2b. DP budget enforcement (fail before producing any output).
+    # Cumulative per-column ε = budget already spent in prior releases of this
+    # session + what this run would spend. Refuse if any column exceeds the
+    # budget — otherwise repeated independent noisy releases of the same data
+    # could be averaged to recover the true value.
+    this_run_spent = accountant.snapshot()
+    dp_cumulative = dict(prior_dp_spent or {})
+    for col, eps in this_run_spent.items():
+        dp_cumulative[col] = dp_cumulative.get(col, 0.0) + eps
+    if epsilon_budget is not None:
+        over = sorted(c for c, v in dp_cumulative.items() if v > epsilon_budget + 1e-9)
+        if over:
+            detail = ", ".join(f"'{c}' (ε={dp_cumulative[c]:g})" for c in over)
+            raise PipelineError(
+                f"DP privacy budget exhausted for column(s): {detail}. "
+                f"Cumulative ε across releases would exceed the per-column "
+                f"session budget of {epsilon_budget:g}. Repeated noisy releases "
+                f"of the same data enable averaging attacks, so this release is "
+                f"refused. Re-upload the data to start a fresh budget."
+            )
+
+    # 3. k-anonymity (+ optional l-diversity over sensitive columns)
     # dict.fromkeys preserves order while deduplicating — duplicate QI entries
     # from the same column would cause a Polars DuplicateError in group_by.
     qi_cols = list(dict.fromkeys(
         p.column for p in request.policies
         if p.is_quasi_identifier and p.column in df.columns
     ))
-    k_result = enforce_k(df, qi_cols, request.k)
+    sensitive_cols = resolve_sensitive_columns(
+        df.columns, request.policies, qi_cols, request.sensitive_columns
+    )
+    k_result = enforce_k(
+        df, qi_cols, request.k,
+        sensitive_columns=sensitive_cols, l=request.l,
+    )
 
     # Always refuse zero-row output — an empty dataset is never a useful result,
     # regardless of the accept_weaker_guarantee flag.
@@ -249,15 +326,44 @@ def run_pipeline(
         "classes_total": k_result.classes_total,
         "classes_below_k": k_result.classes_below_k,
         "qi_columns": qi_cols,
+        "l_diversity": {
+            "sensitive_columns": k_result.sensitive_columns,
+            "l_target": k_result.l_target,
+            "l_achieved": k_result.l_achieved,
+            "homogeneous_classes": k_result.homogeneous_classes,
+            "classes_below_l": k_result.classes_below_l,
+            "enforced": request.l >= 2,
+        },
     }
+
+    # Attribute-disclosure warning: when l-diversity is not being enforced and a
+    # released equivalence class is homogeneous in a cleartext column, that
+    # column's value leaks for everyone in the class (the "label leakage" the
+    # k-anonymity guarantee does NOT cover).
+    warnings: list[str] = []
+    if request.l < 2 and k_result.sensitive_columns:
+        leaky = sorted(c for c, n in k_result.homogeneous_classes.items() if n > 0)
+        if leaky:
+            warnings.append(
+                "Attribute disclosure risk: one or more released equivalence "
+                f"classes are homogeneous in cleartext column(s) {leaky}. "
+                "k-anonymity does not prevent an attacker from learning these "
+                "values for individuals in such a class. Mitigate by enabling "
+                "l-diversity (l >= 2) on these columns, generalizing/masking "
+                "them, or dropping them."
+            )
+
     report = build_report(
         session_id=session_id,
         schema=schema,
         pii_suggestions=pii_suggestions,
         policies_applied=policies_applied,
-        dp_spent=accountant.snapshot(),
+        dp_spent=this_run_spent,
+        dp_cumulative=dp_cumulative,
+        epsilon_budget=epsilon_budget,
         kanon=kanon_report,
         validation=validation,
         deterministic_key_name=request.deterministic_key_name,
+        warnings=warnings,
     )
-    return ProcessResult(df=df, report=report)
+    return ProcessResult(df=df, report=report, dp_spent_cumulative=dp_cumulative)
