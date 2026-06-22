@@ -45,3 +45,6 @@ BUGS/
 
 # Local Codex/automation config (not published)
 ax-code.json
+
+# Local debug logs (not published)
+debug-log/

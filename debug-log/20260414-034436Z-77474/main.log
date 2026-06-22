@@ -1,8 +1,0 @@
-INFO  2026-04-14T03:44:36 +195ms service=default version=3.1.3 args=["--debug","--debug-dir","./debug-log"] ax-code
-INFO  2026-04-14T03:44:36 +2ms service=default directory=/Users/akiralam/code/sdsa creating instance
-INFO  2026-04-14T03:44:36 +3ms service=project directory=/Users/akiralam/code/sdsa fromDirectory
-INFO  2026-04-14T03:44:36 +28ms service=db path=/Users/akiralam/.local/share/ax-code/ax-code.db opening database
-INFO  2026-04-14T03:44:36 +6ms service=db count=18 mode=bundled applying migrations
-INFO  2026-04-14T03:44:36 +14ms service=config path=/Users/akiralam/.config/ax-code/config.json loading
-INFO  2026-04-14T03:44:36 +0ms service=config path=/Users/akiralam/.config/ax-code/ax-code.json loading
-INFO  2026-04-14T03:44:36 +1ms service=config path=/Users/akiralam/.config/ax-code/ax-code.jsonc loading
