@@ -42,3 +42,6 @@ automatosx/
 
 # Local bug audit workspace (not published)
 BUGS/
+
+# Local Codex/automation config (not published)
+ax-code.json

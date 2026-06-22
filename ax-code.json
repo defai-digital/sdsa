@@ -1,7 +1,0 @@
-{
-  "$schema": "https://raw.githubusercontent.com/defai-digital/ax-code/main/packages/ax-code/config.schema.json",
-  "isolation": {
-    "mode": "workspace-write",
-    "network": false
-  }
-}
