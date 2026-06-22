@@ -44,10 +44,19 @@ For a package install:
 sdsa-server start
 ```
 
+The default URL is <http://127.0.0.1:8000/>.
+
 If port 8000 is already in use, choose an available high port automatically:
 
 ```bash
 sdsa-server start --random-port
+```
+
+For a specific port or a LAN-accessible bind address:
+
+```bash
+sdsa-server start --port 10001
+sdsa-server start --host 0.0.0.0 --port 8000
 ```
 
 For an editable source install from `backend/`:
@@ -55,8 +64,6 @@ For an editable source install from `backend/`:
 ```bash
 .venv/bin/sdsa-server start
 ```
-
-Open <http://127.0.0.1:8000/>.
 
 You can also install from a source checkout into your active Python environment
 and run the same entry point directly:
@@ -72,14 +79,19 @@ sdsa-server start
 1. Upload a CSV, TXT, or SQL file. If you cloned the repository, try
    `samples/employees.csv`.
 2. Review the detected columns and suggested policies.
-3. Mark quasi-identifiers for k-anonymity, such as `dob`, `zip`, and
+3. Drop, redact, hash, or tokenize direct identifiers such as names, emails,
+   phone numbers, card numbers, and government IDs.
+4. Mark quasi-identifiers for k-anonymity, such as `dob`, `zip`, and
    `department`.
-4. For numeric DP fields such as `salary`, set `epsilon`, `lower`, and `upper`
+5. For numeric DP fields such as `salary`, set `epsilon`, `lower`, and `upper`
    bounds.
-5. Check the preflight panel. If suppression is too high, uncheck a
+6. If a cleartext attribute should be diverse inside each QI group, check
+   **Sensitive** for that column and set `l` to `2` or higher. Leave `l=1` to
+   measure warnings only.
+7. Check the preflight panel. If suppression is too high, uncheck a
    high-cardinality quasi-identifier or generalize it more aggressively.
-6. Click **Process**.
-7. Download the sanitized CSV and the JSON or Markdown privacy report.
+8. Click **Process**.
+9. Download the sanitized CSV and the JSON or Markdown privacy report.
 
 The session stays in memory for 30 minutes by default. Re-upload the file after
 the session expires.
@@ -190,7 +202,13 @@ Expected result:
 - `zip` becomes a retained prefix such as `100**`.
 - `age` becomes a range such as `[20, 30)`.
 - `salary` receives bounded Laplace noise.
-- The report records `k`, suppression, policies applied, and epsilon spend.
+- The report records `k`, l-diversity measurement, suppression, policies
+  applied, per-release epsilon, and cumulative session epsilon spend.
+
+The same uploaded session has a cumulative per-column DP budget. If you process
+the same session repeatedly with `salary` DP epsilon `1.0` and the session
+budget is `1.0`, the second release is refused. Re-upload the data to start a
+fresh session budget.
 
 ## 5. Common Actions
 
@@ -204,6 +222,8 @@ Expected result:
 | Generalize dates | `date_truncate` | `granularity`: `year`, `month`, or `day` |
 | Generalize ZIP or postal codes | `string_truncate` | `keep` |
 | Add bounded numeric noise | `dp_laplace` | `epsilon`, `lower`, `upper` in `dp_params` |
+| Measure attribute disclosure | `l=1` with sensitive columns | `sensitive_columns` or checked Sensitive columns |
+| Enforce l-diversity | `l >= 2` | Sensitive columns with cleartext values |
 
 ## 6. Run Tests
 
@@ -271,8 +291,14 @@ Registry after tests pass.
 
 - `DP column needs declared bounds`: add `lower` and `upper` to `dp_params`.
 - `epsilon outside allowed range`: use a value between `0.1` and `10.0`.
+- `DP privacy budget exhausted`: this session already released enough noisy
+  output for that column. Re-upload to start a new session, or use a smaller
+  epsilon before the budget is exhausted.
 - `All rows were suppressed`: lower `k`, remove a high-cardinality
   quasi-identifier, or generalize QI columns more.
+- `Attribute disclosure risk`: one or more released QI groups are homogeneous
+  in a cleartext sensitive column. Set `l >= 2`, mask/generalize/drop the
+  column, or accept the warning if that residual risk is appropriate.
 - `Deterministic mode requires SDSA_DEPLOYMENT_SALT`: set a hex salt before
   starting the server, for example
   `export SDSA_DEPLOYMENT_SALT=$(openssl rand -hex 32)`.

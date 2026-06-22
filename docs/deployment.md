@@ -36,10 +36,13 @@ Open <http://127.0.0.1:8000/>.
 For a simple VM or internal host where Docker is not desired:
 
 ```bash
-cd backend
-python3 -m pip install .
+python3 -m pip install sdsa
 sdsa-server start --host 0.0.0.0 --port 8000
 ```
+
+From a source checkout, run `python3 -m pip install .` inside `backend/`
+instead. For local testing when port 8000 is already occupied, use
+`sdsa-server start --random-port`.
 
 The package includes the static frontend, so the same command serves the UI and
 the API. For production, run this behind a process supervisor and TLS reverse
@@ -115,6 +118,23 @@ volumes:
 ```
 
 The compose files already include this volume as a commented example.
+
+## Privacy and Utility Controls
+
+The main runtime controls are configured through environment variables:
+
+- `SDSA_SESSION_TTL`: in-memory session lifetime.
+- `SDSA_MAX_UPLOAD_BYTES`: app upload limit. Keep this aligned with nginx
+  `client_max_body_size`.
+- `SDSA_SAMPLE_ROWS`: bounded PII-detection sample size. Schema inference still
+  uses the full uploaded dataset.
+- `SDSA_MAX_SUPPRESSION` and `SDSA_HARD_MAX_SUPPRESSION`: soft and hard utility
+  caps for k-anonymity/l-diversity suppression.
+- `SDSA_EPSILON_MIN`, `SDSA_EPSILON_MAX`, and
+  `SDSA_EPSILON_SESSION_BUDGET`: allowed DP epsilon range and cumulative
+  per-column session budget.
+- `SDSA_DEPLOYMENT_SALT`: required only for deterministic cross-session
+  hashing/tokenization. Keep it stable and secret if used.
 
 ## Operational Notes
 

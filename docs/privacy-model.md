@@ -2,11 +2,12 @@
 
 ## Overview
 
-SDSA combines two privacy techniques for tabular data:
+SDSA combines several privacy controls for tabular data:
 
 1. data obfuscation at the column level
 2. bounded local differential privacy on selected numeric columns
 3. k-anonymity enforcement on declared quasi-identifiers
+4. l-diversity measurement or enforcement for sensitive cleartext attributes
 
 That combination is meant for enterprise data-sharing workflows where teams
 need something more rigorous than ad hoc masking, but do not want to pretend
@@ -18,6 +19,7 @@ The result is a governed sanitization pipeline:
 - review detected sensitive fields
 - choose the transformation for each field
 - preview the expected suppression impact
+- review any residual attribute-disclosure warnings
 - export sanitized data with a machine-readable privacy report
 
 ## What "Data Obfuscation" Means In SDSA
@@ -53,6 +55,11 @@ declares:
 The implementation clamps inputs to the declared range, adds Laplace noise,
 and clamps outputs again to the same range. That keeps the mechanism bounded
 to the declared domain and prevents obviously invalid output values.
+
+Choose bounds deliberately. Bounds define the sensitivity used for noise scale;
+overly wide bounds add avoidable noise, while overly narrow bounds clamp real
+values before noise is applied. Both choices should be documented in the
+privacy report review.
 
 Important limit:
 
@@ -118,6 +125,11 @@ equivalence classes with fewer than `l` distinct values in a sensitive column
 are suppressed alongside the usual k-anonymity suppression (subject to the same
 utility caps). Mask, generalize, or drop a column to remove it from the
 cleartext attribute-disclosure surface entirely.
+
+Distinct l-diversity is intentionally simple and auditable. It counts distinct
+values; it does not prove semantic diversity between similar values. For
+example, multiple rare diagnosis labels may still be semantically related even
+if the distinct count is high.
 
 ## How The Pieces Work Together
 

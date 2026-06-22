@@ -20,6 +20,19 @@ is not a black-box anonymization service, and it does not claim dataset-level
 
 For a first run, start with [QUICKSTART.md](QUICKSTART.md).
 
+## When To Use SDSA
+
+Use SDSA when you need a repeatable, reviewable release process for tabular
+data that still has analytic or test value after sanitization. Good fits
+include vendor extracts, QA datasets, support/debugging snapshots, internal
+analytics handoffs, and customer-facing evidence packages where the recipient
+does not need raw identifiers.
+
+Do not treat SDSA as a replacement for legal review, access control, encrypted
+storage, or a full formal anonymization proof. The output is safer
+pseudonymized microdata with explicit guardrails and a report, not a guarantee
+that every auxiliary-data linkage attack is impossible.
+
 ## What SDSA Does
 
 - Upload CSV, TXT, or SQL data through a browser UI or REST API.
@@ -47,6 +60,15 @@ k-anonymity is enforced through suppression over declared quasi-identifiers. The
 default `k` is 5. SDSA refuses zero-row output, refuses outputs above the hard
 suppression cap, and requires an explicit override to exceed the soft
 suppression cap.
+
+l-diversity can be measured or enforced for sensitive cleartext attributes.
+With `l=1`, SDSA reports homogeneous sensitive classes as warnings. With
+`l >= 2`, those classes are suppressed along with below-k classes, subject to
+the same utility caps.
+
+Numeric DP has a per-session cumulative epsilon budget. A successful release
+charges each DP column against `SDSA_EPSILON_SESSION_BUDGET`, so repeated
+process runs cannot average away the noise for the same uploaded session.
 
 Every generated report includes this claim:
 
@@ -151,6 +173,21 @@ Processing requests use this shape:
 Supported actions are `retain`, `mask`, `hash`, `tokenize`, `redact`,
 `numeric_bin`, `date_truncate`, `string_truncate`, `drop`, and `dp_laplace`.
 
+Important request semantics:
+
+- `policies` are applied in request order. A column omitted from `policies`
+  remains retained by default.
+- `is_quasi_identifier=true` marks the transformed column for k-anonymity.
+- `sensitive_columns` lists cleartext non-QI attributes to measure or enforce
+  l-diversity against. If it is empty, SDSA automatically measures cleartext
+  non-QI columns.
+- `l=1` only measures attribute-disclosure risk. Set `l >= 2` to enforce
+  distinct l-diversity through additional suppression.
+- `dp_params` is required for every `dp_laplace` column and must include
+  `epsilon`, `lower`, and `upper`.
+- `accept_weaker_guarantee=true` only bypasses the soft suppression cap. Zero
+  rows and hard-cap breaches are always refused.
+
 ## Field Policy Files
 
 Place `sdsa-policy.json` at the repository root to override default policy
@@ -199,6 +236,23 @@ Use [`sdsa-policy.json.example`](sdsa-policy.json.example) as a starting point.
 
 Deterministic mode requires `SDSA_DEPLOYMENT_SALT`. SDSA rejects deterministic
 mode when the same request also contains `dp_laplace` columns.
+
+For deterministic hashing/tokenization across sessions, set
+`SDSA_DEPLOYMENT_SALT` to a stable 32-byte hex value and pass
+`deterministic_key_name` in the process request. Without that salt, hashes and
+tokens are intentionally session-random.
+
+## Workflow Guidance
+
+1. Upload and inspect the detected schema and PII suggestions.
+2. Drop or redact direct identifiers that downstream users do not need.
+3. Generalize likely quasi-identifiers before marking them as QIs.
+4. Use preflight to check suppression before processing.
+5. For numeric sensitive values that must remain numeric, use `dp_laplace`
+   with explicit bounds and a conservative epsilon.
+6. If a cleartext attribute is sensitive inside each QI group, mark it
+   sensitive and set `l >= 2`, or mask/drop/generalize it.
+7. Review the Markdown or JSON privacy report before sharing the CSV.
 
 ## Testing
 
