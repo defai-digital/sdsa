@@ -57,6 +57,17 @@ limits, and tradeoffs.
 
 ## Quick Start
 
+Install SDSA with `pip` first:
+
+```bash
+python3 -m pip install sdsa
+sdsa-server start
+```
+
+Open <http://127.0.0.1:8000/> and upload a CSV, TXT, or SQL file.
+
+If you want the sample files or plan to develop SDSA from source:
+
 ```bash
 git clone https://github.com/defai-digital/sdsa.git
 cd sdsa/backend
@@ -65,7 +76,7 @@ python3 -m venv .venv
 .venv/bin/sdsa-server start
 ```
 
-Open <http://127.0.0.1:8000/> and upload one of the files in
+Then upload one of the files in
 [`samples/`](samples/), such as [`samples/employees.csv`](samples/employees.csv).
 
 For browser and CLI walkthroughs, see [QUICKSTART.md](QUICKSTART.md).
@@ -220,13 +231,14 @@ per deployment unless you replace the session store with shared infrastructure.
 
 ### Python Package
 
-For a simple host-level install:
+For a simple host-level install, prefer installing the published package first:
 
 ```bash
-cd backend
-python3 -m pip install .
+python3 -m pip install sdsa
 sdsa-server start
 ```
+
+From a source checkout, use `python3 -m pip install .` inside `backend/` instead.
 
 The `sdsa-server start` command serves both the API and the packaged frontend.
 Useful options:

@@ -12,6 +12,15 @@ API run.
 
 ## 1. Install
 
+For a first run, install SDSA with `pip`:
+
+```bash
+python3 -m pip install sdsa
+```
+
+If you want the sample files or plan to develop SDSA from source, clone the
+repository and use an editable install:
+
 ```bash
 git clone https://github.com/defai-digital/sdsa.git
 cd sdsa/backend
@@ -19,7 +28,7 @@ python3 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 ```
 
-If you already cloned the repository, start from:
+If you already cloned the repository, run:
 
 ```bash
 cd backend
@@ -29,7 +38,13 @@ python3 -m venv .venv
 
 ## 2. Start SDSA
 
-From `backend/`:
+For a package install:
+
+```bash
+sdsa-server start
+```
+
+For an editable source install from `backend/`:
 
 ```bash
 .venv/bin/sdsa-server start
@@ -37,8 +52,8 @@ From `backend/`:
 
 Open <http://127.0.0.1:8000/>.
 
-You can also install it into your active Python environment and run the same
-entry point directly:
+You can also install from a source checkout into your active Python environment
+and run the same entry point directly:
 
 ```bash
 cd backend
@@ -48,7 +63,8 @@ sdsa-server start
 
 ## 3. Sanitize a File in the Browser
 
-1. Upload `../samples/employees.csv`.
+1. Upload a CSV, TXT, or SQL file. If you cloned the repository, try
+   `samples/employees.csv`.
 2. Review the detected columns and suggested policies.
 3. Mark quasi-identifiers for k-anonymity, such as `dob`, `zip`, and
    `department`.
