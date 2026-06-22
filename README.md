@@ -8,7 +8,7 @@ and Markdown privacy report.
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](backend/pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-130%20passing-brightgreen)](backend/tests/)
+[![Tests](https://img.shields.io/badge/tests-150%20passing-brightgreen)](backend/tests/)
 [![Docker CI](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml/badge.svg)](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml)
 
 ![SDSA upload screen showing the three-step sanitization workflow](docs/assets/sdsa-upload-screen.png)
@@ -29,7 +29,8 @@ For a first run, start with [QUICKSTART.md](QUICKSTART.md).
   files.
 - Apply masking, HMAC hashing, tokenization, redaction, dropping, numeric
   binning, date truncation, string truncation, and bounded Laplace noise.
-- Enforce k-anonymity over operator-selected quasi-identifiers.
+- Enforce k-anonymity over operator-selected quasi-identifiers and measure or
+  enforce l-diversity for sensitive cleartext attributes.
 - Estimate suppression before processing through a preflight endpoint and UI.
 - Export a sanitized CSV plus machine-readable and human-readable privacy
   reports.
@@ -138,6 +139,8 @@ Processing requests use this shape:
     {"column": "salary", "action": "dp_laplace"}
   ],
   "k": 5,
+  "l": 1,
+  "sensitive_columns": [],
   "dp_params": {
     "salary": {"epsilon": 1.0, "lower": 40000, "upper": 180000}
   },
@@ -183,11 +186,12 @@ Use [`sdsa-policy.json.example`](sdsa-policy.json.example) as a starting point.
 |---|---:|---|
 | `SDSA_MAX_UPLOAD_BYTES` | `314572800` | Maximum upload size, 300 MB by default. |
 | `SDSA_SESSION_TTL` | `1800` | Session lifetime in seconds. |
-| `SDSA_SAMPLE_ROWS` | `10000` | Rows sampled for schema and PII detection. |
+| `SDSA_SAMPLE_ROWS` | `10000` | Rows sampled for PII detection. Schema always uses the full dataset. |
 | `SDSA_DEFAULT_K` | `5` | Default k-anonymity target. |
 | `SDSA_DEFAULT_EPSILON` | `1.0` | Default epsilon used in policy suggestions. |
 | `SDSA_EPSILON_MIN` | `0.1` | Minimum allowed epsilon. |
 | `SDSA_EPSILON_MAX` | `10.0` | Maximum allowed epsilon. |
+| `SDSA_EPSILON_SESSION_BUDGET` | `SDSA_EPSILON_MAX` | Per-column cumulative epsilon budget for one uploaded session. |
 | `SDSA_MAX_SUPPRESSION` | `0.10` | Soft row-suppression cap. |
 | `SDSA_HARD_MAX_SUPPRESSION` | `0.50` | Hard row-suppression cap. |
 | `SDSA_ALLOWED_CORS_ORIGINS` | empty | Comma-separated allowed browser origins. `*` is rejected. |

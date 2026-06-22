@@ -134,6 +134,8 @@ curl -sS -H "Content-Type: application/json" \
       {"column": "salary", "action": "dp_laplace"}
     ],
     "k": 5,
+    "l": 1,
+    "sensitive_columns": [],
     "dp_params": {
       "salary": {"epsilon": 1.0, "lower": 40000, "upper": 100000}
     }
@@ -163,6 +165,8 @@ curl -sS -H "Content-Type: application/json" \
       {"column": "salary", "action": "dp_laplace"}
     ],
     "k": 5,
+    "l": 1,
+    "sensitive_columns": [],
     "dp_params": {
       "salary": {"epsilon": 1.0, "lower": 40000, "upper": 100000}
     }
@@ -210,7 +214,7 @@ From `backend/`:
 .venv/bin/ruff check src tests
 ```
 
-The current backend test suite reports `130 passed`.
+The current backend test suite reports `150 passed`.
 
 ## 7. Run with Docker
 
