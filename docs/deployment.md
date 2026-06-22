@@ -92,7 +92,7 @@ The Docker workflow publishes images to GitHub Container Registry on pushes to
 
 ```text
 ghcr.io/defai-digital/sdsa:main
-ghcr.io/defai-digital/sdsa:v1.2.0
+ghcr.io/defai-digital/sdsa:v1.2.1
 ghcr.io/defai-digital/sdsa:sha-...
 ```
 
@@ -100,7 +100,7 @@ ghcr.io/defai-digital/sdsa:sha-...
 instead of building on the host, remove or ignore the `build` block and keep:
 
 ```yaml
-image: ghcr.io/defai-digital/sdsa:v1.2.0
+image: ghcr.io/defai-digital/sdsa:v1.2.1
 ```
 
 Pull requests run pytest, Ruff, and a Docker image build without publishing.

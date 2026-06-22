@@ -35,7 +35,7 @@ def test_local_compose_uses_env_file_and_policy_mount_hint():
 def test_production_compose_hardens_app_and_keeps_single_entrypoint():
     compose = read_repo_file("compose.prod.yml")
 
-    assert "ghcr.io/defai-digital/sdsa:1.2.0" in compose
+    assert "ghcr.io/defai-digital/sdsa:1.2.1" in compose
     assert "expose:" in compose
     assert '"8000"' in compose
     assert "read_only: true" in compose

@@ -242,8 +242,8 @@ From the repository root:
 
 ```bash
 cp .env.example .env
-docker build -t defai-digital/sdsa:1.2.0 .
-docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.2.0
+docker build -t defai-digital/sdsa:1.2.1 .
+docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.2.1
 ```
 
 Or with Compose:
@@ -278,7 +278,7 @@ See [docs/deployment.md](docs/deployment.md) for the deployment design, nginx
 configuration, policy-file mounting, and rollback notes.
 
 Version tags publish images to GitHub Container Registry, for example
-`ghcr.io/defai-digital/sdsa:v1.2.0`.
+`ghcr.io/defai-digital/sdsa:v1.2.1`.
 
 ## 9. CI/CD
 

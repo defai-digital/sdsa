@@ -1,6 +1,6 @@
 services:
   sdsa:
-    image: ghcr.io/defai-digital/sdsa:1.2.0
+    image: ghcr.io/defai-digital/sdsa:1.2.1
     build:
       context: .
       dockerfile: Dockerfile
