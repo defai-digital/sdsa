@@ -48,7 +48,7 @@ async def _lifespan(app: FastAPI):
 def create_app() -> FastAPI:
     setup_logging()
     cfg = get_config()
-    app = FastAPI(title="SDSA", version="1.1.2", lifespan=_lifespan)
+    app = FastAPI(title="SDSA", version="1.2.0", lifespan=_lifespan)
     if cfg.allowed_cors_origins:
         app.add_middleware(
             CORSMiddleware,

@@ -315,8 +315,8 @@ Local container:
 
 ```bash
 cp .env.example .env
-docker build -t defai-digital/sdsa:1.1.2 .
-docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.2
+docker build -t defai-digital/sdsa:1.2.0 .
+docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.2.0
 ```
 
 Local Compose:
@@ -341,7 +341,7 @@ the full deployment guide.
 
 Tagged pushes also build and publish container images to GitHub Container
 Registry through [`.github/workflows/docker.yml`](.github/workflows/docker.yml).
-For example, tag `v1.1.2` publishes `ghcr.io/defai-digital/sdsa:v1.1.2`.
+For example, tag `v1.2.0` publishes `ghcr.io/defai-digital/sdsa:v1.2.0`.
 The workflow runs pytest and Ruff before building or publishing images.
 
 ## License
