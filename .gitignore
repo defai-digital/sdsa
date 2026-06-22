@@ -36,3 +36,9 @@ samples/employees_huge.csv
 sdsa-policy.json
 .env
 .env.local
+
+# Local automation workspace (not published)
+automatosx/
+
+# Local bug audit workspace (not published)
+BUGS/
