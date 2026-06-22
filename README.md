@@ -11,6 +11,8 @@ and Markdown privacy report.
 [![Tests](https://img.shields.io/badge/tests-130%20passing-brightgreen)](backend/tests/)
 [![Docker CI](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml/badge.svg)](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml)
 
+![SDSA upload screen showing the three-step sanitization workflow](docs/assets/sdsa-upload-screen.png)
+
 SDSA is designed for compliance-oriented engineering, analytics, and vendor data
 sharing workflows where transformations must be reviewable and reproducible. It
 is not a black-box anonymization service, and it does not claim dataset-level
@@ -255,8 +257,8 @@ Local container:
 
 ```bash
 cp .env.example .env
-docker build -t defai-digital/sdsa:1.1.1 .
-docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.1
+docker build -t defai-digital/sdsa:1.1.2 .
+docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.2
 ```
 
 Local Compose:
@@ -281,7 +283,7 @@ the full deployment guide.
 
 Tagged pushes also build and publish container images to GitHub Container
 Registry through [`.github/workflows/docker.yml`](.github/workflows/docker.yml).
-For example, tag `v1.1.1` publishes `ghcr.io/defai-digital/sdsa:v1.1.1`.
+For example, tag `v1.1.2` publishes `ghcr.io/defai-digital/sdsa:v1.1.2`.
 The workflow runs pytest and Ruff before building or publishing images.
 
 ## License

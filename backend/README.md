@@ -7,6 +7,8 @@ It ingests CSV, delimited TXT, and single-table SQL `INSERT` dumps; detects
 likely sensitive fields; applies explicit per-column privacy policies; enforces
 k-anonymity; and exports a sanitized CSV with JSON and Markdown privacy reports.
 
+![SDSA upload screen showing the three-step sanitization workflow](https://raw.githubusercontent.com/defai-digital/sdsa/main/docs/assets/sdsa-upload-screen.png)
+
 ## Install
 
 ```bash
