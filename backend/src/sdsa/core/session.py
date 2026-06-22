@@ -112,7 +112,13 @@ class SessionStore:
             _zeroize(expired)
         return result
 
-    def store_output(self, session_id: str, output_bytes: bytes, output_report: dict[str, Any]) -> bool:
+    def store_output(
+        self,
+        session_id: str,
+        output_bytes: bytes,
+        output_report: dict[str, Any],
+        dp_spent: dict[str, float] | None = None,
+    ) -> bool:
         expired: Session | None = None
         with self._lock:
             session = self._sessions.get(session_id)
@@ -123,6 +129,8 @@ class SessionStore:
             else:
                 session.output_bytes = output_bytes
                 session.output_report = output_report
+                if dp_spent is not None:
+                    session.dp_spent = dict(dp_spent)
                 return True
         if expired is not None:
             _zeroize(expired)

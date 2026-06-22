@@ -568,3 +568,19 @@ def test_pii_detection_samples_whole_frame(monkeypatch):
         assert r.json()["pii_suggestions"]["contact"]["kind"] == "email"
     finally:
         config_module._config = None
+
+
+def test_pii_detection_includes_tail_rows(monkeypatch):
+    monkeypatch.setenv("SDSA_SAMPLE_ROWS", "10")
+    config_module._config = None
+    try:
+        rows = ["contact,score"]
+        rows += [f",{i}" for i in range(99)]
+        rows += ["tail-user@example.com,99"]
+        csv_bytes = ("\n".join(rows) + "\n").encode()
+        local = TestClient(create_app())
+        r = local.post("/api/upload", files={"file": ("tail.csv", csv_bytes, "text/csv")})
+        assert r.status_code == 200, r.text
+        assert r.json()["pii_suggestions"]["contact"]["kind"] == "email"
+    finally:
+        config_module._config = None

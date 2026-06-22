@@ -66,14 +66,7 @@ async def upload(file: UploadFile) -> UploadResponse:
         raise HTTPException(400, str(e))
 
     df = result.df
-    # Detect PII on a random sample across the whole frame, not just the head —
-    # PII concentrated in later rows (e.g. a file sorted with clean test rows
-    # first) would otherwise be missed and silently retained. seed=0 keeps
-    # detection deterministic across re-uploads of the same data.
-    if df.height > cfg.sample_rows_for_detection:
-        sample = df.sample(cfg.sample_rows_for_detection, seed=0)
-    else:
-        sample = df
+    sample = _detection_sample(df, cfg.sample_rows_for_detection)
     schema = infer_schema(df)
     pii = {k: asdict_pii(v) for k, v in detect_dataframe(sample).items()}
     preview_sample = _serialize_sample(df.head(PREVIEW_ROW_LIMIT))
@@ -141,6 +134,35 @@ def asdict_pii(s) -> dict[str, Any]:
     return {"kind": s.kind, "confidence": round(s.confidence, 3), "reason": s.reason}
 
 
+def _detection_sample(df: pl.DataFrame, limit: int) -> pl.DataFrame:
+    """Bounded deterministic sample for PII detection.
+
+    A plain head sample misses PII concentrated late in sorted files; a plain
+    random sample can still miss tail-only PII. Include both ends and use the
+    remaining budget for a deterministic random middle sample.
+    """
+    if limit <= 0:
+        return df.head(0)
+    if df.height <= limit:
+        return df
+    if limit == 1:
+        return df.tail(1)
+
+    edge_count = max(1, limit // 3)
+    head_count = min(edge_count, df.height)
+    tail_count = min(edge_count, df.height - head_count)
+    middle_count = limit - head_count - tail_count
+
+    parts = [df.head(head_count)]
+    middle_len = df.height - head_count - tail_count
+    if middle_count > 0 and middle_len > 0:
+        middle = df.slice(head_count, middle_len)
+        parts.append(middle.sample(min(middle_count, middle.height), seed=0))
+    if tail_count > 0:
+        parts.append(df.tail(tail_count))
+    return pl.concat(parts)
+
+
 class ProcessResponse(BaseModel):
     session_id: str
     report: dict
@@ -188,11 +210,16 @@ async def process(session_id: str, request: ProcessRequest) -> ProcessResponse:
         # Serialize CSV into session bytes buffer.
         buf = io.BytesIO()
         result.df.write_csv(buf)
-        if not store.store_output(session_id, buf.getvalue(), result.report):
+        # Persist output and cumulative DP spend under the same session-store
+        # lock. If these were separate writes, a disappearing/expired session
+        # could leave a successful DP release without its budget update.
+        if not store.store_output(
+            session_id,
+            buf.getvalue(),
+            result.report,
+            dp_spent=result.dp_spent_cumulative,
+        ):
             raise HTTPException(404, "session expired — please re-upload and reprocess")
-        # Persist the cumulative DP budget only after a successful release, so a
-        # refused/failed run never advances the budget.
-        store.set_dp_spent(session_id, result.dp_spent_cumulative)
 
         log.info("process_complete", extra={
             "session_id": session_id,

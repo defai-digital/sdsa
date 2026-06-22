@@ -130,6 +130,19 @@ def test_set_dp_spent_persists_and_snapshots():
     assert store.checkout("s1").dp_spent == {"salary": 1.5}
 
 
+def test_store_output_can_atomically_persist_dp_spent():
+    store = SessionStore()
+    session = Session(session_id="s1", created_at=time.time())
+    store._sessions[session.session_id] = session
+
+    assert store.store_output("s1", b"csv", {"ok": True}, dp_spent={"salary": 1.0})
+    snap = store.checkout("s1")
+    assert snap is not None
+    assert snap.output_bytes == b"csv"
+    assert snap.output_report == {"ok": True}
+    assert snap.dp_spent == {"salary": 1.0}
+
+
 def test_set_dp_spent_missing_session_returns_false():
     store = SessionStore()
     assert store.set_dp_spent("nope", {"a": 1.0}) is False
