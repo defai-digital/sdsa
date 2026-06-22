@@ -34,6 +34,7 @@ Open <http://127.0.0.1:8000/>.
 ```bash
 sdsa-server start
 sdsa-server start --host 0.0.0.0 --port 8000
+sdsa-server start --random-port
 sdsa-server start --reload
 ```
 

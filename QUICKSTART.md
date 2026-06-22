@@ -44,6 +44,12 @@ For a package install:
 sdsa-server start
 ```
 
+If port 8000 is already in use, choose an available high port automatically:
+
+```bash
+sdsa-server start --random-port
+```
+
 For an editable source install from `backend/`:
 
 ```bash
@@ -204,7 +210,7 @@ From `backend/`:
 .venv/bin/ruff check src tests
 ```
 
-The current backend test suite reports `128 passed`.
+The current backend test suite reports `130 passed`.
 
 ## 7. Run with Docker
 
@@ -212,8 +218,8 @@ From the repository root:
 
 ```bash
 cp .env.example .env
-docker build -t defai-digital/sdsa:1.1.0 .
-docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.0
+docker build -t defai-digital/sdsa:1.1.1 .
+docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.1
 ```
 
 Or with Compose:
@@ -248,7 +254,7 @@ See [docs/deployment.md](docs/deployment.md) for the deployment design, nginx
 configuration, policy-file mounting, and rollback notes.
 
 Version tags publish images to GitHub Container Registry, for example
-`ghcr.io/defai-digital/sdsa:v1.1.0`.
+`ghcr.io/defai-digital/sdsa:v1.1.1`.
 
 ## 9. CI/CD
 

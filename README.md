@@ -8,7 +8,7 @@ and Markdown privacy report.
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](backend/pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-128%20passing-brightgreen)](backend/tests/)
+[![Tests](https://img.shields.io/badge/tests-130%20passing-brightgreen)](backend/tests/)
 [![Docker CI](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml/badge.svg)](https://github.com/defai-digital/sdsa/actions/workflows/docker.yml)
 
 SDSA is designed for compliance-oriented engineering, analytics, and vendor data
@@ -245,6 +245,7 @@ Useful options:
 
 ```bash
 sdsa-server start --host 0.0.0.0 --port 8000
+sdsa-server start --random-port
 sdsa-server start --reload
 ```
 
@@ -254,8 +255,8 @@ Local container:
 
 ```bash
 cp .env.example .env
-docker build -t defai-digital/sdsa:1.1.0 .
-docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.0
+docker build -t defai-digital/sdsa:1.1.1 .
+docker run --rm --env-file .env -p 8000:8000 defai-digital/sdsa:1.1.1
 ```
 
 Local Compose:
@@ -280,7 +281,7 @@ the full deployment guide.
 
 Tagged pushes also build and publish container images to GitHub Container
 Registry through [`.github/workflows/docker.yml`](.github/workflows/docker.yml).
-For example, tag `v1.1.0` publishes `ghcr.io/defai-digital/sdsa:v1.1.0`.
+For example, tag `v1.1.1` publishes `ghcr.io/defai-digital/sdsa:v1.1.1`.
 The workflow runs pytest and Ruff before building or publishing images.
 
 ## License

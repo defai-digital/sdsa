@@ -46,6 +46,23 @@ def test_start_command_honors_flags(monkeypatch):
     assert calls[0]["forwarded_allow_ips"] == "*"
 
 
+def test_start_command_can_use_random_high_port(monkeypatch):
+    calls: list[dict] = []
+    monkeypatch.setattr(cli, "_find_available_port", lambda host: 12345)
+    monkeypatch.setattr(cli.uvicorn, "run", lambda app, **kwargs: calls.append({"app": app, **kwargs}))
+
+    assert cli.main(["start", "--random-port"]) == 0
+
+    assert calls[0]["host"] == "127.0.0.1"
+    assert calls[0]["port"] == 12345
+
+
+def test_find_available_port_uses_port_above_10000():
+    port = cli._find_available_port("127.0.0.1")
+
+    assert cli.MIN_RANDOM_PORT <= port <= cli.MAX_RANDOM_PORT
+
+
 def test_start_command_honors_environment(monkeypatch):
     calls: list[dict] = []
     monkeypatch.setenv("SDSA_HOST", "0.0.0.0")
